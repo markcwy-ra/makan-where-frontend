@@ -1,0 +1,17 @@
+.menu-add-navbar {
+  position: absolute;
+  background-color: #0078ef;
+  color: white;
+  padding: 15px;
+  top: -100px;
+  left: 50%;
+  margin-left: -80px;
+  width: 160px;
+  height: 90px;
+  border-radius: 15px;
+  text-align: center;
+  box-shadow: rgba(100, 100, 111, 0.6) 0px 7px 29px 0px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}

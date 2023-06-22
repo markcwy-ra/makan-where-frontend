@@ -1,0 +1,10 @@
+.feed-tabs {
+  display: flex;
+  gap: 15px;
+}
+
+.feed-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
