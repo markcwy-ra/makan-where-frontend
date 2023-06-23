@@ -38,7 +38,7 @@ const SearchScreen = () => {
             handleClick={handleToggle}
           />
         </div>
-        <SearchBar />
+        <SearchBar db={activeToggle} />
       </div>
     </>
   );

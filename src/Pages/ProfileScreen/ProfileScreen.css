@@ -35,12 +35,16 @@
 }
 
 .horz-feed-cards::-webkit-scrollbar {
-  background-color: rgb(220, 220, 220);
   height: 8px;
-  border-radius: 4px;
 }
 
 .horz-feed-cards::-webkit-scrollbar-thumb {
   background: #0078ef;
+  border-radius: 4px;
+}
+
+.horz-feed-cards::-webkit-scrollbar-track {
+  margin-right: 20px;
+  background-color: rgb(220, 220, 220);
   border-radius: 4px;
 }

@@ -1,0 +1,24 @@
+.search-bar {
+  position: relative;
+}
+
+.search-bar form input {
+  width: 100%;
+  padding: 15px 20px;
+  height: 50px;
+  border-radius: 25px;
+  border: none;
+  background-color: #9edef5;
+}
+
+.search-bar form input::placeholder {
+  letter-spacing: 0.02em;
+  font-size: 15px;
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.search-bar form img {
+  position: absolute;
+  right: 15px;
+  top: 9px;
+}
