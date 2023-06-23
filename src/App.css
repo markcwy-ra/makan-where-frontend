@@ -15,10 +15,19 @@ body #root {
   height: 100%;
   text-align: left;
   color: black;
-  padding: 20px;
+  padding-bottom: 0px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  overflow: hidden;
+}
+
+.content {
+  overflow: auto;
+  flex: 1;
+}
+
+.content::-webkit-scrollbar {
+  display: none;
 }
 
 h1,
@@ -27,6 +36,7 @@ h3,
 h4 {
   font-weight: 900;
   line-height: 1;
+  letter-spacing: -0.02em;
 }
 
 h1 {
@@ -61,5 +71,5 @@ p {
 .divider-line {
   height: 1px;
   width: 100%;
-  background-color: white;
+  background-color: #0078ef;
 }

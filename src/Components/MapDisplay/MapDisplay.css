@@ -1,0 +1,7 @@
+.map-display {
+  background-color: #0078ef;
+  border-radius: 25px 25px 0 0;
+  height: 100%;
+  width: 100%;
+  z-index: 0;
+}

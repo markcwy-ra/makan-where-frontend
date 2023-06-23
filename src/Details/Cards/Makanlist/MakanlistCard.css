@@ -1,0 +1,19 @@
+.card-makanlist-full {
+  cursor: pointer;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  gap: 5px;
+  padding: 15px;
+  border-radius: 25px;
+  position: relative;
+}
+
+.card-makanlist-full-title {
+  width: 60%;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 1;
+}

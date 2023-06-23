@@ -1,7 +1,11 @@
-.feed-list {
+.search-page {
   display: flex;
   flex-direction: column;
   gap: 10px;
   padding: 0 20px;
-  padding-bottom: 140px;
+}
+
+.search-toggles {
+  display: flex;
+  gap: 10px;
 }

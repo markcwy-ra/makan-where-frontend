@@ -1,0 +1,8 @@
+.star-small img {
+  height: 15px;
+  width: 15px;
+}
+
+.star-rating {
+  display: flex;
+}

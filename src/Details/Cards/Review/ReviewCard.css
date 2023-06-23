@@ -1,0 +1,32 @@
+.card-review-full {
+  cursor: pointer;
+  height: 200px;
+  width: 100%;
+  display: flex;
+  flex-direction: row-reverse;
+  gap: 5px;
+  padding: 15px;
+  border-radius: 25px;
+  position: relative;
+  border: 1px solid rgb(207, 207, 207);
+  overflow: hidden;
+}
+
+.card-review-full-title {
+  width: 100%;
+  background-color: white;
+  color: black;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 15px;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+}
+
+.rating-byline {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
