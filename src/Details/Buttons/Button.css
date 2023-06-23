@@ -6,7 +6,8 @@
   cursor: pointer;
 }
 
-.button-small {
+.button-small,
+.button-medium {
   padding: 10px;
 }
 

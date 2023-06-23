@@ -12,6 +12,10 @@ const Header = ({ children, icon }) => {
     case "map":
       selectedIcon = Map;
       break;
+    case "profile":
+      selectedIcon =
+        "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fHByb2ZpbGUlMjBwaG90byUyMGFzaWFufGVufDB8fDB8fHww&auto=format&fit=crop&w=900&q=60";
+      break;
     default:
       break;
   }
@@ -19,7 +23,13 @@ const Header = ({ children, icon }) => {
   return (
     <div id="header">
       <div className="header-title">{children}</div>
-      {selectedIcon && <img src={selectedIcon} alt={icon} />}
+      {selectedIcon && (
+        <img
+          className={icon === "profile" ? "header-profilepic" : ""}
+          src={selectedIcon}
+          alt={icon}
+        />
+      )}
     </div>
   );
 };

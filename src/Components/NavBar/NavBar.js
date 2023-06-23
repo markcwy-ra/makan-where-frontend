@@ -66,9 +66,9 @@ const NavBar = () => {
         {activeIcon === "/search" && <div className="navbar-active" />}
       </div>
 
-      <div className="navbar-icon">
+      <div className="navbar-icon navbar-profilepic">
         <img
-          src={Home}
+          src="https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fHByb2ZpbGUlMjBwaG90byUyMGFzaWFufGVufDB8fDB8fHww&auto=format&fit=crop&w=900&q=60"
           onClick={handleClick}
           id="profile"
           alt="Profile Button"

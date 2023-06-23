@@ -1,0 +1,46 @@
+.profile-page-header {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 0px 20px 20px 20px;
+}
+
+.profile-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.profile-page-feeds {
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.horz-feed {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  position: relative;
+  width: 100%;
+}
+
+.horz-feed-cards {
+  display: flex;
+  width: 100%;
+  gap: 10px;
+  overflow-x: scroll;
+  padding-bottom: 10px;
+  padding-right: 20px;
+}
+
+.horz-feed-cards::-webkit-scrollbar {
+  background-color: rgb(220, 220, 220);
+  height: 8px;
+  border-radius: 4px;
+}
+
+.horz-feed-cards::-webkit-scrollbar-thumb {
+  background: #0078ef;
+  border-radius: 4px;
+}

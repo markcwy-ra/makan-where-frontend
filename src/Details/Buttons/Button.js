@@ -1,6 +1,12 @@
 import "./Button.css";
 
-const Button = ({ id, label, size, isActive, handleClick }) => {
+const Button = ({ id, label, size = "large", isActive, handleClick }) => {
+  let buttonLabel;
+  if (size === "small") {
+    buttonLabel = <h4>{label}</h4>;
+  } else {
+    buttonLabel = <p>{label}</p>;
+  }
   return (
     <button
       className={`button button-${size} ${
@@ -9,7 +15,7 @@ const Button = ({ id, label, size, isActive, handleClick }) => {
       onClick={handleClick}
       id={id}
     >
-      <h4>{label}</h4>
+      {buttonLabel}
     </button>
   );
 };

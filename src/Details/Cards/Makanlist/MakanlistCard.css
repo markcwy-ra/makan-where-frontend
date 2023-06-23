@@ -1,5 +1,11 @@
-.card-makanlist-full {
+.card-makanlist-full,
+.card-makanlist-small {
   cursor: pointer;
+}
+
+/* FULL CARD */
+
+.card-makanlist-full {
   width: 100%;
   display: flex;
   justify-content: space-between;
@@ -10,6 +16,29 @@
 }
 
 .card-makanlist-full-title {
+  width: 60%;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 1;
+}
+
+/* SMALL CARD */
+
+.card-makanlist-small {
+  width: 150px;
+  min-width: 150px;
+  height: 150px;
+  display: flex;
+  justify-content: space-between;
+  gap: 5px;
+  padding: 10px;
+  border-radius: 15px;
+  position: relative;
+}
+
+.card-makanlist-small-title {
   width: 60%;
   color: white;
   display: flex;

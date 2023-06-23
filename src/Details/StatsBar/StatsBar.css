@@ -1,0 +1,17 @@
+.stats-bar {
+  width: 100%;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.stats-bar-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.stats-bar-stats h2 {
+  color: #0078ef;
+}

@@ -1,7 +1,7 @@
 import "./MakanlistCard.css";
 import "../Cards.css";
 
-const MakanlistCard = ({ config, content }) => {
+const MakanlistCard = ({ config = "full", content }) => {
   let styling;
   if (content.photoUrl) {
     styling = {
@@ -17,14 +17,22 @@ const MakanlistCard = ({ config, content }) => {
     };
   }
 
+  let cardTitle;
+
+  if (config === "full") {
+    cardTitle = <h2>{content.title}</h2>;
+  } else {
+    cardTitle = <h3>{content.title}</h3>;
+  }
+
   return (
     <div className={`card-makanlist-${config}`} style={styling}>
       <div className={`card-makanlist-${config}-title`}>
-        <h2>{content.title}</h2>
-        <h4>Makanlist by @{content.author}</h4>
+        {cardTitle}
+        {config === "full" && <h4>Makanlist by @{content.author}</h4>}
       </div>
 
-      <div className="profile-pic"></div>
+      {config === "full" && <div className="profile-pic"></div>}
     </div>
   );
 };
