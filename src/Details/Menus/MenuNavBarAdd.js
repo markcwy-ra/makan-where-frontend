@@ -1,11 +1,19 @@
 import "./MenuNavBarAdd.css";
 
-const MenuNavBarAdd = () => {
+const MenuNavBarAdd = ({ handleToggle, setShowMenu }) => {
+  const handleClick = (e) => {
+    handleToggle(e.currentTarget.id);
+    setShowMenu(false);
+  };
   return (
     <div className="menu-add-navbar">
-      <h4>Add Review</h4>
+      <h4 onClick={handleClick} id="review-composer">
+        Add Review
+      </h4>
       <div className="divider-line" />
-      <h4>Create New List</h4>
+      <h4 onClick={handleClick} id="makanlist-composer">
+        Create Makanlist
+      </h4>
     </div>
   );
 };

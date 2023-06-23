@@ -20,7 +20,7 @@ import "./NavBar.css";
 
 //------------------------------//
 
-const NavBar = () => {
+const NavBar = ({ handleToggle }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [showMenu, setShowMenu] = useState(false);
@@ -42,7 +42,9 @@ const NavBar = () => {
 
   return (
     <div id="nav">
-      {showMenu && <MenuNavBarAdd />}
+      {showMenu && (
+        <MenuNavBarAdd handleToggle={handleToggle} setShowMenu={setShowMenu} />
+      )}
 
       <div className="navbar-icon">
         <img src={Home} onClick={handleClick} id="" alt="Home Button" />
