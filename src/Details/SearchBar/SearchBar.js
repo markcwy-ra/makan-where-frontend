@@ -2,7 +2,7 @@ import { useState } from "react";
 import "./SearchBar.css";
 import Search from "../../Icons/Search.svg";
 
-const SearchBar = ({ db = "places" }) => {
+const SearchBar = ({ db = "places", setResults }) => {
   const [query, setQuery] = useState("");
   let placeholderCopy;
 
@@ -25,6 +25,7 @@ const SearchBar = ({ db = "places" }) => {
   };
   const handleSubmit = () => {
     console.log(query);
+    // setResults();
   };
 
   return (
