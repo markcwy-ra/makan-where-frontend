@@ -39,6 +39,10 @@
   gap: 10px;
 }
 
+.review-content-details h4 {
+  cursor: pointer;
+}
+
 .review-content-details-row {
   display: flex;
   gap: 5px;

@@ -1,12 +1,12 @@
 import HeartFull from "../../Icons/HeartFull.svg";
 import HeartEmpty from "../../Icons/HeartEmpty.svg";
 
-const HeartButton = ({ handleClick }) => {
+const HeartButton = ({ heart, handleClick }) => {
   return (
     <img
       className="heart-button"
       onClick={handleClick}
-      src={HeartEmpty}
+      src={heart ? HeartFull : HeartEmpty}
       alt="Heart Button"
     />
   );

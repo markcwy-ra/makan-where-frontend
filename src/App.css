@@ -82,3 +82,9 @@ img {
   width: 100%;
   background-color: #0078ef;
 }
+
+.divider-dotted {
+  height: 1px;
+  width: 100%;
+  border-top: 2px dotted #0078ef;
+}

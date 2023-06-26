@@ -164,9 +164,11 @@ const tempRestPageData = {
 const tempReviewPageData = {
   restaurant: "ONALU Bagel Haús",
   title: "Good bagels, nice atmostphere",
+  restaurantId: 1,
   rating: 4,
   upvotes: 5,
   author: "janelee",
+  recommended: "Deviled Spam Bagel, Plain bagel too!",
   content: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Diam phasellus vestibulum lorem sed risus ultricies. Sed vulputate mi sit amet mauris. Orci sagittis eu volutpat odio facilisis mauris sit amet. Ridiculus mus mauris vitae ultricies leo integer malesuada nunc vel. Lobortis scelerisque fermentum dui faucibus in ornare quam viverra orci. Justo eget magna fermentum iaculis eu non diam phasellus vestibulum. Viverra orci sagittis eu volutpat. Tempus egestas sed sed risus. Sed risus pretium quam vulputate dignissim suspendisse in est. Consequat semper viverra nam libero justo laoreet.`,
   photoUrl: "https://i.imgur.com/7JX5nqm.jpg",
 };

@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 //---------- Components ----------//
 
@@ -17,7 +17,7 @@ import { tempRestPageData } from "../../../tempData";
 
 const RestaurantScreen = () => {
   const data = { ...tempRestPageData };
-  const navigate = useNavigate();
+  const [heart, setHeart] = useState(false);
 
   const handleClick = () => {
     window.open(
@@ -25,7 +25,7 @@ const RestaurantScreen = () => {
     );
   };
   const handleHeart = () => {
-    console.log("hearted");
+    setHeart((prev) => !prev);
   };
   const handleMenu = () => {
     console.log("Add menu");
@@ -39,7 +39,7 @@ const RestaurantScreen = () => {
           <div className="restaurant-title">
             <h1>{data.name}</h1>
             <div className="restaurant-title-buttons">
-              <HeartButton handleClick={handleHeart} />
+              <HeartButton heart={heart} handleClick={handleHeart} />
               <img onClick={handleMenu} src={AddSmall} alt="Add Button" />
             </div>
           </div>
