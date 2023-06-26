@@ -1,0 +1,32 @@
+.horz-feed {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  position: relative;
+  width: 100%;
+  padding-left: 20px;
+}
+
+.horz-feed-cards {
+  display: flex;
+  width: 100%;
+  gap: 10px;
+  overflow-x: scroll;
+  padding-bottom: 10px;
+  padding-right: 20px;
+}
+
+.horz-feed-cards::-webkit-scrollbar {
+  height: 6px;
+}
+
+.horz-feed-cards::-webkit-scrollbar-thumb {
+  background: #0078ef;
+  border-radius: 4px;
+}
+
+.horz-feed-cards::-webkit-scrollbar-track {
+  margin-right: 20px;
+  background-color: rgb(220, 220, 220);
+  border-radius: 4px;
+}

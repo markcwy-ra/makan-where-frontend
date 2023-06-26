@@ -27,13 +27,13 @@
 /* SMALL CARD */
 
 .card-makanlist-small {
-  width: 150px;
-  min-width: 150px;
-  height: 150px;
+  width: 180px;
+  min-width: 180px;
+  height: 180px;
   display: flex;
   justify-content: space-between;
   gap: 5px;
-  padding: 10px;
+  padding: 15px;
   border-radius: 15px;
   position: relative;
 }

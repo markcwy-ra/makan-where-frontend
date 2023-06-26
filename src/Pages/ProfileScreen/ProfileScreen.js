@@ -1,23 +1,14 @@
 import Header from "../../Components/Header/Header";
+import { tempListData, tempReviewData } from "../../tempData";
 import "./ProfileScreen.css";
 import StatsBar from "../../Details/StatsBar/StatsBar";
 import Button from "../../Details/Buttons/Button";
-import ReviewCard from "../../Details/Cards/Review/ReviewCard.js";
-import { tempListData, tempReviewData } from "../../tempData";
-import MakanlistCard from "../../Details/Cards/Makanlist/MakanlistCard";
+import HorzFeed from "../../Components/Feeds/HorzFeed";
 
 const ProfileScreen = () => {
   const handleClick = (e) => {
     console.log(e.currentTarget.id);
   };
-
-  const reviewFeed = tempReviewData.map((data, index) => (
-    <ReviewCard key={index} config="small" content={data} />
-  ));
-
-  const makanlistFeed = tempListData.map((data, index) => (
-    <MakanlistCard key={index} config="small" content={data} />
-  ));
 
   return (
     <>
@@ -46,18 +37,8 @@ const ProfileScreen = () => {
         </div>
       </div>
       <div className="content profile-page-feeds">
-        <div className="horz-feed">
-          <div className="horz-feed-header">
-            <h4>My Reviews</h4>
-          </div>
-          <div className="horz-feed-cards">{reviewFeed}</div>
-        </div>
-        <div className="horz-feed">
-          <div className="horz-feed-header">
-            <h4>My Makanlists</h4>
-          </div>
-          <div className="horz-feed-cards">{makanlistFeed}</div>
-        </div>
+        <HorzFeed type="reviews" data={tempReviewData} />
+        <HorzFeed type="makanlists" data={tempListData} />
       </div>
     </>
   );
