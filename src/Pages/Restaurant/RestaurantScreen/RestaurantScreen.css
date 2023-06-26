@@ -19,6 +19,8 @@
 .restaurant-title {
   display: flex;
   justify-content: space-between;
+  margin-bottom: 5px;
+  gap: 10px;
 }
 
 .restaurant-title-buttons {
@@ -35,15 +37,17 @@
 .restaurant-content-details {
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 20px;
   padding: 20px;
 }
 
 .restaurant-content-details-row {
   display: flex;
-  gap: 5px;
+  gap: 8px;
 }
 
-.address {
-  margin-bottom: 15px;
+.restaurant-content-details-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
 }

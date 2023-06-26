@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 //---------- Components ----------//
 
@@ -18,6 +18,43 @@ import { tempRestPageData } from "../../../tempData";
 const RestaurantScreen = () => {
   const data = { ...tempRestPageData };
   const [heart, setHeart] = useState(false);
+  const [openingHours, setOpeningHours] = useState(null);
+
+  useEffect(() => {
+    const hours = {
+      Monday: "Closed",
+      Tuesday: "Closed",
+      Wednesday: "Closed",
+      Thursday: "Closed",
+      Friday: "Closed",
+      Saturday: "Closed",
+      Sunday: "Closed",
+    };
+    data.openingHours.forEach((dayHours) => {
+      hours[
+        dayHours.day
+      ] = `${dayHours.opening_time} - ${dayHours.closing_time}`;
+    });
+    const daysOfWeek = [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+      "Sunday",
+    ];
+    const hourDisplay = daysOfWeek.map((day, index) => {
+      return (
+        <div key={day} className="restaurant-content-details-row">
+          <p>{day}</p> <p>•</p>
+          <p>{hours[day]}</p>
+        </div>
+      );
+    });
+    setOpeningHours(hourDisplay);
+    // eslint-disable-next-line
+  }, []);
 
   const handleClick = () => {
     window.open(
@@ -36,23 +73,30 @@ const RestaurantScreen = () => {
       <img className="restaurant-cover" src={data.photoUrl} alt={data.name} />
       <div className="restaurant-content">
         <div className="restaurant-content-details">
-          <div className="restaurant-title">
-            <h1>{data.name}</h1>
-            <div className="restaurant-title-buttons">
-              <HeartButton heart={heart} handleClick={handleHeart} />
-              <img onClick={handleMenu} src={AddSmall} alt="Add Button" />
+          <div className="restaurant-content-details-group">
+            <div className="restaurant-title">
+              <h1>{data.name}</h1>
+              <div className="restaurant-title-buttons">
+                <HeartButton heart={heart} handleClick={handleHeart} />
+                <img onClick={handleMenu} src={AddSmall} alt="Add Button" />
+              </div>
             </div>
+            <div className="restaurant-content-details-row">
+              <Rating score={data.avgRating} />
+              <h4>({data.reviews.length})</h4>
+            </div>
+            <div className="restaurant-content-details-row">
+              <p>{data.cuisine}</p>
+              <p>•</p>
+              <p>{data.price}</p>
+            </div>
+            <p className="address">{data.address}</p>
           </div>
-          <div className="restaurant-content-details-row">
-            <Rating score={data.avgRating} />
-            <h4>({data.reviews.length})</h4>
+          <div className="restaurant-content-details-group">
+            <h4>Opening Hours</h4>
+            {openingHours}
           </div>
-          <div className="restaurant-content-details-row">
-            <p>{data.cuisine}</p>
-            <p>•</p>
-            <p>{data.price}</p>
-          </div>
-          <p className="address">{data.address}</p>
+
           <Button
             id="directions"
             label="Open Location in Google Maps"
