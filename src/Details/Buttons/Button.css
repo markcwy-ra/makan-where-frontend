@@ -26,3 +26,9 @@
 .button-inactive {
   background-color: #9edef5;
 }
+
+.heart-button {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+}

@@ -1,6 +1,12 @@
 import "./Button.css";
 
-const Button = ({ id, label, size = "large", isActive, handleClick }) => {
+const Button = ({
+  id,
+  label,
+  size = "large",
+  isActive = true,
+  handleClick,
+}) => {
   let buttonLabel;
   if (size === "small") {
     buttonLabel = <h4>{label}</h4>;

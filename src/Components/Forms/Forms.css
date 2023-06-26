@@ -8,7 +8,12 @@
   background-color: rgba(0, 0, 0, 0.5);
 }
 
+/* Pop Up */
+
 .form-popup {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
   background-color: white;
   width: 100%;
   height: 90%;
@@ -18,13 +23,74 @@
   padding: 20px;
 }
 
+/* Pop Up Header */
+
 .form-popup-header {
   display: flex;
   justify-content: space-between;
   width: 100%;
   align-items: center;
+  margin-bottom: 20px;
+  position: relative;
 }
 
-.form-popup-header img {
+.form-popup-header .form-close {
+  position: absolute;
+  cursor: pointer;
+  right: 2px;
+  top: 4px;
+}
+
+/* Pop Up Form */
+
+.form-popup form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.form-popup form input {
+  width: 100%;
+  padding: 15px 20px;
+  height: 50px;
+  border-radius: 25px;
+  border: none;
+  background-color: #9edef5;
+}
+
+.form-popup form textarea {
+  width: 100%;
+  padding: 15px 20px;
+  border-radius: 25px;
+  border: none;
+  background-color: #9edef5;
+}
+
+.form-popup form input::placeholder,
+.form-popup form textarea::placeholder {
+  letter-spacing: 0.02em;
+  font-size: 15px;
+  color: rgba(0, 0, 0, 0.5);
+}
+
+/* Search Bar */
+
+.form-search {
+  position: relative;
+  width: 100%;
+}
+
+.form-search img {
+  position: absolute;
+  right: 15px;
+  top: 9px;
+}
+
+/* Ratings Bar */
+
+.form-rating img {
+  width: 40px;
+  height: 40px;
   cursor: pointer;
 }

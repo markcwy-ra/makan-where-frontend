@@ -8,7 +8,8 @@ import HomeScreen from "./Pages/HomeScreen/HomeScreen";
 import MapScreen from "./Pages/MapScreen/MapScreen";
 import SearchScreen from "./Pages/SearchScreen/SearchScreen";
 import ProfileScreen from "./Pages/ProfileScreen/ProfileScreen";
-import RestaurantScreen from "./Pages/RestaurantScreen/RestaurantScreen";
+import RestaurantScreen from "./Pages/Restaurant/RestaurantScreen/RestaurantScreen";
+import RestaurantReview from "./Pages/Restaurant/RestaurantReview/RestaurantReview";
 
 //---------- Components ----------//
 
@@ -30,7 +31,10 @@ function App() {
         <Route path="/profile" element={<ProfileScreen />} />
         <Route path="/places">
           <Route index element={<Navigate to="/" />} />
-          <Route path=":placeId" element={<RestaurantScreen />} />
+          <Route path=":placeId">
+            <Route index element={<RestaurantScreen />} />
+            <Route path=":reviewId" element={<RestaurantReview />} />
+          </Route>
         </Route>
       </Route>
     </Routes>

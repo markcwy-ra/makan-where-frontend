@@ -16,6 +16,22 @@
   gap: 20px;
 }
 
+.restaurant-title {
+  display: flex;
+  justify-content: space-between;
+}
+
+.restaurant-title-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.restaurant-title-buttons img {
+  height: 24px;
+  width: 24px;
+  cursor: pointer;
+}
+
 .restaurant-content-details {
   display: flex;
   flex-direction: column;
