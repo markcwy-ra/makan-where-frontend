@@ -1,12 +1,14 @@
 const tempData = [
   {
     type: "Makanlist",
+    makanlistId: 1,
     title: "Desserts For All Moods",
     author: "johntan",
     photoUrl: "https://i.imgur.com/hwu8nZ3.jpg",
   },
   {
     type: "Makanlist",
+    makanlistId: 2,
     title: "Cheap But Still Good",
     author: "janelee",
   },
@@ -14,12 +16,15 @@ const tempData = [
     type: "Review",
     title: "Good bagels, nice atmosphere!",
     restaurantName: "ONALU Bagel Haús",
+    restaurantId: 1,
+    reviewId: 1,
     author: "johntan",
     rating: 4,
     photoUrl: "https://i.imgur.com/7JX5nqm.jpg",
   },
   {
     type: "Makanlist",
+    makanlistId: 2,
     title: "Cheap But Still Good",
     author: "janelee",
   },
@@ -27,6 +32,8 @@ const tempData = [
     type: "Review",
     title: "Tender and crispy tonkatsu",
     restaurantName: "Maruhachi",
+    restaurantId: 2,
+    reviewId: 2,
     author: "johntan",
     rating: 5,
     photoUrl: "https://i.imgur.com/ciSqZkv.jpg",
@@ -37,6 +44,8 @@ const tempReviewData = [
   {
     title: "Good bagels, nice atmosphere!",
     restaurantName: "ONALU Bagel Haús",
+    restaurantId: 1,
+    reviewId: 1,
     author: "johntan",
     rating: 4,
     photoUrl: "https://i.imgur.com/7JX5nqm.jpg",
@@ -44,6 +53,8 @@ const tempReviewData = [
   {
     title: "Tender and crispy tonkatsu",
     restaurantName: "Maruhachi",
+    restaurantId: 2,
+    reviewId: 2,
     author: "johntan",
     rating: 5,
     photoUrl: "https://i.imgur.com/ciSqZkv.jpg",
@@ -51,6 +62,8 @@ const tempReviewData = [
   {
     title: "Good bagels, nice atmosphere!",
     restaurantName: "ONALU Bagel Haús",
+    restaurantId: 1,
+    reviewId: 1,
     author: "johntan",
     rating: 4,
     photoUrl: "https://i.imgur.com/7JX5nqm.jpg",
@@ -58,6 +71,8 @@ const tempReviewData = [
   {
     title: "Tender and crispy tonkatsu",
     restaurantName: "Maruhachi",
+    restaurantId: 2,
+    reviewId: 2,
     author: "johntan",
     rating: 5,
     photoUrl: "https://i.imgur.com/ciSqZkv.jpg",
@@ -68,24 +83,28 @@ const tempListData = [
   {
     title: "Desserts For All Moods",
     author: "johntan",
+    makanlistId: 2,
     photoUrl: "https://i.imgur.com/hwu8nZ3.jpg",
   },
   {
     title: "Cheap But Still Good",
+    makanlistId: 2,
     author: "janelee",
   },
   {
     title: "Desserts For All Moods",
     author: "johntan",
+    makanlistId: 2,
     photoUrl: "https://i.imgur.com/hwu8nZ3.jpg",
   },
   {
     title: "Cheap But Still Good",
+    makanlistId: 2,
     author: "janelee",
   },
 ];
 
-const testRestPageData = {
+const tempRestPageData = {
   name: "ONALU Bagel Haús",
   avgRating: 4.3,
   price: "$$",
@@ -119,12 +138,13 @@ const testRestPageData = {
       opening_time: "10:00 AM",
       closing_time: "8:00 PM",
     },
-    // rest of the week
   ],
   reviews: [
     {
       title: "Good bagels, nice atmosphere!",
       restaurantName: "ONALU Bagel Haús",
+      restaurantId: 1,
+      reviewId: 1,
       author: "johntan",
       rating: 4,
       photoUrl: "https://i.imgur.com/7JX5nqm.jpg",
@@ -132,6 +152,8 @@ const testRestPageData = {
     {
       title: "Great flavours and tasty bagels",
       restaurantName: "ONALU Bagel Haús",
+      restaurantId: 1,
+      reviewId: 1,
       author: "janelee",
       rating: 5,
       photoUrl: "https://i.imgur.com/7JX5nqm.jpg",
@@ -149,10 +171,39 @@ const tempReviewPageData = {
   photoUrl: "https://i.imgur.com/7JX5nqm.jpg",
 };
 
+const tempListPageData = {
+  title: "Desserts For All Moods",
+  photoUrl: "https://i.imgur.com/7JX5nqm.jpg",
+  author: "johntan",
+  description:
+    "My very own curated list of desserts that fit whatever mood you’re in!",
+  restaurants: [
+    {
+      name: "ONALU Bagel Haús",
+      avgRating: 4.3,
+      restaurantId: 1,
+      photoUrl: "https://i.imgur.com/7JX5nqm.jpg",
+    },
+    {
+      name: "Percolate",
+      avgRating: 4.7,
+      restaurantId: 3,
+      photoUrl: "https://i.imgur.com/nerEAWX.jpg",
+    },
+    {
+      name: "Ponggol Nasi Lemak",
+      avgRating: 4.2,
+      restaurantId: 4,
+      photoUrl: "https://i.imgur.com/Kr1trVJ.jpg",
+    },
+  ],
+};
+
 export {
   tempData,
   tempReviewData,
   tempListData,
-  testRestPageData,
+  tempRestPageData,
   tempReviewPageData,
+  tempListPageData,
 };

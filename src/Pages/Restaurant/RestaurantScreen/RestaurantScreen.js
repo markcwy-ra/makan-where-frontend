@@ -11,12 +11,12 @@ import AddSmall from "../../../Icons/AddSmall.svg";
 //---------- Others ----------//
 
 import "./RestaurantScreen.css";
-import { testRestPageData } from "../../../tempData";
+import { tempRestPageData } from "../../../tempData";
 
 //------------------------------//
 
 const RestaurantScreen = () => {
-  const data = { ...testRestPageData };
+  const data = { ...tempRestPageData };
   const navigate = useNavigate();
 
   const handleClick = () => {

@@ -1,7 +1,10 @@
 import "./MakanlistCard.css";
 import "../Cards.css";
+import { useNavigate } from "react-router-dom";
 
 const MakanlistCard = ({ config = "full", content }) => {
+  const navigate = useNavigate();
+
   let styling;
   if (content.photoUrl) {
     styling = {
@@ -25,8 +28,16 @@ const MakanlistCard = ({ config = "full", content }) => {
     cardTitle = <h3>{content.title}</h3>;
   }
 
+  const handleClick = () => {
+    navigate(`/makanlists/${content.makanlistId}`);
+  };
+
   return (
-    <div className={`card-makanlist-${config}`} style={styling}>
+    <div
+      className={`card-makanlist-${config}`}
+      style={styling}
+      onClick={handleClick}
+    >
       <div className={`card-makanlist-${config}-title`}>
         {cardTitle}
         {config === "full" && <h4>Makanlist by @{content.author}</h4>}

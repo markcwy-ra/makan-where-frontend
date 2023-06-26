@@ -1,10 +1,17 @@
 import "./ReviewCard.css";
 import "../Cards.css";
 import Rating from "../../Ratings/Rating";
+import { useNavigate } from "react-router-dom";
 
 const ReviewCard = ({ config = "full", content }) => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(`/places/${content.restaurantId}/${content.reviewId}`);
+  };
+
   return (
-    <div className={`card-review-${config}`}>
+    <div className={`card-review-${config}`} onClick={handleClick}>
       <img src={content.photoUrl} alt={content.restaurantName} />
       <div className={`card-review-${config}-title`}>
         <h4>{content.restaurantName}</h4>

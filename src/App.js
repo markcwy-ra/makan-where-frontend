@@ -10,6 +10,7 @@ import SearchScreen from "./Pages/SearchScreen/SearchScreen";
 import ProfileScreen from "./Pages/ProfileScreen/ProfileScreen";
 import RestaurantScreen from "./Pages/Restaurant/RestaurantScreen/RestaurantScreen";
 import RestaurantReview from "./Pages/Restaurant/RestaurantReview/RestaurantReview";
+import MakanlistScreen from "./Pages/MakanlistScreen/MakanlistScreen";
 
 //---------- Components ----------//
 
@@ -35,6 +36,10 @@ function App() {
             <Route index element={<RestaurantScreen />} />
             <Route path=":reviewId" element={<RestaurantReview />} />
           </Route>
+        </Route>
+        <Route path="makanlists">
+          <Route index element={<Navigate to="/" />} />
+          <Route path=":listId" element={<MakanlistScreen />} />
         </Route>
       </Route>
     </Routes>

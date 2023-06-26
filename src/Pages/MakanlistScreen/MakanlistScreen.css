@@ -1,0 +1,26 @@
+.makanlist-header {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 5px;
+  padding: 25px 20px;
+  height: 140px;
+  color: white;
+  background-size: cover;
+  background-position: 50%;
+  border-radius: 0 0 25px 25px;
+}
+
+.makanlist-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  gap: 25px;
+}
+
+.makanlist-content h6 {
+  text-align: center;
+  width: 75%;
+  color: #0078ef;
+}
