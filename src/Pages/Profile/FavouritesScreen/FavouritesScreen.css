@@ -1,0 +1,19 @@
+.feed-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 0 20px;
+  padding-bottom: 140px;
+}
+
+#places,
+#makanlists {
+  cursor: pointer;
+}
+
+.back-button {
+  padding-top: 20px;
+  padding-left: 20px;
+  cursor: pointer;
+  color: #0078ef;
+}

@@ -13,12 +13,16 @@ const VertFeed = ({ data, type = "all" }) => {
       feedContent = data.map((data, index) => (
         <RestaurantCard key={index} content={data} />
       ));
+    } else if (type === "makanlists") {
+      feedContent = data.map((data, index) => (
+        <MakanlistCard key={index} content={data} />
+      ));
     } else {
-      feedContent = data.map((content, index) => {
-        if (content.type === "makanlist") {
-          return <MakanlistCard key={index} content={content} />;
+      feedContent = data.map((data, index) => {
+        if (data.type === "makanlist") {
+          return <MakanlistCard key={index} content={data} />;
         } else {
-          return <ReviewCard key={index} content={content} />;
+          return <ReviewCard key={index} content={data} />;
         }
       });
     }

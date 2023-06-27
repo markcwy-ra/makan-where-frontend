@@ -214,6 +214,12 @@ const tempListPageData = {
   restaurants: [...tempRestaurantList],
 };
 
+const tempUserData = {
+  username: "johntan",
+  email: "john@john.com",
+  country: "Singapore",
+};
+
 export {
   tempData,
   tempReviewData,
@@ -222,4 +228,5 @@ export {
   tempReviewPageData,
   tempListPageData,
   tempRestaurantList,
+  tempUserData,
 };

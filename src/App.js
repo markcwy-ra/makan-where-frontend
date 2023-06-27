@@ -7,10 +7,12 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import SplashScreen from "./Pages/SplashScreen/SplashScreen";
 import SignUpScreen from "./Pages/SignUpScreen/SignUpScreen";
 import LoginScreen from "./Pages/LoginScreen/LoginScreen";
+import ResetPassword from "./Pages/LoginScreen/ResetPassword";
 import HomeScreen from "./Pages/HomeScreen/HomeScreen";
 import MapScreen from "./Pages/MapScreen/MapScreen";
 import SearchScreen from "./Pages/SearchScreen/SearchScreen";
 import ProfileScreen from "./Pages/Profile/ProfileScreen/ProfileScreen";
+import FavouritesScreen from "./Pages/Profile/FavouritesScreen/FavouritesScreen";
 import RestaurantScreen from "./Pages/Restaurant/RestaurantScreen/RestaurantScreen";
 import RestaurantReview from "./Pages/Restaurant/RestaurantReview/RestaurantReview";
 import MakanlistScreen from "./Pages/MakanlistScreen/MakanlistScreen";
@@ -23,7 +25,6 @@ import MainOutlet from "./Outlets/MainOutlet";
 //---------- Others ----------//
 
 import "./App.css";
-import ResetPassword from "./Pages/LoginScreen/ResetPassword";
 
 //------------------------------//
 
@@ -43,7 +44,10 @@ function App() {
           <Route path="/home" element={<HomeScreen />} />
           <Route path="/map" element={<MapScreen />} />
           <Route path="/search" element={<SearchScreen />} />
-          <Route path="/profile" element={<ProfileScreen />} />
+          <Route path="/profile">
+            <Route index element={<ProfileScreen />} />
+            <Route path="favourites" element={<FavouritesScreen />} />
+          </Route>
           <Route path="/places">
             <Route index element={<Navigate to="/" />} />
             <Route path=":placeId">

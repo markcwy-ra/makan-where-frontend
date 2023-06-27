@@ -1,19 +1,47 @@
+//----------- React -----------//
+
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+
+//---------- Components ----------//
+
 import Header from "../../../Components/Header/Header";
-import { tempListData, tempReviewData } from "../../../tempData";
-import "./ProfileScreen.css";
 import StatsBar from "../../../Details/StatsBar/StatsBar";
-import Button from "../../../Details/Buttons/Button";
 import HorzFeed from "../../../Components/Feeds/HorzFeed";
+import Button from "../../../Details/Buttons/Button";
+
+//---------- Others ----------//
+
+import { tempListData, tempReviewData, tempUserData } from "../../../tempData";
+import "./ProfileScreen.css";
+import ProfileEditor from "../../../Components/Forms/ProfileEditor";
+
+//------------------------------//
 
 const ProfileScreen = () => {
+  const navigate = useNavigate();
+  const [editToggle, setEditToggle] = useState(false);
+
   const handleClick = (e) => {
-    console.log(e.currentTarget.id);
+    const id = e.currentTarget.id;
+    if (id === "favourites") {
+      navigate("favourites");
+    } else if (id === "edit-profile") {
+      handleToggle();
+    }
+  };
+
+  const handleToggle = () => {
+    setEditToggle((prev) => !prev);
   };
 
   return (
     <>
+      {editToggle && (
+        <ProfileEditor handleToggle={handleToggle} profileData={tempUserData} />
+      )}
       <Header icon="profile">
-        <h1>@johntan</h1>
+        <h1>@{tempUserData.username}</h1>
       </Header>
       <div className="profile-page-header">
         <div className="divider-line" />
