@@ -15,12 +15,18 @@ import Button from "../../../Details/Buttons/Button";
 import { tempListData, tempReviewData, tempUserData } from "../../../tempData";
 import "./ProfileScreen.css";
 import ProfileEditor from "../../../Components/Forms/ProfileEditor";
+import MenuProfile from "../../../Details/Menus/MenuProfile";
 
 //------------------------------//
 
 const ProfileScreen = () => {
   const navigate = useNavigate();
-  const [editToggle, setEditToggle] = useState(false);
+  const [toggleEdit, setToggleEdit] = useState(false);
+  const [showMenu, setShowMenu] = useState(false);
+
+  const handleToggle = () => {
+    setToggleEdit((prev) => !prev);
+  };
 
   const handleClick = (e) => {
     const id = e.currentTarget.id;
@@ -28,19 +34,21 @@ const ProfileScreen = () => {
       navigate("favourites");
     } else if (id === "edit-profile") {
       handleToggle();
+      setShowMenu(false);
+    } else if (id === "logout") {
+      navigate("/");
+    } else if (id === "profile") {
+      setShowMenu((prev) => !prev);
     }
-  };
-
-  const handleToggle = () => {
-    setEditToggle((prev) => !prev);
   };
 
   return (
     <>
-      {editToggle && (
+      {showMenu && <MenuProfile handleClick={handleClick} />}
+      {toggleEdit && (
         <ProfileEditor handleToggle={handleToggle} profileData={tempUserData} />
       )}
-      <Header icon="profile">
+      <Header icon="profile" handleClick={handleClick}>
         <h1>@{tempUserData.username}</h1>
       </Header>
       <div className="profile-page-header">
@@ -51,13 +59,6 @@ const ProfileScreen = () => {
           <Button
             id="favourites"
             label="View Favourites"
-            size="medium"
-            isActive={true}
-            handleClick={handleClick}
-          />
-          <Button
-            id="edit-profile"
-            label="Edit Profile"
             size="medium"
             isActive={true}
             handleClick={handleClick}

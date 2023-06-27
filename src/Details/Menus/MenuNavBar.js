@@ -1,12 +1,12 @@
-import "./MenuNavBarAdd.css";
+import "./Menus.css";
 
-const MenuNavBarAdd = ({ handleToggle, setShowMenu }) => {
+const MenuNavBar = ({ handleToggle, setShowMenu }) => {
   const handleClick = (e) => {
     handleToggle(e.currentTarget.id);
     setShowMenu(false);
   };
   return (
-    <div className="menu-add-navbar">
+    <div className="menu-popup menu-navbar">
       <h4 onClick={handleClick} id="review-composer">
         Add Review
       </h4>
@@ -18,4 +18,4 @@ const MenuNavBarAdd = ({ handleToggle, setShowMenu }) => {
   );
 };
 
-export default MenuNavBarAdd;
+export default MenuNavBar;

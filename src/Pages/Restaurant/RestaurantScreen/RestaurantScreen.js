@@ -12,6 +12,7 @@ import AddSmall from "../../../Icons/AddSmall.svg";
 
 import "./RestaurantScreen.css";
 import { tempRestPageData } from "../../../tempData";
+import MenuRestaurant from "../../../Details/Menus/MenuRestaurant";
 
 //------------------------------//
 
@@ -19,6 +20,7 @@ const RestaurantScreen = () => {
   const data = { ...tempRestPageData };
   const [heart, setHeart] = useState(false);
   const [openingHours, setOpeningHours] = useState(null);
+  const [showMenu, setShowMenu] = useState(false);
 
   useEffect(() => {
     const hours = {
@@ -65,7 +67,7 @@ const RestaurantScreen = () => {
     setHeart((prev) => !prev);
   };
   const handleMenu = () => {
-    console.log("Add menu");
+    setShowMenu((prev) => !prev);
   };
 
   return (
@@ -79,6 +81,7 @@ const RestaurantScreen = () => {
               <div className="restaurant-title-buttons">
                 <HeartButton heart={heart} handleClick={handleHeart} />
                 <img onClick={handleMenu} src={AddSmall} alt="Add Button" />
+                {showMenu && <MenuRestaurant />}
               </div>
             </div>
             <div className="restaurant-content-details-row">

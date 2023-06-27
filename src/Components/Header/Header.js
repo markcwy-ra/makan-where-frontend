@@ -2,7 +2,7 @@ import Map from "../../Icons/Map.svg";
 import Search from "../../Icons/Search.svg";
 import "./Header.css";
 
-const Header = ({ children, icon }) => {
+const Header = ({ children, icon, handleClick = null }) => {
   let selectedIcon;
 
   switch (icon) {
@@ -25,9 +25,12 @@ const Header = ({ children, icon }) => {
       <div className="header-title">{children}</div>
       {selectedIcon && (
         <img
+          id={icon}
           className={icon === "profile" ? "header-profilepic" : ""}
           src={selectedIcon}
           alt={icon}
+          onClick={handleClick}
+          style={icon === "profile" ? { cursor: "pointer" } : null}
         />
       )}
     </div>

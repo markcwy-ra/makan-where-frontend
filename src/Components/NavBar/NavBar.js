@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 
 //---------- Components ----------//
 
-import MenuNavBarAdd from "../../Details/Menus/MenuNavBarAdd";
+import MenuNavBar from "../../Details/Menus/MenuNavBar";
 
 //---------- Icons ----------//
 
@@ -43,7 +43,7 @@ const NavBar = ({ handleToggle }) => {
   return (
     <div id="nav">
       {showMenu && (
-        <MenuNavBarAdd handleToggle={handleToggle} setShowMenu={setShowMenu} />
+        <MenuNavBar handleToggle={handleToggle} setShowMenu={setShowMenu} />
       )}
 
       <div className="navbar-icon">
