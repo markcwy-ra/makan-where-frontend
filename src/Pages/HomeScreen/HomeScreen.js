@@ -1,25 +1,39 @@
 import Header from "../../Components/Header/Header";
-import MakanlistCard from "../../Details/Cards/Makanlist/MakanlistCard";
-import ReviewCard from "../../Details/Cards/Review/ReviewCard";
 import "./HomeScreen.css";
 import { tempData } from "../../tempData";
+import VertFeed from "../../Components/Feeds/VertFeed";
+import { useState } from "react";
 
 const HomeScreen = () => {
-  const feed = tempData.map((data, index) => {
-    if (data.type === "Makanlist") {
-      return <MakanlistCard key={index} content={data} />;
-    } else {
-      return <ReviewCard key={index} content={data} />;
-    }
-  });
+  const [tab, setTab] = useState("featured");
+
+  const handleClick = (e) => {
+    setTab(e.currentTarget.id);
+  };
 
   return (
     <>
       <Header>
-        <h1>Featured</h1>
-        <h1 className="inactive-text">Following</h1>
+        <h1
+          className={tab === "following" ? "inactive-text" : ""}
+          onClick={handleClick}
+          id="featured"
+        >
+          Featured
+        </h1>
+        <h1
+          className={tab === "featured" ? "inactive-text" : ""}
+          onClick={handleClick}
+          id="following"
+        >
+          Following
+        </h1>
       </Header>
-      <div className="content feed-list">{feed}</div>
+      {tab === "featured" ? (
+        <VertFeed data={tempData} />
+      ) : (
+        <VertFeed data={tempData} />
+      )}
     </>
   );
 };

@@ -1,5 +1,6 @@
+// global google
 import "./MapDisplay.css";
-import { GoogleMap, useLoadScript } from "@react-google-maps/api";
+import { GoogleMap, Marker, useLoadScript } from "@react-google-maps/api";
 import { useEffect, useState } from "react";
 
 const MapDisplay = () => {

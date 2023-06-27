@@ -19,7 +19,7 @@ const MakanlistScreen = () => {
         <h6>{data.description}</h6>
         <div className="divider-line" />
       </div>
-      {<VertFeed data={data.restaurants} />}
+      {<VertFeed data={data.restaurants} type="restaurants" />}
     </div>
   );
 };

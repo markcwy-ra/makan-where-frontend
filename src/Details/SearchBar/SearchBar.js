@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "./SearchBar.css";
 import Search from "../../Icons/Search.svg";
+import axios from "axios";
 
 const SearchBar = ({ db = "places", setResults }) => {
   const [query, setQuery] = useState("");
@@ -23,8 +24,19 @@ const SearchBar = ({ db = "places", setResults }) => {
   const handleChange = (e) => {
     setQuery(e.currentTarget.value);
   };
-  const handleSubmit = () => {
-    console.log(query);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (db === "places") {
+      const results = await axios.get(
+        "https://api.yelp.com/v3/businesses/search?term=onalu&categories=restaurant&sort_by=best_match&limit=20",
+        {
+          headers: {
+            Authorization: `Bearer ${process.env.REACT_APP_YELP_API_KEY}`,
+          },
+        }
+      );
+      console.log(results);
+    }
     // setResults();
   };
 
@@ -37,7 +49,7 @@ const SearchBar = ({ db = "places", setResults }) => {
           onChange={handleChange}
           value={query}
         />
-        <img src={Search} alt="Search Bar" />
+        <img src={Search} alt="Search Bar" onClick={handleSubmit} />
       </form>
     </div>
   );

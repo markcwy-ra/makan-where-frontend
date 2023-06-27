@@ -1,0 +1,29 @@
+.splashscreen img {
+  width: 100%;
+  height: 80%;
+}
+
+.splashscreen-popup {
+  background-color: white;
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  text-align: center;
+  border-radius: 25px 25px 0 0;
+}
+
+.splashscreen-popup h1 {
+  font-size: 50px;
+  margin-bottom: 20px;
+}
+
+.splashscreen-popup-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}

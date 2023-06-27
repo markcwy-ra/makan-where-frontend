@@ -1,19 +1,19 @@
 const tempData = [
   {
-    type: "Makanlist",
+    type: "makanlist",
     makanlistId: 1,
     title: "Desserts For All Moods",
     author: "johntan",
     photoUrl: "https://i.imgur.com/hwu8nZ3.jpg",
   },
   {
-    type: "Makanlist",
+    type: "makanlist",
     makanlistId: 2,
     title: "Cheap But Still Good",
     author: "janelee",
   },
   {
-    type: "Review",
+    type: "review",
     title: "Good bagels, nice atmosphere!",
     restaurantName: "ONALU Bagel Haús",
     restaurantId: 1,
@@ -23,13 +23,13 @@ const tempData = [
     photoUrl: "https://i.imgur.com/7JX5nqm.jpg",
   },
   {
-    type: "Makanlist",
+    type: "makanlist",
     makanlistId: 2,
     title: "Cheap But Still Good",
     author: "janelee",
   },
   {
-    type: "Review",
+    type: "review",
     title: "Tender and crispy tonkatsu",
     restaurantName: "Maruhachi",
     restaurantId: 2,
@@ -173,32 +173,45 @@ const tempReviewPageData = {
   photoUrl: "https://i.imgur.com/7JX5nqm.jpg",
 };
 
+const tempRestaurantList = [
+  {
+    name: "ONALU Bagel Haús",
+    avgRating: 4.3,
+    restaurantId: 1,
+    coordinate: { lat: "1.29601", lng: "103.84947" },
+    photoUrl: "https://i.imgur.com/7JX5nqm.jpg",
+  },
+  {
+    name: "Percolate",
+    avgRating: 4.7,
+    restaurantId: 3,
+    coordinate: { lat: "1.32826", lng: "103.93525" },
+    photoUrl: "https://i.imgur.com/nerEAWX.jpg",
+  },
+  {
+    name: "Ponggol Nasi Lemak",
+    avgRating: 4.2,
+    restaurantId: 4,
+    coordinate: { lat: "1.31284", lng: "103.85961" },
+    photoUrl: "https://i.imgur.com/Kr1trVJ.jpg",
+  },
+  {
+    name: "Lau Wang Claypot Delights",
+    avgRating: 4.2,
+    restaurantId: 4,
+    coordinate: { lat: "1.35453", lng: "103.87203" },
+    photoUrl:
+      "https://cdn.shopify.com/s/files/1/0770/5745/products/LauWangClaypot_CV__1_1f61c002-3c70-40ad-bc42-18ea4092fee4.jpg?v=1646881709",
+  },
+];
+
 const tempListPageData = {
   title: "Desserts For All Moods",
   photoUrl: "https://i.imgur.com/7JX5nqm.jpg",
   author: "johntan",
   description:
     "My very own curated list of desserts that fit whatever mood you’re in!",
-  restaurants: [
-    {
-      name: "ONALU Bagel Haús",
-      avgRating: 4.3,
-      restaurantId: 1,
-      photoUrl: "https://i.imgur.com/7JX5nqm.jpg",
-    },
-    {
-      name: "Percolate",
-      avgRating: 4.7,
-      restaurantId: 3,
-      photoUrl: "https://i.imgur.com/nerEAWX.jpg",
-    },
-    {
-      name: "Ponggol Nasi Lemak",
-      avgRating: 4.2,
-      restaurantId: 4,
-      photoUrl: "https://i.imgur.com/Kr1trVJ.jpg",
-    },
-  ],
+  restaurants: [...tempRestaurantList],
 };
 
 export {
@@ -208,4 +221,5 @@ export {
   tempRestPageData,
   tempReviewPageData,
   tempListPageData,
+  tempRestaurantList,
 };

@@ -72,6 +72,12 @@ img {
   object-fit: cover;
 }
 
+u {
+  padding-bottom: 2px;
+  text-decoration: none;
+  border-bottom: 1px solid #ffffff;
+}
+
 .inactive {
   background-color: #dedede;
 }

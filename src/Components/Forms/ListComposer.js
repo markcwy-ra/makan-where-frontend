@@ -41,7 +41,7 @@ const ListComposer = ({ handleToggle }) => {
             className="form-close"
             src={Close}
             alt="Close Button"
-            onClick={() => handleToggle("review-composer")}
+            onClick={() => handleToggle("makanlist-composer")}
           />
         </div>
 
