@@ -1,11 +1,14 @@
 import { useState } from "react";
 import "./LoginScreen.css";
 import { useNavigate } from "react-router-dom";
+import ErrorPill from "../../Details/Errors/ErrorPill";
 
 const LoginScreen = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isError, setIsError] = useState(false);
 
   const handleChange = (e) => {
     const input = e.currentTarget;
@@ -17,7 +20,12 @@ const LoginScreen = () => {
   };
   const handleLogin = (e) => {
     e.preventDefault();
-    email && password && navigate("/home");
+    if (email && password) {
+      navigate("/home");
+    } else {
+      setErrorMessage("Please input both email and password!");
+      setIsError(true);
+    }
   };
   const handleClick = (e) => {
     const id = e.currentTarget.id;
@@ -55,6 +63,7 @@ const LoginScreen = () => {
           Login
         </button>
       </form>
+      {isError && <ErrorPill message={errorMessage} />}
       <div className="loginscreen-buttons">
         <p>
           Forgot your password?{" "}

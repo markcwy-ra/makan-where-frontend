@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import "./SignUpScreen.css";
 import { useNavigate } from "react-router-dom";
 import { getNames } from "country-list";
+import ErrorPill from "../../Details/Errors/ErrorPill";
 
 const SignUpScreen = () => {
   const navigate = useNavigate();
@@ -13,6 +14,8 @@ const SignUpScreen = () => {
   const [countryList, setCountryList] = useState(null);
   const [country, setCountry] = useState("");
   const [isFormComplete, setIsFormComplete] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isError, setIsError] = useState(false);
 
   useEffect(() => {
     const countries = getNames();
@@ -61,7 +64,15 @@ const SignUpScreen = () => {
   };
   const handleSignUp = (e) => {
     e.preventDefault();
-    isFormComplete && navigate("/home");
+    if (password !== repeatPassword) {
+      setErrorMessage("Password don't match!");
+      setIsError(true);
+    } else if (isFormComplete) {
+      navigate("/home");
+    } else {
+      setErrorMessage("Please fill in all fields!");
+      setIsError(true);
+    }
   };
   const handleClick = (e) => {
     const id = e.currentTarget.id;
@@ -121,6 +132,7 @@ const SignUpScreen = () => {
           Sign Up
         </button>
       </form>
+      {isError && <ErrorPill message={errorMessage} />}
       <div className="signupscreen-buttons">
         <p>
           Already have an account?{" "}
