@@ -1,6 +1,6 @@
 import Close from "../../Icons/Close.svg";
 import "./Forms.css";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Button from "../../Details/Buttons/Button";
 import SearchBar from "../../Details/SearchBar/SearchBar";
 

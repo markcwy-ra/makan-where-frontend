@@ -1,0 +1,76 @@
+.signupscreen {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 40px;
+  gap: 30px;
+  background-color: #0078ef;
+  color: white;
+}
+
+.signupscreen-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.signupscreen form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 10px;
+}
+
+.signupscreen form input {
+  width: 100%;
+  padding: 15px 20px;
+  height: 50px;
+  border-radius: 25px;
+  border: none;
+  background-color: rgba(0, 0, 0, 0);
+  border: 1px solid white;
+  color: white;
+}
+
+.signupscreen form select {
+  width: 100%;
+  padding: 0px 20px;
+  height: 50px;
+  border-radius: 25px;
+  border: none;
+  background-color: rgba(0, 0, 0, 0);
+  border: 1px solid white;
+  color: white;
+  display: flex;
+  align-items: center;
+}
+
+.signupscreen form input::placeholder {
+  letter-spacing: 0.02em;
+  font-size: 15px;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.signupscreen form button {
+  width: 100%;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  height: 50px;
+}
+
+.login-inactive {
+  background-color: #c9c9c9;
+  color: white;
+}
+
+.login-active {
+  background-color: #ffffff;
+  color: #0078ef;
+}
+
+.loginscreen u {
+  cursor: pointer;
+}
