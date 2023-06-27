@@ -59,15 +59,14 @@ const SignUpScreen = () => {
         break;
     }
   };
-  const handleSignUp = () => {
-    console.log("login button pressed");
+  const handleSignUp = (e) => {
+    e.preventDefault();
+    isFormComplete && navigate("/home");
   };
   const handleClick = (e) => {
     const id = e.currentTarget.id;
-    if (id === "signup") {
-      navigate("/signup");
-    } else if (id === "reset") {
-      navigate("/login/reset");
+    if (id === "login") {
+      navigate("/login");
     }
   };
 
@@ -116,7 +115,7 @@ const SignUpScreen = () => {
           {countryList}
         </select>
         <button
-          className={isFormComplete ? "login-active" : "login-inactive"}
+          className={isFormComplete ? "signup-active" : "signup-inactive"}
           onClick={handleSignUp}
         >
           Sign Up
@@ -125,7 +124,7 @@ const SignUpScreen = () => {
       <div className="signupscreen-buttons">
         <p>
           Already have an account?{" "}
-          <u id="signup" onClick={handleClick}>
+          <u id="login" onClick={handleClick}>
             Login
           </u>
         </p>

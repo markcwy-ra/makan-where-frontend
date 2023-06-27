@@ -1,9 +1,9 @@
-import Header from "../../Components/Header/Header";
-import { tempListData, tempReviewData } from "../../tempData";
+import Header from "../../../Components/Header/Header";
+import { tempListData, tempReviewData } from "../../../tempData";
 import "./ProfileScreen.css";
-import StatsBar from "../../Details/StatsBar/StatsBar";
-import Button from "../../Details/Buttons/Button";
-import HorzFeed from "../../Components/Feeds/HorzFeed";
+import StatsBar from "../../../Details/StatsBar/StatsBar";
+import Button from "../../../Details/Buttons/Button";
+import HorzFeed from "../../../Components/Feeds/HorzFeed";
 
 const ProfileScreen = () => {
   const handleClick = (e) => {

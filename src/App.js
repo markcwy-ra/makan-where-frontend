@@ -10,7 +10,7 @@ import LoginScreen from "./Pages/LoginScreen/LoginScreen";
 import HomeScreen from "./Pages/HomeScreen/HomeScreen";
 import MapScreen from "./Pages/MapScreen/MapScreen";
 import SearchScreen from "./Pages/SearchScreen/SearchScreen";
-import ProfileScreen from "./Pages/ProfileScreen/ProfileScreen";
+import ProfileScreen from "./Pages/Profile/ProfileScreen/ProfileScreen";
 import RestaurantScreen from "./Pages/Restaurant/RestaurantScreen/RestaurantScreen";
 import RestaurantReview from "./Pages/Restaurant/RestaurantReview/RestaurantReview";
 import MakanlistScreen from "./Pages/MakanlistScreen/MakanlistScreen";

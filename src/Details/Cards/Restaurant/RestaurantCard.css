@@ -1,10 +1,12 @@
-.card-restaurant-full {
+.card-restaurant-full,
+.card-restaurant-small {
   cursor: pointer;
   display: flex;
   flex-direction: column;
 }
 
-.card-restaurant-full img {
+.card-restaurant-full img,
+.card-restaurant-small img {
   width: 100%;
   min-height: 0;
   flex: 1;
@@ -41,13 +43,18 @@
 
 /* SMALL CARD */
 
-/* .card-restaurant-small {
+.card-restaurant-small {
+  position: absolute;
+  top: calc(50% - 310px);
+  right: 50%;
+  margin-right: -90px;
   width: 180px;
   min-width: 180px;
   height: 260px;
   border-radius: 15px;
   border: 1px solid rgb(207, 207, 207);
   overflow: hidden;
+  z-index: 100;
 }
 
 .card-restaurant-small-title {
@@ -58,4 +65,4 @@
   flex-direction: column;
   gap: 8px;
   padding: 15px;
-} */
+}

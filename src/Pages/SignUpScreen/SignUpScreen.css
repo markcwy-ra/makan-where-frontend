@@ -61,16 +61,16 @@
   height: 50px;
 }
 
-.login-inactive {
+.signup-inactive {
   background-color: #c9c9c9;
   color: white;
 }
 
-.login-active {
+.signup-active {
   background-color: #ffffff;
   color: #0078ef;
 }
 
-.loginscreen u {
+.signupscreen u {
   cursor: pointer;
 }

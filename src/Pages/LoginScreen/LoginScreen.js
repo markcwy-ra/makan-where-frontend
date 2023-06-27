@@ -15,8 +15,9 @@ const LoginScreen = () => {
       setPassword(input.value);
     }
   };
-  const handleLogin = () => {
-    console.log("login button pressed");
+  const handleLogin = (e) => {
+    e.preventDefault();
+    email && password && navigate("/home");
   };
   const handleClick = (e) => {
     const id = e.currentTarget.id;

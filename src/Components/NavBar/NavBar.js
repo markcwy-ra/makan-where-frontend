@@ -47,7 +47,7 @@ const NavBar = ({ handleToggle }) => {
       )}
 
       <div className="navbar-icon">
-        <img src={Home} onClick={handleClick} id="" alt="Home Button" />
+        <img src={Home} onClick={handleClick} id="home" alt="Home Button" />
         {activeIcon === "/" && <div className="navbar-active" />}
       </div>
 
