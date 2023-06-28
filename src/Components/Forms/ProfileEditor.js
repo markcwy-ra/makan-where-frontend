@@ -1,19 +1,34 @@
-import Close from "../../Icons/Close.svg";
-import "./Forms.css";
+//----------- React -----------//
+
 import { useContext, useEffect, useState } from "react";
+import { UserContext } from "../../App";
+
+//---------- Components ----------//
+
+import Close from "../../Icons/Close.svg";
 import Button from "../../Details/Buttons/Button";
 import ErrorPill from "../../Details/Errors/ErrorPill";
-import axios from "axios";
-import { UserContext } from "../../App";
+
+//---------- Firebase ----------//
+
+import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
+import { storage } from "../../firebase";
+
+//---------- Others ----------//
+
 import { bearerToken } from "../../utils";
+import "./Forms.css";
+import axios from "axios";
 // import { getNames } from "country-list";
+
+//------------------------------//
 
 const ProfileEditor = ({ handleToggle, profileData }) => {
   const { user, setUser } = useContext(UserContext);
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
-  const [oldPassword, setOldPassword] = useState("");
-  const [password, setPassword] = useState("");
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
   const [file, setFile] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
@@ -39,9 +54,15 @@ const ProfileEditor = ({ handleToggle, profileData }) => {
     e.preventDefault();
     try {
       const token = localStorage.getItem("token");
+      let photoUrl = null;
+      if (file) {
+        const fileRef = ref(storage, `profile/${username}`);
+        await uploadBytesResumable(fileRef, file);
+        photoUrl = await getDownloadURL(fileRef);
+      }
       const response = await axios.put(
         `${process.env.REACT_APP_BACKEND_URL}/users/${user.id}/update`,
-        { username, email },
+        { username, email, currentPassword, newPassword, photoUrl },
         bearerToken(token)
       );
       const data = response.data.data;
@@ -53,7 +74,8 @@ const ProfileEditor = ({ handleToggle, profileData }) => {
       });
       handleToggle();
     } catch (err) {
-      setErrorMessage("Could not update profile");
+      console.log(err);
+      setErrorMessage(err.response.data.msg);
       setIsError(true);
     }
   };
@@ -68,11 +90,11 @@ const ProfileEditor = ({ handleToggle, profileData }) => {
       case "email":
         setEmail(value);
         break;
-      case "oldPassword":
-        setOldPassword(value);
+      case "currentPassword":
+        setCurrentPassword(value);
         break;
       case "password":
-        setPassword(value);
+        setNewPassword(value);
         break;
       case "repeat-password":
         setRepeatPassword(value);
@@ -117,18 +139,18 @@ const ProfileEditor = ({ handleToggle, profileData }) => {
             value={email}
           />
           <input
-            id="old-password"
+            id="currentPassword"
             type="password"
             placeholder="Enter Current Password"
             onChange={handleChange}
-            value={oldPassword}
+            value={currentPassword}
           />
           <input
             id="password"
             type="password"
             placeholder="Enter New Password"
             onChange={handleChange}
-            value={password}
+            value={newPassword}
           />
           <input
             id="repeat-password"

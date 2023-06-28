@@ -59,6 +59,7 @@ const MainOutlet = () => {
           photoUrl: data.photoUrl,
         });
       } catch (err) {
+        console.log(err);
         navigate("/");
       }
     };

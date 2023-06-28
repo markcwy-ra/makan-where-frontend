@@ -41,13 +41,12 @@ const ProfileScreen = () => {
       setShowMenu(false);
     } else if (id === "logout") {
       try {
-        const refreshToken = await localStorage.getItem("refreshToken");
-        const response = await axios.post(
+        const refreshToken = localStorage.getItem("refreshToken");
+        await axios.post(
           `${process.env.REACT_APP_BACKEND_URL}/auth/sign-out`,
           {},
           logoutToken(refreshToken)
         );
-        console.log(response);
         navigate("/");
       } catch (err) {
         const code = err.response.status;

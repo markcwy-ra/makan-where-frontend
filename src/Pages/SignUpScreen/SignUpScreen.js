@@ -100,11 +100,8 @@ const SignUpScreen = () => {
             { username, email, password, photoUrl }
           );
           const data = response.data.data;
-          await localStorage.setItem("token", response.data.data.token);
-          await localStorage.setItem(
-            "refreshToken",
-            response.data.data.refreshToken
-          );
+          localStorage.setItem("token", response.data.data.token);
+          localStorage.setItem("refreshToken", response.data.data.refreshToken);
           setUser({
             username: data.username,
             email: data.email,
