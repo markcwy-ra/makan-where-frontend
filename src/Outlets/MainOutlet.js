@@ -49,7 +49,15 @@ const MainOutlet = () => {
           {},
           logoutToken(refreshToken)
         );
-        console.log(response);
+        const data = response.data.data;
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("refreshToken", data.refreshToken);
+        setUser({
+          username: data.username,
+          email: data.email,
+          id: data.id,
+          photoUrl: data.photoUrl,
+        });
       } catch (err) {
         navigate("/");
       }
