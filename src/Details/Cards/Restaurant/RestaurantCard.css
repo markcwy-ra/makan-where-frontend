@@ -66,3 +66,23 @@
   gap: 8px;
   padding: 15px;
 }
+
+/* SEARCH CARD */
+.card-restaurant-search {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 15px;
+  width: 100%;
+  min-height: 100px;
+  border-radius: 25px;
+  position: relative;
+  border: 1px solid rgb(207, 207, 207);
+  overflow: hidden;
+  color: #0078ef;
+  cursor: pointer;
+}
+
+.card-restaurant-search p {
+  color: black;
+}

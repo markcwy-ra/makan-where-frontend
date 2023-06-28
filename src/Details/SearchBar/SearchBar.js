@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./SearchBar.css";
 import Search from "../../Icons/Search.svg";
 import axios from "axios";
+import { bearerToken } from "../../utils";
 
 const SearchBar = ({
   db = "places",
+  location,
   setResults,
   setIsError,
   setErrorMessage,
@@ -26,13 +28,30 @@ const SearchBar = ({
       break;
   }
 
+  useEffect(() => {
+    setQuery("");
+  }, [db]);
+
   const handleChange = (e) => {
     setQuery(e.currentTarget.value);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (db === "users") {
+    const token = localStorage.getItem("token");
+    if (db === "places") {
+      try {
+        const response = await axios.get(
+          `${process.env.REACT_APP_BACKEND_URL}/restaurants/search?searchTerm=${query}&lat=${location.lat}&lng=${location.lng}`,
+          bearerToken(token)
+        );
+        setResults(response.data.data);
+      } catch (err) {
+        console.log(err);
+        setErrorMessage("?");
+        setIsError(true);
+      }
+    } else if (db === "users") {
       try {
         const response = await axios.get(
           `${process.env.REACT_APP_BACKEND_URL}/users/search/${query}`
