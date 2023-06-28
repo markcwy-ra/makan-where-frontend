@@ -1,12 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import "./SearchScreen.css";
 import Header from "../../Components/Header/Header";
 import Button from "../../Details/Buttons/Button";
 import SearchBar from "../../Details/SearchBar/SearchBar";
 import ErrorPill from "../../Details/Errors/ErrorPill";
 import UserCard from "../../Details/Cards/Users/UserCard.js";
+import { UserContext } from "../../App";
 
 const SearchScreen = () => {
+  const { user } = useContext(UserContext);
   const [errorMessage, setErrorMessage] = useState("");
   const [isError, setIsError] = useState(false);
   const [activeToggle, setActiveToggle] = useState("places");
@@ -22,13 +24,15 @@ const SearchScreen = () => {
     let display = null;
     if (results) {
       if (activeToggle === "users") {
-        display = results.map((user) => (
-          <UserCard key={user.id} content={user} />
-        ));
+        display = results.map((foundUser) => {
+          if (foundUser.username !== user.username) {
+            return <UserCard key={foundUser.id} content={foundUser} />;
+          }
+        });
       }
     }
     setResultsDisplay(display);
-  }, [activeToggle, results]);
+  }, [activeToggle, results, user]);
 
   return (
     <>

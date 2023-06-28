@@ -1,36 +1,61 @@
 import Close from "../../Icons/Close.svg";
 import "./Forms.css";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Button from "../../Details/Buttons/Button";
-import { getNames } from "country-list";
+import ErrorPill from "../../Details/Errors/ErrorPill";
+import axios from "axios";
+import { UserContext } from "../../App";
+import { bearerToken } from "../../utils";
+// import { getNames } from "country-list";
 
 const ProfileEditor = ({ handleToggle, profileData }) => {
+  const { user, setUser } = useContext(UserContext);
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [oldPassword, setOldPassword] = useState("");
   const [password, setPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
   const [file, setFile] = useState(null);
-  const [countryList, setCountryList] = useState(null);
-  const [country, setCountry] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isError, setIsError] = useState(false);
+  // const [countryList, setCountryList] = useState(null);
+  // const [country, setCountry] = useState("");
 
   useEffect(() => {
-    const countries = getNames();
-    const countryOptions = countries.map((country, i) => (
-      <option key={i} value={country}>
-        {country}
-      </option>
-    ));
+    // const countries = getNames();
+    // const countryOptions = countries.map((country, i) => (
+    //   <option key={i} value={country}>
+    //     {country}
+    //   </option>
+    // ));
+    // setCountryList(countryOptions);
+    // setCountry(profileData.country);
 
-    setCountryList(countryOptions);
     setUsername(profileData.username);
     setEmail(profileData.email);
-    setCountry(profileData.country);
   }, [profileData]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("submit clicked");
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.put(
+        `${process.env.REACT_APP_BACKEND_URL}/users/${user.id}/update`,
+        { username, email },
+        bearerToken(token)
+      );
+      const data = response.data.data;
+      setUser({
+        username: data.username,
+        email: data.email,
+        id: data.id,
+        photoUrl: data.photoUrl,
+      });
+      handleToggle();
+    } catch (err) {
+      setErrorMessage("Could not update profile");
+      setIsError(true);
+    }
   };
 
   const handleChange = (e) => {
@@ -55,9 +80,9 @@ const ProfileEditor = ({ handleToggle, profileData }) => {
       case "file":
         setFile(value);
         break;
-      case "country":
-        setCountry(value);
-        break;
+      // case "country":
+      //   setCountry(value);
+      //   break;
       default:
         break;
     }
@@ -72,7 +97,7 @@ const ProfileEditor = ({ handleToggle, profileData }) => {
             className="form-close"
             src={Close}
             alt="Close Button"
-            onClick={() => handleToggle("makanlist-composer")}
+            onClick={handleToggle}
           />
         </div>
 
@@ -118,13 +143,14 @@ const ProfileEditor = ({ handleToggle, profileData }) => {
             placeholder="Add Profile Image"
             onChange={handleChange}
           />
-          <select id="country" onChange={handleChange} required value={country}>
+          {/* <select id="country" onChange={handleChange} required value={country}>
             <option value="" disabled>
               Choose your country
             </option>
             {countryList}
-          </select>
+          </select> */}
         </form>
+        {isError && <ErrorPill message={errorMessage} />}
         <Button
           id="form-submit"
           label="Save Edits"
