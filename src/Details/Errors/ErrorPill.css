@@ -1,5 +1,7 @@
 .error-pill {
   background-color: rgb(216, 56, 24);
+  color: white;
+  text-align: center;
   padding: 5px 15px;
   border-radius: 20px;
 }

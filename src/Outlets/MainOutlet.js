@@ -21,7 +21,6 @@ const MainOutlet = () => {
         `${process.env.REACT_APP_BACKEND_URL}/users`,
         bothTokens(token, refreshToken)
       );
-      console.log(response);
       const data = response.data.data;
       setUser({
         username: data.username,

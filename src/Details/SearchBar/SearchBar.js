@@ -29,23 +29,23 @@ const SearchBar = ({
   const handleChange = (e) => {
     setQuery(e.currentTarget.value);
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (db === "users") {
       try {
-        const response = axios.get(
-          `${process.env.REACT_APP_BACKEND_URL}/search/${query}`
+        const response = await axios.get(
+          `${process.env.REACT_APP_BACKEND_URL}/users/search/${query}`
         );
-        console.log(response);
+        setResults(response.data);
       } catch (err) {
         const code = err.response.status;
         if (code === 404) {
-          setErrorMessage("No users found");
+          setErrorMessage("No users found!");
           setIsError(true);
         }
       }
     }
-    // setResults();
   };
 
   return (
