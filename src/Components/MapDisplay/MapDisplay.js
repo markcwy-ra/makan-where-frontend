@@ -11,9 +11,9 @@ const MapDisplay = () => {
   const [markers, setMarkers] = useState(null);
   const [isInfoOpen, setIsInfoOpen] = useState(false);
   const [selectedMarker, setSelectedMarker] = useState(null);
-  // const { isLoaded } = useLoadScript({
-  //   googleMapsApiKey: process.env.REACT_APP_MAPS_API_KEY,
-  // });
+  const { isLoaded } = useLoadScript({
+    googleMapsApiKey: process.env.REACT_APP_MAPS_API_KEY,
+  });
 
   useEffect(() => {
     const getLocation = async () => {
@@ -51,29 +51,29 @@ const MapDisplay = () => {
     setMarkers(generateMarkers);
   }, []);
 
-  // const onLoad = (map) => {
-  //   setMap(map);
-  // };
+  const onLoad = (map) => {
+    setMap(map);
+  };
 
-  // const handleMarkerClick = (id, lat, lng) => {
-  //   map?.panTo({ lat, lng });
-  //   setSelectedMarker(id);
-  //   setIsInfoOpen(true);
-  //   console.log("Marker id:" + id + " clicked at " + lat + "," + lng);
-  // };
+  const handleMarkerClick = (id, lat, lng) => {
+    map?.panTo({ lat, lng });
+    setSelectedMarker(id);
+    setIsInfoOpen(true);
+    console.log("Marker id:" + id + " clicked at " + lat + "," + lng);
+  };
 
-  // const handleDrag = () => {
-  //   console.log(map?.getBounds());
-  // };
+  const handleDrag = () => {
+    console.log(map?.getBounds());
+  };
 
-  // const handleMapMove = () => {
-  //   setIsInfoOpen(false);
-  // };
+  const handleMapMove = () => {
+    setIsInfoOpen(false);
+  };
 
   return (
     <div className="content">
       <div className="map-display">
-        {/* {!isLoaded || !location || !markers ? (
+        {!isLoaded || !location || !markers ? (
           <h1>Loading...</h1>
         ) : (
           <GoogleMap
@@ -100,7 +100,7 @@ const MapDisplay = () => {
               </MarkerF>
             ))}
           </GoogleMap>
-        )} */}
+        )}
       </div>
     </div>
   );

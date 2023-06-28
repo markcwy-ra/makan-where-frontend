@@ -1,7 +1,7 @@
 //---------- React ----------//
 
 import { useLocation, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 //---------- Components ----------//
 
@@ -13,16 +13,20 @@ import Home from "../../Icons/Home.svg";
 import Map from "../../Icons/Map.svg";
 import Add from "../../Icons/Add.svg";
 import Search from "../../Icons/Search.svg";
+import User from "../../Icons/User.svg";
 
 //---------- Others ----------//
 
 import "./NavBar.css";
+import { UserContext } from "../../App";
 
 //------------------------------//
 
 const NavBar = ({ handleToggle }) => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { user } = useContext(UserContext);
+
   const [showMenu, setShowMenu] = useState(false);
   const [activeIcon, setActiveIcon] = useState(null);
 
@@ -70,7 +74,7 @@ const NavBar = ({ handleToggle }) => {
 
       <div className="navbar-icon navbar-profilepic">
         <img
-          src="https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fHByb2ZpbGUlMjBwaG90byUyMGFzaWFufGVufDB8fDB8fHww&auto=format&fit=crop&w=900&q=60"
+          src={user.photoUrl ? user.photoUrl : User}
           onClick={handleClick}
           id="profile"
           alt="Profile Button"

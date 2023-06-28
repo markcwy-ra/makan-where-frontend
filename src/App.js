@@ -1,5 +1,6 @@
 //----------- React -----------//
 
+import React, { useState } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 
 //---------- Pages ----------//
@@ -26,43 +27,52 @@ import MainOutlet from "./Outlets/MainOutlet";
 
 import "./App.css";
 
+//---------- Context ----------//
+
+const UserContext = React.createContext(null);
+
 //------------------------------//
 
 function App() {
+  const [user, setUser] = useState(null);
+
   return (
-    <Routes>
-      <Route path="/">
-        <Route element={<SplashOutlet />}>
-          <Route index element={<SplashScreen />} />
-          <Route path="/login">
-            <Route index element={<LoginScreen />} />
-            <Route path="reset" element={<ResetPassword />} />
+    <UserContext.Provider value={{ user, setUser }}>
+      <Routes>
+        <Route path="/">
+          <Route element={<SplashOutlet />}>
+            <Route index element={<SplashScreen />} />
+            <Route path="/login">
+              <Route index element={<LoginScreen />} />
+              <Route path="reset" element={<ResetPassword />} />
+            </Route>
+            <Route path="/signup" element={<SignUpScreen />} />
           </Route>
-          <Route path="/signup" element={<SignUpScreen />} />
-        </Route>
-        <Route element={<MainOutlet />}>
-          <Route path="/home" element={<HomeScreen />} />
-          <Route path="/map" element={<MapScreen />} />
-          <Route path="/search" element={<SearchScreen />} />
-          <Route path="/profile">
-            <Route index element={<ProfileScreen />} />
-            <Route path="favourites" element={<FavouritesScreen />} />
-          </Route>
-          <Route path="/places">
-            <Route index element={<Navigate to="/" />} />
-            <Route path=":placeId">
-              <Route index element={<RestaurantScreen />} />
-              <Route path=":reviewId" element={<RestaurantReview />} />
+          <Route element={<MainOutlet />}>
+            <Route path="/home" element={<HomeScreen />} />
+            <Route path="/map" element={<MapScreen />} />
+            <Route path="/search" element={<SearchScreen />} />
+            <Route path="/profile">
+              <Route index element={<ProfileScreen />} />
+              <Route path="favourites" element={<FavouritesScreen />} />
+            </Route>
+            <Route path="/places">
+              <Route index element={<Navigate to="/" />} />
+              <Route path=":placeId">
+                <Route index element={<RestaurantScreen />} />
+                <Route path=":reviewId" element={<RestaurantReview />} />
+              </Route>
+            </Route>
+            <Route path="makanlists">
+              <Route index element={<Navigate to="/" />} />
+              <Route path=":listId" element={<MakanlistScreen />} />
             </Route>
           </Route>
-          <Route path="makanlists">
-            <Route index element={<Navigate to="/" />} />
-            <Route path=":listId" element={<MakanlistScreen />} />
-          </Route>
         </Route>
-      </Route>
-    </Routes>
+      </Routes>
+    </UserContext.Provider>
   );
 }
 
 export default App;
+export { UserContext };

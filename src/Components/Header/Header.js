@@ -1,9 +1,13 @@
+import { useContext } from "react";
 import Map from "../../Icons/Map.svg";
 import Search from "../../Icons/Search.svg";
+import User from "../../Icons/User.svg";
 import "./Header.css";
+import { UserContext } from "../../App";
 
 const Header = ({ children, icon, handleClick = null }) => {
   let selectedIcon;
+  const { user } = useContext(UserContext);
 
   switch (icon) {
     case "search":
@@ -13,8 +17,7 @@ const Header = ({ children, icon, handleClick = null }) => {
       selectedIcon = Map;
       break;
     case "profile":
-      selectedIcon =
-        "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fHByb2ZpbGUlMjBwaG90byUyMGFzaWFufGVufDB8fDB8fHww&auto=format&fit=crop&w=900&q=60";
+      selectedIcon = user.photoUrl ? user.photoUrl : User;
       break;
     default:
       break;

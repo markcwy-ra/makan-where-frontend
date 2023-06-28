@@ -1,42 +1,57 @@
-import { useEffect, useState } from "react";
-import "./SignUpScreen.css";
+import { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { getNames } from "country-list";
 import ErrorPill from "../../Details/Errors/ErrorPill";
+import axios from "axios";
+import { UserContext } from "../../App";
+import "./SignUpScreen.css";
+import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
+import { storage } from "../../firebase";
+// import { getNames } from "country-list";
 
 const SignUpScreen = () => {
   const navigate = useNavigate();
+  const { setUser } = useContext(UserContext);
+
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
   const [file, setFile] = useState(null);
-  const [countryList, setCountryList] = useState(null);
-  const [country, setCountry] = useState("");
   const [isFormComplete, setIsFormComplete] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [isError, setIsError] = useState(false);
 
-  useEffect(() => {
-    const countries = getNames();
-    const countryOptions = countries.map((country, i) => (
-      <option key={i} value={country}>
-        {country}
-      </option>
-    ));
+  // const [countryList, setCountryList] = useState(null);
+  // const [country, setCountry] = useState("");
+  // useEffect(() => {
+  //   const countries = getNames();
+  //   const countryOptions = countries.map((country, i) => (
+  //     <option key={i} value={country}>
+  //       {country}
+  //     </option>
+  //   ));
+  //   setCountryList(countryOptions);
+  // }, []);
 
-    setCountryList(countryOptions);
-  }, []);
+  useEffect(() => {
+    if (file) {
+      if (!(file.type === "image/jpeg" || file.type === "image/png")) {
+        setErrorMessage("Only JPGs and PNGs are allowed!");
+        setIsError(true);
+      }
+    }
+  }, [file]);
 
   useEffect(() => {
-    if (username && email && password && repeatPassword && country) {
+    if (username && email && password && repeatPassword) {
       setIsFormComplete(true);
     } else {
       setIsFormComplete(false);
     }
-  }, [username, email, password, repeatPassword, country]);
+  }, [username, email, password, repeatPassword]);
 
   const handleChange = (e) => {
+    setIsError(false);
     const id = e.currentTarget.id;
     const value = e.currentTarget.value;
     switch (id) {
@@ -53,25 +68,61 @@ const SignUpScreen = () => {
         setRepeatPassword(value);
         break;
       case "file":
-        setFile(value);
+        setFile(e.currentTarget.files[0]);
         break;
-      case "country":
-        setCountry(value);
-        break;
+      // case "country":
+      //   setCountry(value);
+      //   break;
       default:
         break;
     }
   };
-  const handleSignUp = (e) => {
+
+  const handleSignUp = async (e) => {
     e.preventDefault();
     if (password !== repeatPassword) {
       setErrorMessage("Password don't match!");
       setIsError(true);
-    } else if (isFormComplete) {
-      navigate("/home");
-    } else {
+    } else if (!isFormComplete) {
       setErrorMessage("Please fill in all fields!");
       setIsError(true);
+    } else {
+      try {
+        let photoUrl = null;
+        if (file) {
+          const fileRef = ref(storage, `profile/${username}`);
+          await uploadBytesResumable(fileRef, file);
+          photoUrl = await getDownloadURL(fileRef);
+        }
+        if ((file && photoUrl !== null) || !file) {
+          const response = await axios.post(
+            `${process.env.REACT_APP_BACKEND_URL}/auth/sign-up`,
+            { username, email, password, photoUrl }
+          );
+          const data = response.data.data;
+          await localStorage.setItem("token", response.data.data.token);
+          await localStorage.setItem(
+            "refreshToken",
+            response.data.data.refreshToken
+          );
+          setUser({
+            username: data.username,
+            email: data.email,
+            id: data.id,
+            photoUrl: data.photoUrl,
+          });
+          navigate("/home");
+        }
+      } catch (err) {
+        const code = err.response.status;
+        if (code === 400) {
+          setErrorMessage("User already exists. Login instead!");
+          setIsError(true);
+        } else if (code === 500) {
+          setErrorMessage("There was an error. Please refresh.");
+          setIsError(true);
+        }
+      }
     }
   };
   const handleClick = (e) => {
@@ -119,12 +170,12 @@ const SignUpScreen = () => {
           placeholder="Add Profile Image"
           onChange={handleChange}
         />
-        <select id="country" onChange={handleChange} required defaultValue="">
+        {/* <select id="country" onChange={handleChange} required defaultValue="">
           <option value="" disabled>
             Choose your country
           </option>
           {countryList}
-        </select>
+        </select> */}
         <button
           className={isFormComplete ? "signup-active" : "signup-inactive"}
           onClick={handleSignUp}

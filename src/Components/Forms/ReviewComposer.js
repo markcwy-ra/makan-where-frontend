@@ -3,16 +3,23 @@ import "./Forms.css";
 import { useEffect, useState } from "react";
 import StarFull from "../../Icons/StarFull.svg";
 import StarEmpty from "../../Icons/StarEmpty.svg";
-import Search from "../../Icons/Search.svg";
 import Button from "../../Details/Buttons/Button";
+import SearchBar from "../../Details/SearchBar/SearchBar";
 
-const ReviewComposer = ({ handleToggle }) => {
+const ReviewComposer = ({ handleToggle, place = null }) => {
   const [rating, setRating] = useState(0);
   const [ratingDisplay, setRatingDisplay] = useState(null);
-  const [query, setQuery] = useState("");
   const [title, setTitle] = useState("");
   const [review, setReview] = useState("");
   const [file, setFile] = useState(null);
+  const [result, setResults] = useState(null);
+  const [placeId, setPlaceId] = useState(null);
+
+  useEffect(() => {
+    if (place) {
+      setPlaceId(place);
+    }
+  }, [place]);
 
   useEffect(() => {
     const generateStars = (number) => {
@@ -69,9 +76,6 @@ const ReviewComposer = ({ handleToggle }) => {
   const handleChange = (e) => {
     const id = e.currentTarget.id;
     switch (id) {
-      case "query":
-        setQuery(e.currentTarget.value);
-        break;
       case "title":
         setTitle(e.currentTarget.value);
         break;
@@ -100,16 +104,7 @@ const ReviewComposer = ({ handleToggle }) => {
         </div>
 
         <form>
-          <div className="form-search">
-            <input
-              id="query"
-              type="text"
-              placeholder="Place Name"
-              onChange={handleChange}
-              value={query}
-            />
-            <img src={Search} alt="Search Bar" />
-          </div>
+          <SearchBar setResults={setResults} />
           <input
             id="title"
             type="text"
