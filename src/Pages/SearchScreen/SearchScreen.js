@@ -3,8 +3,11 @@ import "./SearchScreen.css";
 import Header from "../../Components/Header/Header";
 import Button from "../../Details/Buttons/Button";
 import SearchBar from "../../Details/SearchBar/SearchBar";
+import ErrorPill from "../../Details/Errors/ErrorPill";
 
 const SearchScreen = () => {
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isError, setIsError] = useState(false);
   const [activeToggle, setActiveToggle] = useState("places");
   const handleToggle = (e) => {
     setActiveToggle(e.currentTarget.id);
@@ -38,7 +41,12 @@ const SearchScreen = () => {
             handleClick={handleToggle}
           />
         </div>
-        <SearchBar db={activeToggle} />
+        <SearchBar
+          db={activeToggle}
+          setIsError={setIsError}
+          setErrorMessage={setErrorMessage}
+        />
+        {isError && <ErrorPill message={errorMessage} />}
       </div>
     </>
   );

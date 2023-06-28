@@ -3,7 +3,12 @@ import "./SearchBar.css";
 import Search from "../../Icons/Search.svg";
 import axios from "axios";
 
-const SearchBar = ({ db = "places", setResults }) => {
+const SearchBar = ({
+  db = "places",
+  setResults,
+  setIsError,
+  setErrorMessage,
+}) => {
   const [query, setQuery] = useState("");
   let placeholderCopy;
 
@@ -26,16 +31,19 @@ const SearchBar = ({ db = "places", setResults }) => {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (db === "places") {
-      const results = await axios.get(
-        "https://api.yelp.com/v3/businesses/search?term=onalu&categories=restaurant&sort_by=best_match&limit=20",
-        {
-          headers: {
-            Authorization: `Bearer ${process.env.REACT_APP_YELP_API_KEY}`,
-          },
+    if (db === "users") {
+      try {
+        const response = axios.get(
+          `${process.env.REACT_APP_BACKEND_URL}/search/${query}`
+        );
+        console.log(response);
+      } catch (err) {
+        const code = err.response.status;
+        if (code === 404) {
+          setErrorMessage("No users found");
+          setIsError(true);
         }
-      );
-      console.log(results);
+      }
     }
     // setResults();
   };

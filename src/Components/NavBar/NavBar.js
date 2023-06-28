@@ -74,7 +74,7 @@ const NavBar = ({ handleToggle }) => {
 
       <div className="navbar-icon navbar-profilepic">
         <img
-          src={user.photoUrl ? user.photoUrl : User}
+          src={user?.photoUrl ? user.photoUrl : User}
           onClick={handleClick}
           id="profile"
           alt="Profile Button"
