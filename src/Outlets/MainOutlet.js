@@ -4,7 +4,7 @@ import ReviewComposer from "../Components/Forms/ReviewComposer";
 import { useState, useEffect, useContext } from "react";
 import ListComposer from "../Components/Forms/ListComposer";
 import axios from "axios";
-import { bothTokens, logoutToken } from "../utils";
+import { bothTokens, logoutToken } from "../Utilities/token.js";
 import { UserContext } from "../App";
 
 const MainOutlet = () => {

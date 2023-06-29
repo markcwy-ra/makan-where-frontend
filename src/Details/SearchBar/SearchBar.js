@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import "./SearchBar.css";
 import Search from "../../Icons/Search.svg";
 import axios from "axios";
-import { bearerToken } from "../../utils";
+import { bearerToken } from "../../Utilities/token";
 
 const SearchBar = ({
   db = "places",
@@ -40,15 +40,20 @@ const SearchBar = ({
     e.preventDefault();
     const token = localStorage.getItem("token");
     if (db === "places") {
-      try {
-        const response = await axios.get(
-          `${process.env.REACT_APP_BACKEND_URL}/restaurants/search?searchTerm=${query}&lat=${location.lat}&lng=${location.lng}`,
-          bearerToken(token)
-        );
-        setResults(response.data.data);
-      } catch (err) {
-        console.log(err);
-        setErrorMessage("?");
+      if (location) {
+        try {
+          const response = await axios.get(
+            `${process.env.REACT_APP_BACKEND_URL}/restaurants/search?searchTerm=${query}&lat=${location.lat}&lng=${location.lng}`,
+            bearerToken(token)
+          );
+          setResults(response.data.data);
+        } catch (err) {
+          console.log(err);
+          setErrorMessage("?");
+          setIsError(true);
+        }
+      } else {
+        setErrorMessage("Please wait while we get your location!");
         setIsError(true);
       }
     } else if (db === "users") {

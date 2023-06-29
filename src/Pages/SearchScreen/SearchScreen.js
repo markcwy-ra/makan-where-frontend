@@ -24,34 +24,10 @@ const SearchScreen = () => {
     setActiveToggle(e.currentTarget.id);
   };
 
-  useEffect(() => {
-    let display = null;
-    if (results) {
-      if (activeToggle === "places") {
-        console.log(results);
-        display = results.map((foundPlace, index) => {
-          const content = {
-            name: foundPlace.name,
-            id: foundPlace.place_id,
-            address: foundPlace.vicinity,
-          };
-          return <RestaurantCard key={index} content={content} />;
-        });
-      } else if (activeToggle === "users") {
-        display = results.map((foundUser) => {
-          if (foundUser.username !== user.username) {
-            return <UserCard key={foundUser.id} content={foundUser} />;
-          }
-        });
-      }
-    }
-    setResultsDisplay(display);
-  }, [activeToggle, results, user]);
-
   // Get current location
   useEffect(() => {
     const getLocation = async () => {
-      await navigator.geolocation.getCurrentPosition(
+      navigator.geolocation.getCurrentPosition(
         (position) => {
           setLocation({
             lat: position.coords.latitude,
@@ -78,6 +54,31 @@ const SearchScreen = () => {
     };
     getLocation();
   }, []);
+
+  useEffect(() => {
+    let display = null;
+    if (results) {
+      if (activeToggle === "places") {
+        console.log(results);
+        display = results.map((foundPlace, index) => {
+          const content = {
+            name: foundPlace.name,
+            id: foundPlace.place_id,
+            address: foundPlace.vicinity,
+          };
+          return <RestaurantCard key={index} content={content} />;
+        });
+      } else if (activeToggle === "users") {
+        //eslint-disable-next-line
+        display = results.map((foundUser) => {
+          if (foundUser.username !== user.username) {
+            return <UserCard key={foundUser.id} content={foundUser} />;
+          }
+        });
+      }
+    }
+    setResultsDisplay(display);
+  }, [activeToggle, results, user]);
 
   return (
     <>

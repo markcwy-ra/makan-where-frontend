@@ -17,7 +17,7 @@ import MenuProfile from "../../../Details/Menus/MenuProfile";
 import { tempListData, tempReviewData } from "../../../tempData";
 import "./ProfileScreen.css";
 import axios from "axios";
-import { logoutToken } from "../../../utils";
+import { logoutToken } from "../../../Utilities/token";
 import { UserContext } from "../../../App";
 
 //------------------------------//

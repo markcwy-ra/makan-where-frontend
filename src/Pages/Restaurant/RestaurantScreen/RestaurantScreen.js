@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 
 //---------- Components ----------//
 
@@ -7,67 +7,84 @@ import Button from "../../../Details/Buttons/Button";
 import HorzFeed from "../../../Components/Feeds/HorzFeed";
 import HeartButton from "../../../Details/Buttons/HeartButton";
 import AddSmall from "../../../Icons/AddSmall.svg";
+import MenuRestaurant from "../../../Details/Menus/MenuRestaurant";
+import ReviewComposer from "../../../Components/Forms/ReviewComposer";
+import ListComposer from "../../../Components/Forms/ListComposer";
 
 //---------- Others ----------//
 
 import "./RestaurantScreen.css";
 import { tempRestPageData } from "../../../tempData";
-import MenuRestaurant from "../../../Details/Menus/MenuRestaurant";
-import ReviewComposer from "../../../Components/Forms/ReviewComposer";
-import ListComposer from "../../../Components/Forms/ListComposer";
+import { useParams } from "react-router-dom";
+import axios from "axios";
+import { bearerToken } from "../../../Utilities/token";
+import { formatToAmPm, capitalise } from "../../../Utilities/formatting";
+import LoadingScreen from "../../LoadingScreen/LoadingScreen";
+import { UserContext } from "../../../App";
 
 //------------------------------//
 
 const RestaurantScreen = () => {
-  const data = { ...tempRestPageData };
+  const { placeId } = useParams();
+  const { user } = useContext(UserContext);
+  const [data, setData] = useState(null);
+  const tempData = { ...tempRestPageData };
+
+  const [token, setToken] = useState(null);
   const [heart, setHeart] = useState(false);
+  const [upvotes, setUpvotes] = useState(null);
   const [openingHours, setOpeningHours] = useState(null);
   const [showMenu, setShowMenu] = useState(false);
   const [reviewToggle, setReviewToggle] = useState(false);
   const [listToggle, setListToggle] = useState(false);
 
   useEffect(() => {
-    const hours = {
-      Monday: "Closed",
-      Tuesday: "Closed",
-      Wednesday: "Closed",
-      Thursday: "Closed",
-      Friday: "Closed",
-      Saturday: "Closed",
-      Sunday: "Closed",
-    };
-    data.openingHours.forEach((dayHours) => {
-      hours[
-        dayHours.day
-      ] = `${dayHours.opening_time} - ${dayHours.closing_time}`;
-    });
-    const daysOfWeek = [
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-      "Saturday",
-      "Sunday",
-    ];
-    const hourDisplay = daysOfWeek.map((day, index) => {
-      return (
-        <div key={day} className="restaurant-content-details-row">
-          <p>{day}</p> <p>•</p>
-          <p>{hours[day]}</p>
-        </div>
+    // Get restaurant data
+    const accessToken = localStorage.getItem("token");
+    setToken(accessToken);
+    const getRestaurantData = async (placeId) => {
+      const response = await axios.get(
+        `${process.env.REACT_APP_BACKEND_URL}/restaurants/${placeId}`,
+        bearerToken(accessToken)
       );
-    });
-    setOpeningHours(hourDisplay);
+      setData(response.data.data);
+      console.log("Place data: ", data);
+      const upvoteCount = await axios.get(
+        `${process.env.REACT_APP_BACKEND_URL}/restaurants/${data.id}/upvotes/count`,
+        bearerToken(accessToken)
+      );
+      setUpvotes(upvoteCount.data.count);
+    };
+    getRestaurantData(placeId);
     // eslint-disable-next-line
   }, []);
 
+  useEffect(() => {
+    // Get opening hours
+    if (data && data.openinghours) {
+      const hourDisplay = data.openinghours.map((day) => (
+        <div key={day.day} className="restaurant-content-details-row">
+          <p>{day.day}</p> <p>•</p>
+          <p>
+            {formatToAmPm(day.openingTime)} - {formatToAmPm(day.closingTime)}
+          </p>
+        </div>
+      ));
+
+      setOpeningHours(hourDisplay);
+    }
+  }, [data]);
+
   const handleClick = () => {
-    window.open(
-      `https://www.google.com/maps/place/${data.coordinate.lat},${data.coordinate.lng}`
-    );
+    window.open(data.googleMapsUrl);
   };
-  const handleHeart = () => {
+  const handleHeart = async () => {
+    const response = await axios.post(
+      `${process.env.REACT_APP_BACKEND_URL}/restaurants/${data.id}/upvote`,
+      { userId: user.id },
+      bearerToken(token)
+    );
+    console.log(response);
     setHeart((prev) => !prev);
   };
   const handleMenu = () => {
@@ -80,58 +97,76 @@ const RestaurantScreen = () => {
       setListToggle((prev) => !prev);
     }
   };
-
-  return (
-    <div className="content restaurant-page">
-      {reviewToggle && (
-        <ReviewComposer handleToggle={handleToggle} place={data} />
-      )}
-      {listToggle && <ListComposer handleToggle={handleToggle} />}
-      <img className="restaurant-cover" src={data.photoUrl} alt={data.name} />
-      <div className="restaurant-content">
-        <div className="restaurant-content-details">
-          <div className="restaurant-content-details-group">
-            <div className="restaurant-title">
-              <h1>{data.name}</h1>
-              <div className="restaurant-title-buttons">
-                <HeartButton heart={heart} handleClick={handleHeart} />
-                <img onClick={handleMenu} src={AddSmall} alt="Add Button" />
-                {showMenu && (
-                  <MenuRestaurant
-                    handleToggle={handleToggle}
-                    setShowMenu={setShowMenu}
-                  />
+  if (!data) {
+    return <LoadingScreen />;
+  } else {
+    return (
+      <div className="content restaurant-page">
+        {reviewToggle && (
+          <ReviewComposer handleToggle={handleToggle} place={tempData} />
+        )}
+        {listToggle && <ListComposer handleToggle={handleToggle} />}
+        <div className="restaurant-cover">
+          {data.photoUrl && <img src={data.photoUrl} alt={data.name} />}
+        </div>
+        <div className="restaurant-content">
+          <div className="restaurant-content-details">
+            <div className="restaurant-content-details-group">
+              <div className="restaurant-title">
+                <h1>{data.name}</h1>
+                <div className="restaurant-title-buttons">
+                  {upvotes && <h4>{upvotes}</h4>}
+                  <HeartButton heart={heart} handleClick={handleHeart} />
+                  <img onClick={handleMenu} src={AddSmall} alt="Add Button" />
+                  {showMenu && (
+                    <MenuRestaurant
+                      handleToggle={handleToggle}
+                      setShowMenu={setShowMenu}
+                    />
+                  )}
+                </div>
+              </div>
+              <div className="restaurant-content-details-row">
+                {data.averageRating && (
+                  <>
+                    <Rating score={data.averageRating} />
+                    <h4>({tempData.reviews.length})</h4>
+                  </>
                 )}
               </div>
+              <div className="restaurant-content-details-row">
+                <p>{capitalise(data.restaurantstatus.status)}</p>
+                <p>•</p>
+                <p>{data.pricerange.priceRange}</p>
+              </div>
+              <p className="address">{data.address}</p>
             </div>
-            <div className="restaurant-content-details-row">
-              <Rating score={data.avgRating} />
-              <h4>({data.reviews.length})</h4>
-            </div>
-            <div className="restaurant-content-details-row">
-              <p>{data.cuisine}</p>
-              <p>•</p>
-              <p>{data.price}</p>
-            </div>
-            <p className="address">{data.address}</p>
-          </div>
-          <div className="restaurant-content-details-group">
-            <h4>Opening Hours</h4>
-            {openingHours}
-          </div>
+            {data.description && (
+              <div className="restaurant-content-details-group">
+                <h4>Description</h4>
+                <p>{data.description}</p>
+              </div>
+            )}
+            {openingHours && (
+              <div className="restaurant-content-details-group">
+                <h4>Opening Hours</h4>
+                {openingHours}
+              </div>
+            )}
 
-          <Button
-            id="directions"
-            label="Open Location in Google Maps"
-            isActive={true}
-            size="medium"
-            handleClick={handleClick}
-          />
+            <Button
+              id="directions"
+              label="Open Location in Google Maps"
+              isActive={true}
+              size="medium"
+              handleClick={handleClick}
+            />
+          </div>
+          <HorzFeed type="reviews" data={tempData.reviews} />
         </div>
-        <HorzFeed type="reviews" data={data.reviews} />
       </div>
-    </div>
-  );
+    );
+  }
 };
 
 export default RestaurantScreen;

@@ -16,7 +16,7 @@ import { storage } from "../../firebase";
 
 //---------- Others ----------//
 
-import { bearerToken } from "../../utils";
+import { bearerToken } from "../../Utilities/token";
 import "./Forms.css";
 import axios from "axios";
 // import { getNames } from "country-list";

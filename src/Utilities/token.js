@@ -1,5 +1,3 @@
-import axios from "axios";
-
 const bearerToken = (token) => {
   const output = {
     headers: {
