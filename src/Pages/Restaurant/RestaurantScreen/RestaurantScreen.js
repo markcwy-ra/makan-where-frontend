@@ -12,7 +12,7 @@ import HeartButton from "../../../Details/Buttons/HeartButton";
 import AddSmall from "../../../Icons/AddSmall.svg";
 import MenuRestaurant from "../../../Details/Menus/MenuRestaurant";
 import ReviewComposer from "../../../Components/Forms/ReviewComposer";
-import ListComposer from "../../../Components/Forms/ListComposer";
+import AddToList from "../../../Components/Forms/AddToList";
 import LoadingScreen from "../../LoadingScreen/LoadingScreen";
 
 //---------- Others ----------//
@@ -38,6 +38,7 @@ const RestaurantScreen = () => {
   const [upvoteCount, setUpvoteCount] = useState(null);
   const [openingHours, setOpeningHours] = useState(null);
   const [reviews, setReviews] = useState(null);
+  const [hasReview, setHasReview] = useState(false);
 
   //---------- Display Toggles ----------//
 
@@ -47,6 +48,7 @@ const RestaurantScreen = () => {
 
   //--------- useEffect Functions ---------//
 
+  // Get restaurant data and upvote status
   useEffect(() => {
     // Get restaurant page data
     const getRestaurantData = async (placeId) => {
@@ -72,8 +74,8 @@ const RestaurantScreen = () => {
     // eslint-disable-next-line
   }, [user]);
 
+  // Get upvote count
   useEffect(() => {
-    // Get upvote count
     const getUpvoteCount = async () => {
       const upvoteCount = await axios.get(
         `${process.env.REACT_APP_BACKEND_URL}/restaurants/${data.id}/upvotes/count`,
@@ -86,6 +88,7 @@ const RestaurantScreen = () => {
     }
   }, [heart, data, user]);
 
+  // Get restaurant reviews and format opening hours
   useEffect(() => {
     const getRestaurantReviews = async (placeId) => {
       try {
@@ -118,6 +121,16 @@ const RestaurantScreen = () => {
     }
   }, [data, user]);
 
+  useEffect(() => {
+    if (reviews) {
+      reviews.forEach((review) => {
+        if (review.userId === user.id) {
+          setHasReview(true);
+        }
+      });
+    }
+  }, [reviews]);
+
   //--------- Action Functions ---------//
 
   const handleClick = () => {
@@ -147,7 +160,7 @@ const RestaurantScreen = () => {
   const handleToggle = (target) => {
     if (target === "review-composer") {
       setReviewToggle((prev) => !prev);
-    } else if (target === "makanlist-composer") {
+    } else if (target === "add-to-makanlist") {
       setListToggle((prev) => !prev);
     }
   };
@@ -162,7 +175,9 @@ const RestaurantScreen = () => {
         {reviewToggle && (
           <ReviewComposer handleToggle={handleToggle} place={data} />
         )}
-        {listToggle && <ListComposer handleToggle={handleToggle} />}
+        {listToggle && (
+          <AddToList handleToggle={handleToggle} restaurantId={data.id} />
+        )}
         <div className="restaurant-cover">
           {data.photoUrl && <img src={data.photoUrl} alt={data.name} />}
         </div>
@@ -179,6 +194,7 @@ const RestaurantScreen = () => {
                     <MenuRestaurant
                       handleToggle={handleToggle}
                       setShowMenu={setShowMenu}
+                      hasReview={hasReview}
                     />
                   )}
                 </div>

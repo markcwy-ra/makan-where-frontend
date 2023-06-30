@@ -17,3 +17,21 @@
   cursor: pointer;
   color: #0078ef;
 }
+
+.favourites-screen {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  height: 100%;
+  flex: 1;
+  padding: 0 20px;
+}
+
+.favourites-screen-feed {
+  padding-bottom: 140px;
+  overflow: auto;
+}
+
+.favourites-screen-feed::-webkit-scrollbar {
+  display: none;
+}

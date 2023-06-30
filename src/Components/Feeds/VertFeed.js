@@ -20,6 +20,10 @@ const VertFeed = ({ data, type = "all" }) => {
         feedContent = data.map((data, index) => (
           <MakanlistCard key={index} content={data} />
         ));
+      } else if (type === "reviews") {
+        feedContent = data.map((data, index) => (
+          <ReviewCard key={index} content={data} />
+        ));
       } else {
         feedContent = data.map((data, index) => {
           if (data.type === "makanlist") {

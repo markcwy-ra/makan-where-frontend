@@ -103,9 +103,15 @@ const MakanlistScreen = () => {
         )}
         <div
           className="makanlist-header"
-          style={{
-            backgroundImage: `linear-gradient(rgba(0 0 0 / 50%), rgba(0 0 0  / 50%)), url(${data.photoUrl})`,
-          }}
+          style={
+            data.photoUrl
+              ? {
+                  backgroundImage: `linear-gradient(rgba(0 0 0 / 50%), rgba(0 0 0  / 50%)), url(${data.photoUrl})`,
+                }
+              : {
+                  backgroundColor: "#0078ef",
+                }
+          }
         >
           <div className="makanlist-title">
             <h1>{data.title}</h1>
