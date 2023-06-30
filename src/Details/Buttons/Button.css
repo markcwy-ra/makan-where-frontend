@@ -31,4 +31,9 @@
   width: 24px;
   height: 24px;
   cursor: pointer;
+  color: #0078ef;
+}
+
+.white-icon {
+  color: white;
 }

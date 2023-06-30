@@ -11,7 +11,7 @@ const RestaurantCard = ({
   config = "full",
   content,
   type = "default",
-  setPlaceData,
+  setData,
 }) => {
   const navigate = useNavigate();
   const { user } = useContext(UserContext);
@@ -19,12 +19,16 @@ const RestaurantCard = ({
   const handleClick = async () => {
     if (type === "default") {
       navigate(`/places/${content.id}`);
-    } else if (type === "form-result") {
+    } else {
       const response = await axios.get(
         `${process.env.REACT_APP_BACKEND_URL}/restaurants/${content.place_id}`,
         bearerToken(user.token)
       );
-      setPlaceData(response.data.data);
+      if (type === "form-result") {
+        setData(response.data.data);
+      } else if (type === "list-add") {
+        setData((prev) => [...prev, response.data.data]);
+      }
     }
   };
 

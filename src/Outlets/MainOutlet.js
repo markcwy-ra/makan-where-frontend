@@ -29,7 +29,6 @@ const MainOutlet = () => {
           bothTokens(token, refreshToken)
         );
         const data = response.data.data;
-        console.log(response);
         setUser({
           username: data.username,
           email: data.email,

@@ -29,7 +29,7 @@ const MakanlistCard = ({ config = "full", content }) => {
   }
 
   const handleClick = () => {
-    navigate(`/makanlists/${content.makanlistId}`);
+    navigate(`/makanlists/${content.userId}/${content.id}`);
   };
 
   return (

@@ -14,7 +14,6 @@ import MenuProfile from "../../../Details/Menus/MenuProfile";
 
 //---------- Others ----------//
 
-import { tempListData } from "../../../tempData";
 import "./ProfileScreen.css";
 import axios from "axios";
 import { bearerToken, logoutToken } from "../../../Utilities/token";
@@ -29,6 +28,8 @@ const ProfileScreen = () => {
   const [showMenu, setShowMenu] = useState(false);
   const [reviews, setReviews] = useState(null);
   const [reviewCount, setReviewCount] = useState(0);
+  const [lists, setLists] = useState(null);
+  const [listCount, setListCount] = useState(0);
 
   useEffect(() => {
     const getUserReviews = async (userId) => {
@@ -46,7 +47,21 @@ const ProfileScreen = () => {
         console.log(err);
       }
     };
+    const getUserMakanlists = async (userId) => {
+      try {
+        // Get restaraunt reviews
+        const response = await axios.get(
+          `${process.env.REACT_APP_BACKEND_URL}/makanlists/user/${userId}`,
+          bearerToken(user.token)
+        );
+        setLists(response.data.length > 0 ? response.data : null);
+        setListCount(response.data.length);
+      } catch (err) {
+        console.log(err);
+      }
+    };
     getUserReviews(user.id);
+    getUserMakanlists(user.id);
   }, [user]);
 
   const handleToggle = () => {
@@ -93,7 +108,7 @@ const ProfileScreen = () => {
       </Header>
       <div className="profile-page-header">
         <div className="divider-line" />
-        <StatsBar reviewCount={reviewCount} />
+        <StatsBar reviewCount={reviewCount} makanlistCount={listCount} />
         <div className="divider-line" />
         <div className="profile-buttons">
           <Button
@@ -107,7 +122,7 @@ const ProfileScreen = () => {
       </div>
       <div className="content profile-page-feeds">
         <HorzFeed type="reviews" data={reviews} />
-        <HorzFeed type="makanlists" data={tempListData} />
+        <HorzFeed type="makanlists" data={lists} />
       </div>
     </>
   );

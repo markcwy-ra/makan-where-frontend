@@ -123,7 +123,7 @@ const ReviewComposer = ({ handleToggle, place = null }) => {
           key={index}
           content={data}
           type="form-result"
-          setPlaceData={setPlaceData}
+          setData={setPlaceData}
         />
       ));
       setResultsDisplay(display);
@@ -152,7 +152,10 @@ const ReviewComposer = ({ handleToggle, place = null }) => {
       try {
         let photoUrl = null;
         if (file) {
-          const fileRef = ref(storage, `reviews/${placeData.id}/${user.id}`);
+          const fileRef = ref(
+            storage,
+            `uploads/${user.username}/reviews/${placeData.id}/`
+          );
           await uploadBytesResumable(fileRef, file);
           photoUrl = await getDownloadURL(fileRef);
         }

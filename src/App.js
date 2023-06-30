@@ -65,7 +65,7 @@ function App() {
             </Route>
             <Route path="makanlists">
               <Route index element={<Navigate to="/" />} />
-              <Route path=":listId" element={<MakanlistScreen />} />
+              <Route path=":userId/:listId" element={<MakanlistScreen />} />
             </Route>
           </Route>
         </Route>

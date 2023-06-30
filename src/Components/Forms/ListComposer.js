@@ -1,18 +1,64 @@
+//---------- Firebase ----------//
+
+import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
+import { storage } from "../../firebase";
+
+//---------- Others ----------//
+
 import Close from "../../Icons/Close.svg";
 import "./Forms.css";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Button from "../../Details/Buttons/Button";
-import SearchBar from "../../Details/SearchBar/SearchBar";
+import ErrorPill from "../../Details/Errors/ErrorPill";
+import axios from "axios";
+import { UserContext } from "../../App";
+import { bearerToken } from "../../Utilities/token";
+import { useNavigate } from "react-router-dom";
 
 const ListComposer = ({ handleToggle }) => {
-  const [results, setResults] = useState(null);
+  const navigate = useNavigate();
+  const { user } = useContext(UserContext);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isError, setIsError] = useState(false);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [file, setFile] = useState(null);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("submit clicked");
+    if (!title || !description) {
+      setErrorMessage("Please fill in title and description!");
+      setIsError(true);
+    } else {
+      try {
+        let photoUrl = null;
+
+        if (file) {
+          const fileRef = ref(
+            storage,
+            `uploads/${user.username}/makanlists/${file.name}`
+          );
+          await uploadBytesResumable(fileRef, file);
+          photoUrl = await getDownloadURL(fileRef);
+        }
+        const response = await axios.post(
+          `${process.env.REACT_APP_BACKEND_URL}/makanlists/`,
+          {
+            userId: user.id,
+            title,
+            description,
+            photoUrl,
+          },
+          bearerToken(user.token)
+        );
+        handleToggle("makanlist-composer");
+        navigate(`/makanlists/${user.id}/${response.data.newMakanlist.id}`);
+      } catch (err) {
+        console.log(err);
+        setErrorMessage("Error creating Makanlist");
+        setIsError(true);
+      }
+    }
   };
 
   const handleChange = (e) => {
@@ -24,8 +70,8 @@ const ListComposer = ({ handleToggle }) => {
       case "description":
         setDescription(e.currentTarget.value);
         break;
-      case "image":
-        setFile(e.currentTarget.value);
+      case "file":
+        setFile(e.currentTarget.files[0]);
         break;
       default:
         break;
@@ -60,9 +106,10 @@ const ListComposer = ({ handleToggle }) => {
             onChange={handleChange}
             value={description}
           />
-          <input id="image" type="file" onChange={handleChange} />
+          <input id="file" type="file" onChange={handleChange} />
         </form>
-        <SearchBar setResults={setResults} />
+
+        {isError && <ErrorPill message={errorMessage} />}
         <Button
           id="form-submit"
           label="Create Makanlist"
