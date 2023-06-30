@@ -13,8 +13,10 @@
   gap: 10px;
   position: relative;
   width: 100%;
-  overflow: auto;
+  overflow: none;
   align-items: center;
+  height: fit-content;
+  min-height: fit-content;
 }
 
 .vert-feed::-webkit-scrollbar {

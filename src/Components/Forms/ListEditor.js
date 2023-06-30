@@ -132,12 +132,9 @@ const ListEditor = ({ handleClick, list, setList, data, setData }) => {
     }
   };
 
-  const handleToggle = () => {
-    if (activeToggle === "add-places") {
-      setActiveToggle("edit-details");
-    } else {
-      setActiveToggle("add-places");
-    }
+  const handleToggle = (e) => {
+    const id = e.currentTarget.id;
+    setActiveToggle(id);
   };
 
   const handleChange = (e) => {
@@ -180,6 +177,13 @@ const ListEditor = ({ handleClick, list, setList, data, setData }) => {
             handleClick={handleToggle}
           />
           <Button
+            label="Manage Places"
+            id="manage-places"
+            size="small"
+            isActive={activeToggle === "manage-places" ? true : false}
+            handleClick={handleToggle}
+          />
+          <Button
             label="Edit Details"
             id="edit-details"
             size="small"
@@ -187,18 +191,22 @@ const ListEditor = ({ handleClick, list, setList, data, setData }) => {
             handleClick={handleToggle}
           />
         </div>
-        {activeToggle === "add-places" ? (
-          <>
-            {listDisplay}
+        {activeToggle === "add-places" && (
+          <div className="form-overflow">
+            {/* {listDisplay} */}
             <SearchBar
               location={location}
               setIsError={setIsError}
               setErrorMessage={setErrorMessage}
               setResults={setResults}
             />
-            {resultsDisplay}
-          </>
-        ) : (
+            <div className="form-overflow">{resultsDisplay}</div>
+          </div>
+        )}
+        {activeToggle === "manage-places" && (
+          <div className="form-overflow">{listDisplay}</div>
+        )}
+        {activeToggle === "edit-details" && (
           <form>
             <input
               id="title"

@@ -13,4 +13,9 @@
 
 .home-page {
   padding: 0 20px;
+  overflow: auto;
+}
+
+.home-page::-webkit-scrollbar {
+  display: none;
 }
