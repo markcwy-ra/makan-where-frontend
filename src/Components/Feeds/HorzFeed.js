@@ -10,27 +10,32 @@ const HorzFeed = ({ type, data }) => {
   const location = useLocation();
 
   useEffect(() => {
+    if (type === "reviews") {
+      if (location.pathname === "/profile") {
+        setTitle("My Reviews");
+      } else {
+        setTitle("Reviews");
+      }
+      setFeed(<h3>No Reviews Found!</h3>);
+    } else if (type === "makanlists") {
+      if (location.pathname === "/profile") {
+        setTitle("My Makanlists");
+      } else {
+        setTitle("Makanlists");
+      }
+      setFeed(<h3>No Makanlists Found!</h3>);
+    }
     if (data) {
       if (type === "reviews") {
         const feedContent = data.map((data, index) => (
           <ReviewCard key={index} config="small" content={data} />
         ));
         setFeed(feedContent);
-        if (location.pathname === "/profile") {
-          setTitle("My Reviews");
-        } else {
-          setTitle("Reviews");
-        }
       } else if (type === "makanlists") {
         const feedContent = data.map((data, index) => (
           <MakanlistCard key={index} config="small" content={data} />
         ));
         setFeed(feedContent);
-        if (location.pathname === "/profile") {
-          setTitle("My Makanlists");
-        } else {
-          setTitle("Makanlists");
-        }
       }
     }
   }, [type, data, location]);

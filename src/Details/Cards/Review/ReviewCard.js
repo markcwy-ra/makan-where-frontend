@@ -12,7 +12,11 @@ const ReviewCard = ({ config = "full", content }) => {
 
   return (
     <div className={`card-review-${config}`} onClick={handleClick}>
-      <img src={content.photoUrl} alt={content.restaurant.name} />
+      <div className={`card-review-${config}-image`}>
+        {content.photoUrl && (
+          <img src={content.photoUrl} alt={content.restaurant.name} />
+        )}
+      </div>
       <div className={`card-review-${config}-title`}>
         <h4>{content.restaurant.name}</h4>
         <p>{content.title}</p>
@@ -21,7 +25,6 @@ const ReviewCard = ({ config = "full", content }) => {
           {config === "full" && `Review by @${content.author}`}
         </h4>
       </div>
-
       {config === "full" && <div className="profile-pic"></div>}
     </div>
   );

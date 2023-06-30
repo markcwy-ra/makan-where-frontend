@@ -26,6 +26,7 @@ import ErrorPill from "../../Details/Errors/ErrorPill";
 
 const ReviewComposer = ({ handleToggle, place = null }) => {
   const { user } = useContext(UserContext);
+  const [location, setLocation] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
   const [isError, setIsError] = useState(false);
 
@@ -37,10 +38,51 @@ const ReviewComposer = ({ handleToggle, place = null }) => {
   const [review, setReview] = useState("");
   const [recommendedDishes, setRecommendedDishes] = useState("");
   const [file, setFile] = useState(null);
-  const [result, setResults] = useState(null);
+  const [placeData, setPlaceData] = useState(null);
+  const [results, setResults] = useState(null);
+  const [resultsDisplay, setResultsDisplay] = useState(null);
 
   //---------- UseEffect Functions ----------//
 
+  useEffect(() => {
+    const getLocation = async () => {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setLocation({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          });
+        },
+        (error) => {
+          if (error.code === error.PERMISSION_DENIED) {
+            alert(
+              "Can't find your location! Enable location services for your browser in settings."
+            );
+            setLocation({
+              lat: 1.3521,
+              lng: 103.8198,
+            });
+          }
+        },
+        {
+          enableHighAccuracy: false,
+          timeout: 5000,
+          maximumAge: Infinity,
+        }
+      );
+    };
+    if (!placeData) {
+      getLocation();
+    }
+  }, [placeData]);
+
+  useEffect(() => {
+    if (place) {
+      setPlaceData(place);
+    }
+  }, [place]);
+
+  // Generate Stars
   useEffect(() => {
     const generateStars = (number) => {
       const generatedStars = [];
@@ -74,12 +116,33 @@ const ReviewComposer = ({ handleToggle, place = null }) => {
     setRatingDisplay(generateStars(rating));
   }, [rating]);
 
+  useEffect(() => {
+    if (results) {
+      const display = results.map((data, index) => (
+        <RestaurantCard
+          key={index}
+          content={data}
+          type="form-result"
+          setPlaceData={setPlaceData}
+        />
+      ));
+      setResultsDisplay(display);
+    }
+  }, [results]);
+
+  useEffect(() => {
+    if (placeData) {
+      setResultsDisplay(null);
+    }
+  }, [placeData]);
+
   //---------- Action Functions ----------//
 
   const handleRating = (e) => {
     const ratingId = Number(e.currentTarget.id);
     setRating(ratingId);
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!title || !review || !rating) {
@@ -89,15 +152,15 @@ const ReviewComposer = ({ handleToggle, place = null }) => {
       try {
         let photoUrl = null;
         if (file) {
-          const fileRef = ref(storage, `reviews/${place.id}/${user.id}`);
+          const fileRef = ref(storage, `reviews/${placeData.id}/${user.id}`);
           await uploadBytesResumable(fileRef, file);
           photoUrl = await getDownloadURL(fileRef);
         }
         const response = await axios.post(
-          `${process.env.REACT_APP_BACKEND_URL}/reviews/${place.id}/add`,
+          `${process.env.REACT_APP_BACKEND_URL}/reviews/${placeData.id}/add`,
           {
             userId: user.id,
-            restaurantId: place.id,
+            restaurantId: placeData.id,
             rating,
             title,
             body: review,
@@ -149,11 +212,17 @@ const ReviewComposer = ({ handleToggle, place = null }) => {
             onClick={() => handleToggle("review-composer")}
           />
         </div>
-        {place ? (
-          <RestaurantCard content={place} />
+        {placeData ? (
+          <RestaurantCard content={placeData} type="form-selected" />
         ) : (
-          <SearchBar setResults={setResults} />
+          <SearchBar
+            location={location}
+            setResults={setResults}
+            setIsError={setIsError}
+            setErrorMessage={setErrorMessage}
+          />
         )}
+        {resultsDisplay && resultsDisplay}
         <form>
           <input
             id="title"

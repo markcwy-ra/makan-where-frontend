@@ -194,7 +194,7 @@ const RestaurantScreen = () => {
               <div className="restaurant-content-details-row">
                 <p>{capitalise(data.restaurantstatus.status)}</p>
                 <p>•</p>
-                <p>{data.pricerange.priceRange}</p>
+                {data.pricerange && <p>{data.pricerange.priceRange}</p>}
               </div>
               <p className="address">{data.address}</p>
             </div>
@@ -204,7 +204,7 @@ const RestaurantScreen = () => {
                 <p>{data.description}</p>
               </div>
             )}
-            {openingHours && (
+            {openingHours && openingHours.length !== 0 && (
               <div className="restaurant-content-details-group">
                 <h4>Opening Hours</h4>
                 {openingHours}
@@ -219,7 +219,7 @@ const RestaurantScreen = () => {
               handleClick={handleClick}
             />
           </div>
-          {reviews && <HorzFeed type="reviews" data={reviews} />}
+          <HorzFeed type="reviews" data={reviews} />
         </div>
       </div>
     );

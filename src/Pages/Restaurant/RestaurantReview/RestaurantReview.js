@@ -85,11 +85,11 @@ const RestaurantReview = () => {
   } else {
     return (
       <div className="content restaurant-review">
-        <img
-          className="review-cover"
-          src={data.photoUrl}
-          alt={data.restaurant.name}
-        />
+        <div className="review-cover">
+          {data.photoUrl && (
+            <img src={data.photoUrl} alt={data.restaurant.name} />
+          )}
+        </div>
         <div className="review-content">
           <div className="review-content-details">
             <h4 onClick={handleClick}>{data.restaurant.name}</h4>

@@ -59,7 +59,7 @@ const MainOutlet = () => {
           email: data.email,
           id: data.id,
           photoUrl: data.photoUrl,
-          token: token,
+          token: data.token,
         });
       } catch (err) {
         console.log(err);

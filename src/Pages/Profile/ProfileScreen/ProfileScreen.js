@@ -1,7 +1,7 @@
 //----------- React -----------//
 
 import { useNavigate } from "react-router-dom";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 //---------- Components ----------//
 
@@ -14,10 +14,10 @@ import MenuProfile from "../../../Details/Menus/MenuProfile";
 
 //---------- Others ----------//
 
-import { tempListData, tempReviewData } from "../../../tempData";
+import { tempListData } from "../../../tempData";
 import "./ProfileScreen.css";
 import axios from "axios";
-import { logoutToken } from "../../../Utilities/token";
+import { bearerToken, logoutToken } from "../../../Utilities/token";
 import { UserContext } from "../../../App";
 
 //------------------------------//
@@ -27,6 +27,27 @@ const ProfileScreen = () => {
   const { user } = useContext(UserContext);
   const [toggleEdit, setToggleEdit] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
+  const [reviews, setReviews] = useState(null);
+  const [reviewCount, setReviewCount] = useState(0);
+
+  useEffect(() => {
+    const getUserReviews = async (userId) => {
+      try {
+        // Get restaraunt reviews
+        const response = await axios.get(
+          `${process.env.REACT_APP_BACKEND_URL}/reviews/user/${userId}`,
+          bearerToken(user.token)
+        );
+        setReviews(
+          response.data.reviews.length > 0 ? response.data.reviews : null
+        );
+        setReviewCount(response.data.reviews.length);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getUserReviews(user.id);
+  }, [user]);
 
   const handleToggle = () => {
     setToggleEdit((prev) => !prev);
@@ -72,7 +93,7 @@ const ProfileScreen = () => {
       </Header>
       <div className="profile-page-header">
         <div className="divider-line" />
-        <StatsBar />
+        <StatsBar reviewCount={reviewCount} />
         <div className="divider-line" />
         <div className="profile-buttons">
           <Button
@@ -85,7 +106,7 @@ const ProfileScreen = () => {
         </div>
       </div>
       <div className="content profile-page-feeds">
-        <HorzFeed type="reviews" data={tempReviewData} />
+        <HorzFeed type="reviews" data={reviews} />
         <HorzFeed type="makanlists" data={tempListData} />
       </div>
     </>

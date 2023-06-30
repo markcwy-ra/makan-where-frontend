@@ -5,11 +5,18 @@
   flex-direction: column;
 }
 
-.card-review-full img,
-.card-review-small img {
+.card-review-full-image,
+.card-review-small-image {
   width: 100%;
   min-height: 0;
   flex: 1;
+  background-color: #0078ef;
+}
+
+.card-review-full-image img,
+.card-review-small-image img {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
 }
 
