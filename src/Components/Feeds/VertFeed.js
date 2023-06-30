@@ -8,25 +8,29 @@ const VertFeed = ({ data, type = "all" }) => {
   const [feed, setFeed] = useState(null);
 
   useEffect(() => {
-    let feedContent = [];
-    if (type === "restaurants") {
-      feedContent = data.map((data, index) => (
-        <RestaurantCard key={index} content={data} />
-      ));
-    } else if (type === "makanlists") {
-      feedContent = data.map((data, index) => (
-        <MakanlistCard key={index} content={data} />
-      ));
-    } else {
-      feedContent = data.map((data, index) => {
-        if (data.type === "makanlist") {
-          return <MakanlistCard key={index} content={data} />;
-        } else {
-          return <ReviewCard key={index} content={data} />;
+    if (data) {
+      let feedContent = [];
+      if (type === "restaurants") {
+        if (data.length !== 0) {
+          feedContent = data.map((data, index) => (
+            <RestaurantCard key={index} content={data} />
+          ));
         }
-      });
+      } else if (type === "makanlists") {
+        feedContent = data.map((data, index) => (
+          <MakanlistCard key={index} content={data} />
+        ));
+      } else {
+        feedContent = data.map((data, index) => {
+          if (data.type === "makanlist") {
+            return <MakanlistCard key={index} content={data} />;
+          } else {
+            return <ReviewCard key={index} content={data} />;
+          }
+        });
+      }
+      setFeed(feedContent);
     }
-    setFeed(feedContent);
   }, [data, type]);
 
   return <div className="vert-feed">{feed}</div>;

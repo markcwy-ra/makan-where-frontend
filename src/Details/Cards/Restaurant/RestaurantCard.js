@@ -12,6 +12,7 @@ const RestaurantCard = ({
   content,
   type = "default",
   setData,
+  listId,
 }) => {
   const navigate = useNavigate();
   const { user } = useContext(UserContext);
@@ -28,6 +29,12 @@ const RestaurantCard = ({
         setData(response.data.data);
       } else if (type === "list-add") {
         setData((prev) => [...prev, response.data.data]);
+        const addToList = await axios.post(
+          `${process.env.REACT_APP_BACKEND_URL}/makanlists/user/${user.id}/${listId}`,
+          { restaurantId: response.data.data.id },
+          bearerToken(user.token)
+        );
+        console.log(addToList);
       }
     }
   };

@@ -29,11 +29,13 @@ const HomeScreen = () => {
           Following
         </h1>
       </Header>
-      {tab === "featured" ? (
-        <VertFeed data={tempData} />
-      ) : (
-        <VertFeed data={tempData} />
-      )}
+      <div className="home-page">
+        {tab === "featured" ? (
+          <VertFeed data={tempData} />
+        ) : (
+          <VertFeed data={tempData} />
+        )}
+      </div>
     </>
   );
 };

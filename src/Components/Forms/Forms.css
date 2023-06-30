@@ -107,3 +107,8 @@
   height: 40px;
   cursor: pointer;
 }
+
+.form-popup .search-toggles {
+  display: flex;
+  gap: 10px;
+}

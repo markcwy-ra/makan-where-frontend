@@ -31,13 +31,14 @@ const LoginScreen = () => {
           { email, password }
         );
         const data = response.data.data;
-        await localStorage.setItem("token", data.token);
-        await localStorage.setItem("refreshToken", data.refreshToken);
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("refreshToken", data.refreshToken);
         setUser({
           username: data.username,
           email: data.email,
           id: data.id,
           photoUrl: data.photoUrl,
+          token: data.token,
         });
         navigate("/home");
       } catch (err) {

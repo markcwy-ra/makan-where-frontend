@@ -1,19 +1,25 @@
+import { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 //---------- Firebase ----------//
 
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { storage } from "../../firebase";
 
-//---------- Others ----------//
+//---------- Components ----------//
 
-import Close from "../../Icons/Close.svg";
-import "./Forms.css";
-import { useContext, useState } from "react";
 import Button from "../../Details/Buttons/Button";
 import ErrorPill from "../../Details/Errors/ErrorPill";
+import Close from "../../Icons/Close.svg";
+
+//---------- Others ----------//
+
+import "./Forms.css";
 import axios from "axios";
 import { UserContext } from "../../App";
 import { bearerToken } from "../../Utilities/token";
-import { useNavigate } from "react-router-dom";
+
+//------------------------------//
 
 const ListComposer = ({ handleToggle }) => {
   const navigate = useNavigate();

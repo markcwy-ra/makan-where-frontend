@@ -6,11 +6,12 @@ import { useParams } from "react-router-dom";
 import HeartButton from "../../Details/Buttons/HeartButton";
 import LoadingScreen from "../LoadingScreen/LoadingScreen";
 import VertFeed from "../../Components/Feeds/VertFeed";
+import EditButton from "../../Details/Buttons/EditButton";
+import ListEditor from "../../Components/Forms/ListEditor";
 
 //---------- Others ----------//
 
 import "./MakanlistScreen.css";
-import { tempListPageData } from "../../tempData";
 import axios from "axios";
 import { bearerToken } from "../../Utilities/token";
 import { UserContext } from "../../App";
@@ -18,12 +19,13 @@ import { UserContext } from "../../App";
 //------------------------------//
 
 const MakanlistScreen = () => {
-  const tempData = { ...tempListPageData };
   const { user } = useContext(UserContext);
   const { userId, listId } = useParams();
   const [heart, setHeart] = useState(false);
   const [data, setData] = useState(null);
   const [upvoteCount, setUpvoteCount] = useState(null);
+  const [edit, setEdit] = useState(false);
+  const [list, setList] = useState(null);
 
   useEffect(() => {
     const getUpvoteStatus = async (reviewId) => {
@@ -48,6 +50,12 @@ const MakanlistScreen = () => {
   }, [user]);
 
   useEffect(() => {
+    if (data) {
+      setList(data.restaurants);
+    }
+  }, [data]);
+
+  useEffect(() => {
     // Get upvote count
     const getUpvoteCount = async () => {
       const upvoteCount = await axios.get(
@@ -57,7 +65,7 @@ const MakanlistScreen = () => {
       setUpvoteCount(upvoteCount.data.count);
     };
     getUpvoteCount();
-  }, [user, listId]);
+  }, [user, heart, listId]);
 
   const handleHeart = async () => {
     if (heart) {
@@ -74,11 +82,25 @@ const MakanlistScreen = () => {
     }
     setHeart((prev) => !prev);
   };
+
+  const handleEdit = async () => {
+    setEdit((prev) => !prev);
+  };
+
   if (!data) {
     return <LoadingScreen />;
   } else {
     return (
       <div className="content">
+        {edit && (
+          <ListEditor
+            handleClick={handleEdit}
+            data={data}
+            setData={setData}
+            list={list}
+            setList={setList}
+          />
+        )}
         <div
           className="makanlist-header"
           style={{
@@ -87,7 +109,13 @@ const MakanlistScreen = () => {
         >
           <div className="makanlist-title">
             <h1>{data.title}</h1>
-            <div className="makanlist-title-buttons">
+            <h4>Makanlist by @{data.user.username}</h4>
+          </div>
+          <div className="makanlist-title-buttons">
+            {user.id === Number(userId) && (
+              <EditButton handleClick={handleEdit} white={true} />
+            )}
+            <div className="makanlist-hearts">
               {upvoteCount > 0 && <h4>{upvoteCount}</h4>}
               <HeartButton
                 heart={heart}
@@ -96,13 +124,12 @@ const MakanlistScreen = () => {
               />
             </div>
           </div>
-          <h4>Makanlist by @{data.user.username}</h4>
         </div>
         <div className="makanlist-content">
           <h6>{data.description}</h6>
           <div className="divider-line" />
+          <VertFeed data={list} type="restaurants" />
         </div>
-        {<VertFeed data={tempData.restaurants} type="restaurants" />}
       </div>
     );
   }
