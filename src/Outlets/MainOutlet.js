@@ -36,7 +36,7 @@ const MainOutlet = () => {
           photoUrl: data.photoUrl,
         });
       } catch (err) {
-        console.log("error! getting new refresh token");
+        console.log("Access token expired! Getting a new one.");
         getNewRefreshToken();
         console.log(err);
       }

@@ -1,4 +1,7 @@
+//---------- React ----------//
+
 import { useState, useEffect, useContext } from "react";
+import { useParams } from "react-router-dom";
 
 //---------- Components ----------//
 
@@ -10,16 +13,15 @@ import AddSmall from "../../../Icons/AddSmall.svg";
 import MenuRestaurant from "../../../Details/Menus/MenuRestaurant";
 import ReviewComposer from "../../../Components/Forms/ReviewComposer";
 import ListComposer from "../../../Components/Forms/ListComposer";
+import LoadingScreen from "../../LoadingScreen/LoadingScreen";
 
 //---------- Others ----------//
 
 import "./RestaurantScreen.css";
 import { tempRestPageData } from "../../../tempData";
-import { useParams } from "react-router-dom";
 import axios from "axios";
 import { bearerToken } from "../../../Utilities/token";
 import { formatToAmPm, capitalise } from "../../../Utilities/formatting";
-import LoadingScreen from "../../LoadingScreen/LoadingScreen";
 import { UserContext } from "../../../App";
 
 //------------------------------//
@@ -27,37 +29,64 @@ import { UserContext } from "../../../App";
 const RestaurantScreen = () => {
   const { placeId } = useParams();
   const { user } = useContext(UserContext);
-  const [data, setData] = useState(null);
   const tempData = { ...tempRestPageData };
 
+  //-------------- States --------------//
+
+  const [data, setData] = useState(null);
   const [token, setToken] = useState(null);
   const [heart, setHeart] = useState(false);
-  const [upvotes, setUpvotes] = useState(null);
+  const [upvoteCount, setUpvoteCount] = useState(null);
   const [openingHours, setOpeningHours] = useState(null);
+
+  //---------- Display Toggles ----------//
+
   const [showMenu, setShowMenu] = useState(false);
   const [reviewToggle, setReviewToggle] = useState(false);
   const [listToggle, setListToggle] = useState(false);
 
+  //--------- useEffect Functions ---------//
+
   useEffect(() => {
-    // Get restaurant data
+    // Get restaurant page data
     const accessToken = localStorage.getItem("token");
     setToken(accessToken);
     const getRestaurantData = async (placeId) => {
-      const response = await axios.get(
-        `${process.env.REACT_APP_BACKEND_URL}/restaurants/${placeId}`,
-        bearerToken(accessToken)
-      );
-      setData(response.data.data);
-      console.log("Place data: ", data);
-      const upvoteCount = await axios.get(
-        `${process.env.REACT_APP_BACKEND_URL}/restaurants/${data.id}/upvotes/count`,
-        bearerToken(accessToken)
-      );
-      setUpvotes(upvoteCount.data.count);
+      try {
+        // Get restaraunt details
+        const response = await axios.get(
+          `${process.env.REACT_APP_BACKEND_URL}/restaurants/${placeId}`,
+          bearerToken(accessToken ? accessToken : token)
+        );
+        setData(response.data.data);
+        console.log("Place data: ", data);
+        // Get user upvote status
+        const upvoteStatus = await axios.get(
+          `${process.env.REACT_APP_BACKEND_URL}/restaurants/${response.data.data.id}/upvote/${user.id}`,
+          bearerToken(accessToken ? accessToken : token)
+        );
+        setHeart(upvoteStatus.data.hasUpvoted);
+      } catch (err) {
+        console.log(err);
+      }
     };
     getRestaurantData(placeId);
     // eslint-disable-next-line
   }, []);
+
+  useEffect(() => {
+    // Get upvote count
+    const getUpvoteCount = async () => {
+      const upvoteCount = await axios.get(
+        `${process.env.REACT_APP_BACKEND_URL}/restaurants/${data.id}/upvotes/count`,
+        bearerToken(token)
+      );
+      setUpvoteCount(upvoteCount.data.count);
+    };
+    if (data) {
+      getUpvoteCount();
+    }
+  }, [heart, data, token]);
 
   useEffect(() => {
     // Get opening hours
@@ -75,21 +104,34 @@ const RestaurantScreen = () => {
     }
   }, [data]);
 
+  //--------- Action Functions ---------//
+
   const handleClick = () => {
     window.open(data.googleMapsUrl);
   };
+
   const handleHeart = async () => {
-    const response = await axios.post(
-      `${process.env.REACT_APP_BACKEND_URL}/restaurants/${data.id}/upvote`,
-      { userId: user.id },
-      bearerToken(token)
-    );
-    console.log(response);
+    if (heart) {
+      const response = await axios.delete(
+        `${process.env.REACT_APP_BACKEND_URL}/restaurants/${data.id}/upvote/remove/${user.id}`,
+        bearerToken(token)
+      );
+      console.log(response);
+    } else {
+      const response = await axios.post(
+        `${process.env.REACT_APP_BACKEND_URL}/restaurants/${data.id}/upvote`,
+        { userId: user.id },
+        bearerToken(token)
+      );
+      console.log(response);
+    }
     setHeart((prev) => !prev);
   };
+
   const handleMenu = () => {
     setShowMenu((prev) => !prev);
   };
+
   const handleToggle = (target) => {
     if (target === "review-composer") {
       setReviewToggle((prev) => !prev);
@@ -97,13 +139,16 @@ const RestaurantScreen = () => {
       setListToggle((prev) => !prev);
     }
   };
+
+  //------------------------------//
+
   if (!data) {
     return <LoadingScreen />;
   } else {
     return (
       <div className="content restaurant-page">
         {reviewToggle && (
-          <ReviewComposer handleToggle={handleToggle} place={tempData} />
+          <ReviewComposer handleToggle={handleToggle} place={data} />
         )}
         {listToggle && <ListComposer handleToggle={handleToggle} />}
         <div className="restaurant-cover">
@@ -115,7 +160,7 @@ const RestaurantScreen = () => {
               <div className="restaurant-title">
                 <h1>{data.name}</h1>
                 <div className="restaurant-title-buttons">
-                  {upvotes && <h4>{upvotes}</h4>}
+                  {upvoteCount > 0 && <h4>{upvoteCount}</h4>}
                   <HeartButton heart={heart} handleClick={handleHeart} />
                   <img onClick={handleMenu} src={AddSmall} alt="Add Button" />
                   {showMenu && (
