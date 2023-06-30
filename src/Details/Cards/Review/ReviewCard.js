@@ -12,9 +12,9 @@ const ReviewCard = ({ config = "full", content }) => {
 
   return (
     <div className={`card-review-${config}`} onClick={handleClick}>
-      <img src={content.photoUrl} alt={content.restaurantName} />
+      <img src={content.photoUrl} alt={content.restaurant.name} />
       <div className={`card-review-${config}-title`}>
-        <h4>{content.restaurantName}</h4>
+        <h4>{content.restaurant.name}</h4>
         <p>{content.title}</p>
         <h4 className="rating-byline">
           <Rating score={content.rating} size="small" />

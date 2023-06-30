@@ -15,9 +15,11 @@ const RestaurantCard = ({ config = "full", content }) => {
         <img src={content.photoUrl} alt={content.name} />
         <div className={`card-restaurant-${config}-title`}>
           <h3>{content.name}</h3>
-          <h4 className="rating-byline">
-            <Rating score={content.avgRating} size="small" />
-          </h4>
+          {content.averageRating && (
+            <h4 className="rating-byline">
+              <Rating score={content.averageRating} size="small" />
+            </h4>
+          )}
         </div>
       </div>
     );

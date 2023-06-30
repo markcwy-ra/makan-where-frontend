@@ -29,11 +29,13 @@ const MainOutlet = () => {
           bothTokens(token, refreshToken)
         );
         const data = response.data.data;
+        console.log(response);
         setUser({
           username: data.username,
           email: data.email,
           id: data.id,
           photoUrl: data.photoUrl,
+          token: token,
         });
       } catch (err) {
         console.log("Access token expired! Getting a new one.");
@@ -57,6 +59,7 @@ const MainOutlet = () => {
           email: data.email,
           id: data.id,
           photoUrl: data.photoUrl,
+          token: token,
         });
       } catch (err) {
         console.log(err);

@@ -15,7 +15,9 @@ const tempData = [
   {
     type: "review",
     title: "Good bagels, nice atmosphere!",
-    restaurantName: "ONALU Bagel Haús",
+    restaurant: {
+      name: "ONALU Bagel Haús",
+    },
     restaurantId: 1,
     reviewId: 1,
     author: "johntan",
@@ -31,7 +33,9 @@ const tempData = [
   {
     type: "review",
     title: "Tender and crispy tonkatsu",
-    restaurantName: "Maruhachi",
+    restaurant: {
+      name: "Maruhachi",
+    },
     restaurantId: 2,
     reviewId: 2,
     author: "johntan",
@@ -43,7 +47,9 @@ const tempData = [
 const tempReviewData = [
   {
     title: "Good bagels, nice atmosphere!",
-    restaurantName: "ONALU Bagel Haús",
+    restaurant: {
+      name: "ONALU Bagel Haús",
+    },
     restaurantId: 1,
     reviewId: 1,
     author: "johntan",
@@ -52,7 +58,9 @@ const tempReviewData = [
   },
   {
     title: "Tender and crispy tonkatsu",
-    restaurantName: "Maruhachi",
+    restaurant: {
+      name: "Maruhachi",
+    },
     restaurantId: 2,
     reviewId: 2,
     author: "johntan",
@@ -61,7 +69,9 @@ const tempReviewData = [
   },
   {
     title: "Good bagels, nice atmosphere!",
-    restaurantName: "ONALU Bagel Haús",
+    restaurant: {
+      name: "ONALU Bagel Haús",
+    },
     restaurantId: 1,
     reviewId: 1,
     author: "johntan",
@@ -70,7 +80,9 @@ const tempReviewData = [
   },
   {
     title: "Tender and crispy tonkatsu",
-    restaurantName: "Maruhachi",
+    restaurant: {
+      name: "Maruhachi",
+    },
     restaurantId: 2,
     reviewId: 2,
     author: "johntan",

@@ -34,10 +34,10 @@ const RestaurantScreen = () => {
   //-------------- States --------------//
 
   const [data, setData] = useState(null);
-  const [token, setToken] = useState(null);
   const [heart, setHeart] = useState(false);
   const [upvoteCount, setUpvoteCount] = useState(null);
   const [openingHours, setOpeningHours] = useState(null);
+  const [reviews, setReviews] = useState(null);
 
   //---------- Display Toggles ----------//
 
@@ -49,48 +49,61 @@ const RestaurantScreen = () => {
 
   useEffect(() => {
     // Get restaurant page data
-    const accessToken = localStorage.getItem("token");
-    setToken(accessToken);
     const getRestaurantData = async (placeId) => {
       try {
         // Get restaraunt details
         const response = await axios.get(
           `${process.env.REACT_APP_BACKEND_URL}/restaurants/${placeId}`,
-          bearerToken(accessToken ? accessToken : token)
+          bearerToken(user.token)
         );
         setData(response.data.data);
-        console.log("Place data: ", data);
         // Get user upvote status
         const upvoteStatus = await axios.get(
           `${process.env.REACT_APP_BACKEND_URL}/restaurants/${response.data.data.id}/upvote/${user.id}`,
-          bearerToken(accessToken ? accessToken : token)
+          bearerToken(user.token)
         );
         setHeart(upvoteStatus.data.hasUpvoted);
       } catch (err) {
         console.log(err);
       }
     };
+
     getRestaurantData(placeId);
     // eslint-disable-next-line
-  }, []);
+  }, [user]);
 
   useEffect(() => {
     // Get upvote count
     const getUpvoteCount = async () => {
       const upvoteCount = await axios.get(
         `${process.env.REACT_APP_BACKEND_URL}/restaurants/${data.id}/upvotes/count`,
-        bearerToken(token)
+        bearerToken(user.token)
       );
       setUpvoteCount(upvoteCount.data.count);
     };
     if (data) {
       getUpvoteCount();
     }
-  }, [heart, data, token]);
+  }, [heart, data, user]);
 
   useEffect(() => {
-    // Get opening hours
+    const getRestaurantReviews = async (placeId) => {
+      try {
+        // Get restaraunt reviews
+        const response = await axios.get(
+          `${process.env.REACT_APP_BACKEND_URL}/reviews/${placeId}`,
+          bearerToken(user.token)
+        );
+        setReviews(
+          response.data.reviews.length > 0 ? response.data.reviews : null
+        );
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
     if (data && data.openinghours) {
+      // Get opening hours
       const hourDisplay = data.openinghours.map((day) => (
         <div key={day.day} className="restaurant-content-details-row">
           <p>{day.day}</p> <p>•</p>
@@ -101,6 +114,7 @@ const RestaurantScreen = () => {
       ));
 
       setOpeningHours(hourDisplay);
+      getRestaurantReviews(data.id);
     }
   }, [data]);
 
@@ -114,14 +128,14 @@ const RestaurantScreen = () => {
     if (heart) {
       const response = await axios.delete(
         `${process.env.REACT_APP_BACKEND_URL}/restaurants/${data.id}/upvote/remove/${user.id}`,
-        bearerToken(token)
+        bearerToken(user.token)
       );
       console.log(response);
     } else {
       const response = await axios.post(
         `${process.env.REACT_APP_BACKEND_URL}/restaurants/${data.id}/upvote`,
         { userId: user.id },
-        bearerToken(token)
+        bearerToken(user.token)
       );
       console.log(response);
     }
@@ -142,7 +156,7 @@ const RestaurantScreen = () => {
 
   //------------------------------//
 
-  if (!data) {
+  if (!data || !user) {
     return <LoadingScreen />;
   } else {
     return (
@@ -207,7 +221,7 @@ const RestaurantScreen = () => {
               handleClick={handleClick}
             />
           </div>
-          <HorzFeed type="reviews" data={tempData.reviews} />
+          {reviews && <HorzFeed type="reviews" data={reviews} />}
         </div>
       </div>
     );

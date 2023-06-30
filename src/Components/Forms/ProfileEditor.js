@@ -53,7 +53,6 @@ const ProfileEditor = ({ handleToggle, profileData }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const token = localStorage.getItem("token");
       let photoUrl = null;
       if (file) {
         const fileRef = ref(storage, `profile/${username}`);
@@ -63,7 +62,7 @@ const ProfileEditor = ({ handleToggle, profileData }) => {
       const response = await axios.put(
         `${process.env.REACT_APP_BACKEND_URL}/users/${user.id}/update`,
         { username, email, currentPassword, newPassword, photoUrl },
-        bearerToken(token)
+        bearerToken(user.token)
       );
       const data = response.data.data;
       setUser({
@@ -100,7 +99,7 @@ const ProfileEditor = ({ handleToggle, profileData }) => {
         setRepeatPassword(value);
         break;
       case "file":
-        setFile(value);
+        setFile(e.currentTarget.files[0]);
         break;
       // case "country":
       //   setCountry(value);
