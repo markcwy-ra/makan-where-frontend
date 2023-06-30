@@ -116,7 +116,7 @@ const RestaurantScreen = () => {
       setOpeningHours(hourDisplay);
       getRestaurantReviews(data.id);
     }
-  }, [data]);
+  }, [data, user]);
 
   //--------- Action Functions ---------//
 
@@ -126,18 +126,16 @@ const RestaurantScreen = () => {
 
   const handleHeart = async () => {
     if (heart) {
-      const response = await axios.delete(
+      await axios.delete(
         `${process.env.REACT_APP_BACKEND_URL}/restaurants/${data.id}/upvote/remove/${user.id}`,
         bearerToken(user.token)
       );
-      console.log(response);
     } else {
-      const response = await axios.post(
+      await axios.post(
         `${process.env.REACT_APP_BACKEND_URL}/restaurants/${data.id}/upvote`,
         { userId: user.id },
         bearerToken(user.token)
       );
-      console.log(response);
     }
     setHeart((prev) => !prev);
   };

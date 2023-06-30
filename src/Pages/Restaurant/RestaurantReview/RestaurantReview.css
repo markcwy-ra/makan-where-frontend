@@ -24,6 +24,9 @@
 
 .review-title-buttons {
   display: flex;
+  align-items: center;
+  height: fit-content;
+  color: #0078ef;
   gap: 10px;
 }
 

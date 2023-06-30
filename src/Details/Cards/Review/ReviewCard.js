@@ -7,7 +7,7 @@ const ReviewCard = ({ config = "full", content }) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate(`/places/${content.restaurantId}/${content.reviewId}`);
+    navigate(`/places/${content.restaurant.placeId}/${content.userId}`);
   };
 
   return (

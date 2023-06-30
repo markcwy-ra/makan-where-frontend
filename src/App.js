@@ -60,7 +60,7 @@ function App() {
               <Route index element={<Navigate to="/" />} />
               <Route path=":placeId">
                 <Route index element={<RestaurantScreen />} />
-                <Route path=":reviewId" element={<RestaurantReview />} />
+                <Route path=":userId" element={<RestaurantReview />} />
               </Route>
             </Route>
             <Route path="makanlists">
