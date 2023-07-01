@@ -1,6 +1,5 @@
 import "./FavouritesScreen.css";
 import { useContext, useEffect, useState } from "react";
-import { tempListData } from "../../../tempData";
 import VertFeed from "../../../Components/Feeds/VertFeed";
 import { useNavigate } from "react-router-dom";
 import Button from "../../../Details/Buttons/Button";

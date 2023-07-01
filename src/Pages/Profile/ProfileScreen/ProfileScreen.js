@@ -1,6 +1,6 @@
 //----------- React -----------//
 
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 
 //---------- Components ----------//
@@ -24,14 +24,32 @@ import { UserContext } from "../../../App";
 const ProfileScreen = () => {
   const navigate = useNavigate();
   const { user } = useContext(UserContext);
+  const { userId } = useParams();
+  const [userData, setUserData] = useState(null);
+  const [followed, setFollowed] = useState(false);
   const [toggleEdit, setToggleEdit] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
   const [reviews, setReviews] = useState(null);
   const [reviewCount, setReviewCount] = useState(0);
   const [lists, setLists] = useState(null);
   const [listCount, setListCount] = useState(0);
+  const [followerCount, setFollowerCount] = useState(0);
+  const [followingCount, setFollowingCount] = useState(0);
 
+  // Get profile data
   useEffect(() => {
+    const getUserProfile = async (userId) => {
+      try {
+        // Get restaraunt reviews
+        const response = await axios.get(
+          `${process.env.REACT_APP_BACKEND_URL}/users/${userId}`,
+          bearerToken(user.token)
+        );
+        setUserData(response.data.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
     const getUserReviews = async (userId) => {
       try {
         // Get restaraunt reviews
@@ -60,9 +78,44 @@ const ProfileScreen = () => {
         console.log(err);
       }
     };
-    getUserReviews(user.id);
-    getUserMakanlists(user.id);
-  }, [user]);
+    const getFollowerCounts = async (userId) => {
+      try {
+        // Get restaraunt reviews
+        const followers = await axios.get(
+          `${process.env.REACT_APP_BACKEND_URL}/follows/${userId}/followers/count`,
+          bearerToken(user.token)
+        );
+        const following = await axios.get(
+          `${process.env.REACT_APP_BACKEND_URL}/follows/${userId}/following/count`,
+          bearerToken(user.token)
+        );
+        setFollowerCount(followers.data.count);
+        setFollowingCount(following.data.count);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    if (user) {
+      if (userId && Number(userId) === user.id) {
+        navigate("/profile");
+      }
+      if (userId) {
+        getUserProfile(userId);
+        getUserReviews(userId);
+        getUserMakanlists(userId);
+        getFollowerCounts(userId);
+      } else {
+        setUserData(user);
+        getUserReviews(user.id);
+        getUserMakanlists(user.id);
+        getFollowerCounts(user.id);
+      }
+    }
+    //eslint-disable-next-line
+  }, [user, userId]);
+
+  //---------- Action Functions ----------//
 
   const handleToggle = () => {
     setToggleEdit((prev) => !prev);
@@ -72,10 +125,36 @@ const ProfileScreen = () => {
     const id = e.currentTarget.id;
     if (id === "favourites") {
       navigate("favourites");
-    } else if (id === "edit-profile") {
-      handleToggle();
-      setShowMenu(false);
-    } else if (id === "logout") {
+    } else if (id === "follow") {
+      if (!followed) {
+        try {
+          await axios.post(
+            `${process.env.REACT_APP_BACKEND_URL}/follows/${userId}`,
+            { followerId: user.id },
+            bearerToken(user.token)
+          );
+          setFollowed(true);
+        } catch (err) {
+          console.log(err);
+        }
+      } else {
+        try {
+          await axios.post(
+            `${process.env.REACT_APP_BACKEND_URL}/follows/unfollow/${userId}`,
+            { followerId: user.id },
+            bearerToken(user.token)
+          );
+          setFollowed(false);
+        } catch (err) {
+          console.log(err);
+        }
+      }
+    }
+  };
+
+  const handleMenu = async (e) => {
+    const id = e.currentTarget.id;
+    if (id === "logout") {
       try {
         const refreshToken = localStorage.getItem("refreshToken");
         await axios.post(
@@ -92,32 +171,52 @@ const ProfileScreen = () => {
           console.log(err);
         }
       }
+    } else if (id === "edit-profile") {
+      handleToggle();
+      setShowMenu(false);
     } else if (id === "profile") {
-      setShowMenu((prev) => !prev);
+      if (!userId) {
+        setShowMenu((prev) => !prev);
+      }
     }
   };
 
+  //------------------------------//
+
   return (
     <>
-      {showMenu && <MenuProfile handleClick={handleClick} />}
+      {showMenu && <MenuProfile handleClick={handleMenu} />}
       {toggleEdit && (
         <ProfileEditor handleToggle={handleToggle} profileData={user} />
       )}
-      <Header icon="profile" handleClick={handleClick}>
-        <h1>@{user.username}</h1>
-      </Header>
+      <Header icon="profile" userData={userData} handleClick={handleMenu} />
       <div className="profile-page-header">
         <div className="divider-line" />
-        <StatsBar reviewCount={reviewCount} makanlistCount={listCount} />
+        <StatsBar
+          reviewCount={reviewCount}
+          makanlistCount={listCount}
+          followerCount={followerCount}
+          followingCount={followingCount}
+        />
         <div className="divider-line" />
         <div className="profile-buttons">
-          <Button
-            id="favourites"
-            label="View Favourites"
-            size="medium"
-            isActive={true}
-            handleClick={handleClick}
-          />
+          {userId ? (
+            <Button
+              id="follow"
+              label={followed ? "Unfollow" : "Follow"}
+              size="medium"
+              isActive={true}
+              handleClick={handleClick}
+            />
+          ) : (
+            <Button
+              id="favourites"
+              label="View Favourites"
+              size="medium"
+              isActive={true}
+              handleClick={handleClick}
+            />
+          )}
         </div>
       </div>
       <div className="content profile-page-feeds">

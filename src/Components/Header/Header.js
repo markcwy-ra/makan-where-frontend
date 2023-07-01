@@ -5,10 +5,10 @@ import User from "../../Icons/User.svg";
 import "./Header.css";
 import { UserContext } from "../../App";
 
-const Header = ({ children, icon, handleClick = null }) => {
-  let selectedIcon;
+const Header = ({ children, icon, userData, handleClick = null }) => {
   const { user } = useContext(UserContext);
 
+  let selectedIcon;
   switch (icon) {
     case "search":
       selectedIcon = Search;
@@ -16,28 +16,39 @@ const Header = ({ children, icon, handleClick = null }) => {
     case "map":
       selectedIcon = Map;
       break;
-    case "profile":
-      selectedIcon = user.photoUrl ? user.photoUrl : User;
-      break;
     default:
       break;
   }
 
-  return (
-    <div id="header">
-      <div className="header-title">{children}</div>
-      {selectedIcon && (
-        <img
-          id={icon}
-          className={icon === "profile" ? "header-profilepic" : ""}
-          src={selectedIcon}
-          alt={icon}
-          onClick={handleClick}
-          style={icon === "profile" ? { cursor: "pointer" } : null}
-        />
-      )}
-    </div>
-  );
+  if (icon === "profile") {
+    if (userData) {
+      return (
+        <div id="header">
+          <div className="header-title">
+            <h1>@{userData.username}</h1>
+          </div>
+
+          <img
+            id={icon}
+            className={"header-profilepic"}
+            src={userData.photoUrl ? userData.photoUrl : User}
+            alt={icon}
+            onClick={handleClick}
+            style={userData.id === user.id ? { cursor: "pointer" } : null}
+          />
+        </div>
+      );
+    }
+  } else {
+    return (
+      <div id="header">
+        <div className="header-title">{children}</div>
+        {selectedIcon && (
+          <img id={icon} src={selectedIcon} alt={icon} onClick={handleClick} />
+        )}
+      </div>
+    );
+  }
 };
 
 export default Header;

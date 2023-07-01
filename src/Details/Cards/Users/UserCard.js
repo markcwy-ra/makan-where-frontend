@@ -15,8 +15,7 @@ const UserCard = ({ config = "full", content }) => {
   }
 
   const handleClick = () => {
-    // navigate(`/makanlists/${content.makanlistId}`);
-    console.log("user card clicked");
+    navigate(`/user/${content.id}`);
   };
 
   return (

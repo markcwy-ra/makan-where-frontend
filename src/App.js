@@ -56,6 +56,7 @@ function App() {
               <Route index element={<ProfileScreen />} />
               <Route path="favourites" element={<FavouritesScreen />} />
             </Route>
+            <Route path="/user/:userId" element={<ProfileScreen />} />
             <Route path="/places">
               <Route index element={<Navigate to="/" />} />
               <Route path=":placeId">

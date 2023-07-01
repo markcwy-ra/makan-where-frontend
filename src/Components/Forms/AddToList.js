@@ -1,10 +1,4 @@
 import { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-
-//---------- Firebase ----------//
-
-import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
-import { storage } from "../../firebase";
 
 //---------- Components ----------//
 
@@ -49,7 +43,7 @@ const AddToList = ({ handleToggle, restaurantId }) => {
     };
 
     getUserLists();
-  }, []);
+  }, [user]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

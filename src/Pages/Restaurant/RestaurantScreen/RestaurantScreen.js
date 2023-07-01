@@ -129,7 +129,7 @@ const RestaurantScreen = () => {
         }
       });
     }
-  }, [reviews]);
+  }, [reviews, user]);
 
   //--------- Action Functions ---------//
 
