@@ -162,6 +162,8 @@ const ProfileScreen = () => {
           {},
           logoutToken(refreshToken)
         );
+        localStorage.removeItem("token");
+        localStorage.removeItem("refreshToken");
         navigate("/");
       } catch (err) {
         const code = err.response.status;

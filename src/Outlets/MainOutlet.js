@@ -3,13 +3,12 @@ import NavBar from "../Components/NavBar/NavBar";
 import ReviewComposer from "../Components/Forms/ReviewComposer";
 import { useState, useEffect, useContext } from "react";
 import ListComposer from "../Components/Forms/ListComposer";
-import axios from "axios";
-import { bothTokens, logoutToken } from "../Utilities/token.js";
 import { UserContext } from "../App";
+import { getCurrentUser, getNewTokens } from "../Utilities/auth";
 
 const MainOutlet = () => {
-  const { user, setUser } = useContext(UserContext);
   const navigate = useNavigate();
+  const { user, setUser } = useContext(UserContext);
   const [reviewToggle, setReviewToggle] = useState(false);
   const [listToggle, setListToggle] = useState(false);
 
@@ -20,55 +19,22 @@ const MainOutlet = () => {
     // Check if tokens exist
     if (!token || !refreshToken) {
       navigate("/");
+    } else {
+      if (!user) {
+        try {
+          getCurrentUser({ setUser, token, refreshToken });
+        } catch (err) {
+          console.log("Access token expired! Getting new tokens.");
+          try {
+            getNewTokens({ setUser, refreshToken });
+          } catch (err) {
+            console.log("Refresh token expired! Login required.");
+            navigate("/");
+          }
+        }
+      }
     }
 
-    const getCurrentUser = async () => {
-      try {
-        const response = await axios.get(
-          `${process.env.REACT_APP_BACKEND_URL}/users`,
-          bothTokens(token, refreshToken)
-        );
-        const data = response.data.data;
-        setUser({
-          username: data.username,
-          email: data.email,
-          id: data.id,
-          photoUrl: data.photoUrl,
-          token: token,
-        });
-      } catch (err) {
-        console.log("Access token expired! Getting a new one.");
-        getNewRefreshToken();
-        console.log(err);
-      }
-    };
-
-    const getNewRefreshToken = async () => {
-      try {
-        const response = await axios.post(
-          `${process.env.REACT_APP_BACKEND_URL}/auth/refresh`,
-          {},
-          logoutToken(refreshToken)
-        );
-        const data = response.data.data;
-        localStorage.setItem("token", data.token);
-        localStorage.setItem("refreshToken", data.refreshToken);
-        setUser({
-          username: data.username,
-          email: data.email,
-          id: data.id,
-          photoUrl: data.photoUrl,
-          token: data.token,
-        });
-      } catch (err) {
-        console.log(err);
-        navigate("/");
-      }
-    };
-
-    if (!user) {
-      getCurrentUser();
-    }
     // eslint-disable-next-line
   }, [user]);
 
