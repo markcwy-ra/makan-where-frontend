@@ -14,18 +14,14 @@ const SplashOutlet = () => {
     // Navigate home if tokens exist
     if (token && refreshToken) {
       if (!user) {
-        try {
-          getCurrentUser({ setUser, token, refreshToken });
-          navigate("/home");
-        } catch (err) {
+        getCurrentUser({ setUser, token, refreshToken }).catch(() => {
           console.log("Access token expired! Getting new tokens.");
-          try {
-            getNewTokens({ setUser, refreshToken });
-            navigate("/home");
-          } catch (err) {
+          getNewTokens({ setUser, refreshToken }).catch(() => {
             console.log("Refresh token expired! Login required.");
-          }
-        }
+          });
+          navigate("/home");
+        });
+        navigate("/home");
       }
     }
 

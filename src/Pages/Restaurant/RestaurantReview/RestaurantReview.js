@@ -15,6 +15,7 @@ import axios from "axios";
 import LoadingScreen from "../../LoadingScreen/LoadingScreen";
 import EditButton from "../../../Details/Buttons/EditButton";
 import ReviewEditor from "../../../Components/Forms/ReviewEditor";
+import { getUpvoteCount, getUpvoteStatus } from "../../../Utilities/fetch";
 
 //------------------------------//
 
@@ -27,42 +28,35 @@ const RestaurantReview = () => {
   const [upvoteCount, setUpvoteCount] = useState(null);
   const [isUser, setIsUser] = useState(false);
   const [reviewEditToggle, setReviewEditToggle] = useState(false);
+  const route = "reviews";
 
   useEffect(() => {
-    const getUpvoteStatus = async (reviewId) => {
-      const upvoteStatus = await axios.get(
-        `${process.env.REACT_APP_BACKEND_URL}/reviews/${reviewId}/upvote/${user.id}`,
-        bearerToken(user.token)
-      );
-      setHeart(upvoteStatus.data.hasUpvoted);
-    };
-
     const getReviewData = async () => {
       const response = await axios.get(
         `${process.env.REACT_APP_BACKEND_URL}/reviews/restaurant/${placeId}/user/${userId}`,
         bearerToken(user.token)
       );
       setData(response.data);
-      getUpvoteStatus(response.data.id);
+      getUpvoteStatus({
+        route,
+        id: response.data.id,
+        userId: user.id,
+        setHeart,
+      });
     };
-
     getReviewData();
     //eslint-disable-next-line
   }, [user]);
 
   useEffect(() => {
-    // Get upvote count
-    const getUpvoteCount = async (reviewId) => {
-      const upvoteCount = await axios.get(
-        `${process.env.REACT_APP_BACKEND_URL}/reviews/${reviewId}/upvotes/count`,
-        bearerToken(user.token)
-      );
-      setUpvoteCount(upvoteCount.data.count);
-    };
     if (data) {
-      getUpvoteCount(data.id);
+      getUpvoteCount({
+        route,
+        id: data.id,
+        setUpvoteCount,
+      });
     }
-  }, [heart, data, user]);
+  }, [data, heart]);
 
   useEffect(() => {
     if (Number(userId) === user.id) {

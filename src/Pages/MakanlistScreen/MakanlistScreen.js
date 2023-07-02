@@ -15,6 +15,7 @@ import "./MakanlistScreen.css";
 import axios from "axios";
 import { bearerToken } from "../../Utilities/token";
 import { UserContext } from "../../App";
+import { getUpvoteCount, getUpvoteStatus } from "../../Utilities/fetch";
 
 //------------------------------//
 
@@ -26,23 +27,22 @@ const MakanlistScreen = () => {
   const [upvoteCount, setUpvoteCount] = useState(null);
   const [edit, setEdit] = useState(false);
   const [list, setList] = useState(null);
+  const [isUser, setIsUser] = useState(false);
+  const route = "makanlists";
 
   useEffect(() => {
-    const getUpvoteStatus = async (reviewId) => {
-      const upvoteStatus = await axios.get(
-        `${process.env.REACT_APP_BACKEND_URL}/makanlists/${listId}/upvote/${user.id}`,
-        bearerToken(user.token)
-      );
-      setHeart(upvoteStatus.data.hasUpvoted);
-    };
-
     const getListData = async () => {
       const response = await axios.get(
         `${process.env.REACT_APP_BACKEND_URL}/makanlists/user/${userId}/${listId}`,
         bearerToken(user.token)
       );
       setData(response.data);
-      getUpvoteStatus(response.data.id);
+      getUpvoteStatus({
+        route,
+        id: listId,
+        userId: user.id,
+        setHeart,
+      });
     };
 
     getListData();
@@ -56,16 +56,18 @@ const MakanlistScreen = () => {
   }, [data]);
 
   useEffect(() => {
-    // Get upvote count
-    const getUpvoteCount = async () => {
-      const upvoteCount = await axios.get(
-        `${process.env.REACT_APP_BACKEND_URL}/makanlists/${listId}/upvotes/count`,
-        bearerToken(user.token)
-      );
-      setUpvoteCount(upvoteCount.data.count);
-    };
-    getUpvoteCount();
-  }, [user, heart, listId]);
+    getUpvoteCount({
+      route,
+      id: listId,
+      setUpvoteCount,
+    });
+  }, [listId, heart]);
+
+  useEffect(() => {
+    if (Number(userId) === user.id) {
+      setIsUser(true);
+    }
+  }, [user, userId]);
 
   const handleHeart = async () => {
     if (heart) {
@@ -115,7 +117,7 @@ const MakanlistScreen = () => {
         >
           <div className="makanlist-title">
             <h1>{data.title}</h1>
-            <h4>Makanlist by @{data.user.username}</h4>
+            <h4>Makanlist by {isUser ? "you" : `@${data.user.username}`}</h4>
           </div>
           <div className="makanlist-title-buttons">
             {user.id === Number(userId) && (

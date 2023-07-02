@@ -21,17 +21,13 @@ const MainOutlet = () => {
       navigate("/");
     } else {
       if (!user) {
-        try {
-          getCurrentUser({ setUser, token, refreshToken });
-        } catch (err) {
+        getCurrentUser({ setUser, token, refreshToken }).catch(() => {
           console.log("Access token expired! Getting new tokens.");
-          try {
-            getNewTokens({ setUser, refreshToken });
-          } catch (err) {
+          getNewTokens({ setUser, refreshToken }).catch(() => {
             console.log("Refresh token expired! Login required.");
             navigate("/");
-          }
-        }
+          });
+        });
       }
     }
 

@@ -24,6 +24,7 @@ import { bearerToken } from "../../../Utilities/token";
 import { formatToAmPm, capitalise } from "../../../Utilities/formatting";
 import { UserContext } from "../../../App";
 import ReviewEditor from "../../../Components/Forms/ReviewEditor";
+import { getUpvoteCount, getUpvoteStatus } from "../../../Utilities/fetch";
 
 //------------------------------//
 
@@ -31,6 +32,7 @@ const RestaurantScreen = () => {
   const { placeId } = useParams();
   const { user } = useContext(UserContext);
   const tempData = { ...tempRestPageData };
+  const route = "restaurants";
 
   //-------------- States --------------//
 
@@ -63,11 +65,12 @@ const RestaurantScreen = () => {
         );
         setData(response.data.data);
         // Get user upvote status
-        const upvoteStatus = await axios.get(
-          `${process.env.REACT_APP_BACKEND_URL}/restaurants/${response.data.data.id}/upvote/${user.id}`,
-          bearerToken(user.token)
-        );
-        setHeart(upvoteStatus.data.hasUpvoted);
+        getUpvoteStatus({
+          route,
+          id: response.data.data.id,
+          userId: user.id,
+          setHeart,
+        });
       } catch (err) {
         console.log(err);
       }
@@ -79,17 +82,14 @@ const RestaurantScreen = () => {
 
   // Get upvote count
   useEffect(() => {
-    const getUpvoteCount = async () => {
-      const upvoteCount = await axios.get(
-        `${process.env.REACT_APP_BACKEND_URL}/restaurants/${data.id}/upvotes/count`,
-        bearerToken(user.token)
-      );
-      setUpvoteCount(upvoteCount.data.count);
-    };
     if (data) {
-      getUpvoteCount();
+      getUpvoteCount({
+        route,
+        id: data.id,
+        setUpvoteCount,
+      });
     }
-  }, [heart, data, user]);
+  }, [heart, data]);
 
   // Get restaurant reviews and format opening hours
   useEffect(() => {
