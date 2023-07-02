@@ -7,7 +7,7 @@ import UserCard from "../../Details/Cards/Users/UserCard";
 
 const VertFeed = ({ data, type = "all" }) => {
   const [feed, setFeed] = useState(null);
-
+  console.log(data);
   useEffect(() => {
     if (data) {
       let feedContent = [];
@@ -29,6 +29,37 @@ const VertFeed = ({ data, type = "all" }) => {
         feedContent = data.map((data, index) => (
           <UserCard key={index} content={data} />
         ));
+      } else if (type === "following-feed") {
+        feedContent = data.map((data, index) => {
+          if (data.targetType === "makanlist") {
+            return (
+              <div key={index}>
+                <p>
+                  {data.user.username} {data.activityType} a {data.targetType}
+                </p>
+                <MakanlistCard content={data.targetDetails} />
+              </div>
+            );
+          } else if (data.targetType === "restaurant") {
+            return (
+              <div key={index}>
+                <p>
+                  {data.user.username} {data.activityType} a {data.targetType}
+                </p>
+                <RestaurantCard content={data.targetDetails} />
+              </div>
+            );
+          } else if (data.targetType === "review") {
+            return (
+              <div key={index}>
+                <p>
+                  {data.user.username} {data.activityType} a {data.targetType}
+                </p>
+                <ReviewCard content={data.targetDetails} />
+              </div>
+            );
+          }
+        });
       } else {
         feedContent = data.map((data, index) => {
           if (data.type === "makanlist") {

@@ -16,8 +16,14 @@ import MenuProfile from "../../../Details/Menus/MenuProfile";
 
 import "./ProfileScreen.css";
 import axios from "axios";
-import { bearerToken, logoutToken } from "../../../Utilities/token";
+import { bearerToken } from "../../../Utilities/token";
 import { UserContext } from "../../../App";
+import {
+  getFollowStatus,
+  getFollowerCount,
+  getFollowingCount,
+} from "../../../Utilities/fetch";
+import { logout } from "../../../Utilities/auth";
 
 //------------------------------//
 
@@ -78,19 +84,20 @@ const ProfileScreen = () => {
         console.log(err);
       }
     };
-    const getFollowerCounts = async (userId) => {
+
+    const userProfile = async (id) => {
       try {
-        // Get restaraunt reviews
-        const followers = await axios.get(
-          `${process.env.REACT_APP_BACKEND_URL}/follows/${userId}/followers/count`,
-          bearerToken(user.token)
-        );
-        const following = await axios.get(
-          `${process.env.REACT_APP_BACKEND_URL}/follows/${userId}/following/count`,
-          bearerToken(user.token)
-        );
-        setFollowerCount(followers.data.count);
-        setFollowingCount(following.data.count);
+        getUserProfile(id);
+        getUserReviews(id);
+        getUserMakanlists(id);
+        const followerCount = await getFollowerCount(id);
+        setFollowerCount(followerCount);
+        const followingCount = await getFollowingCount(id);
+        setFollowingCount(followingCount);
+        if (Number(id) !== user.id) {
+          const isFollowing = await getFollowStatus(user.id, id);
+          setFollowed(isFollowing);
+        }
       } catch (err) {
         console.log(err);
       }
@@ -101,15 +108,9 @@ const ProfileScreen = () => {
         navigate("/profile");
       }
       if (userId) {
-        getUserProfile(userId);
-        getUserReviews(userId);
-        getUserMakanlists(userId);
-        getFollowerCounts(userId);
+        userProfile(userId);
       } else {
-        setUserData(user);
-        getUserReviews(user.id);
-        getUserMakanlists(user.id);
-        getFollowerCounts(user.id);
+        userProfile(user.id);
       }
     }
     //eslint-disable-next-line
@@ -156,14 +157,7 @@ const ProfileScreen = () => {
     const id = e.currentTarget.id;
     if (id === "logout") {
       try {
-        const refreshToken = localStorage.getItem("refreshToken");
-        await axios.post(
-          `${process.env.REACT_APP_BACKEND_URL}/auth/sign-out`,
-          {},
-          logoutToken(refreshToken)
-        );
-        localStorage.removeItem("token");
-        localStorage.removeItem("refreshToken");
+        await logout();
         navigate("/");
       } catch (err) {
         const code = err.response.status;

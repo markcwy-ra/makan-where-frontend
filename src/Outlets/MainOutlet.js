@@ -8,29 +8,30 @@ import { getCurrentUser, getNewTokens } from "../Utilities/auth";
 
 const MainOutlet = () => {
   const navigate = useNavigate();
-  const location = useLocation();
+  // const location = useLocation();
   const { user, setUser } = useContext(UserContext);
   const [reviewToggle, setReviewToggle] = useState(false);
   const [listToggle, setListToggle] = useState(false);
-  const [initialLoad, setInitialLoad] = useState(null);
+  // const [initialLoad, setInitialLoad] = useState(null);
   const token = localStorage.getItem("token");
   const refreshToken = localStorage.getItem("refreshToken");
 
-  useEffect(() => {
-    setInitialLoad(new Date());
-  }, []);
+  // useEffect(() => {
+  //   setInitialLoad(new Date());
+  // }, []);
 
-  useEffect(() => {
-    const currentLoad = new Date();
-    const elapsedTime = currentLoad / 60000 - initialLoad / 60000;
-    if (elapsedTime > 45) {
-      getNewTokens({ setUser, refreshToken }).catch(() => {
-        console.log("Refresh token expired! Login required.");
-        navigate("/");
-      });
-    }
-    //eslint-disable-next-line
-  }, [location]);
+  // useEffect(() => {
+  //   const currentLoad = new Date();
+  //   const elapsedTime = initialLoad / 60000 - currentLoad / 60000;
+  //   console.log(elapsedTime);
+  //   if (elapsedTime < 45) {
+  //     getNewTokens({ setUser }).catch(() => {
+  //       console.log("Refresh token expired! Login required.");
+  //       navigate("/");
+  //     });
+  //   }
+  //   //eslint-disable-next-line
+  // }, [location]);
 
   useEffect(() => {
     // Check if tokens exist
@@ -38,9 +39,9 @@ const MainOutlet = () => {
       navigate("/");
     } else {
       if (!user) {
-        getCurrentUser({ setUser, token, refreshToken }).catch(() => {
+        getCurrentUser({ setUser }).catch(() => {
           console.log("Access token expired! Getting new tokens.");
-          getNewTokens({ setUser, refreshToken }).catch(() => {
+          getNewTokens({ setUser }).catch(() => {
             console.log("Refresh token expired! Login required.");
             navigate("/");
           });

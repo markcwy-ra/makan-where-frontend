@@ -3,10 +3,14 @@
 import axios from "axios";
 import { bothTokens, logoutToken } from "./token.js";
 
-const getCurrentUser = async ({ setUser, token, refreshToken }) => {
+const token = localStorage.getItem("token");
+const refreshToken = localStorage.getItem("refreshToken");
+const url = process.env.REACT_APP_BACKEND_URL;
+
+const getCurrentUser = async ({ setUser }) => {
   try {
     const response = await axios.get(
-      `${process.env.REACT_APP_BACKEND_URL}/users`,
+      `${url}/users`,
       bothTokens(token, refreshToken)
     );
     const data = response.data.data;
@@ -22,10 +26,10 @@ const getCurrentUser = async ({ setUser, token, refreshToken }) => {
   }
 };
 
-const getNewTokens = async ({ setUser, refreshToken }) => {
+const getNewTokens = async ({ setUser }) => {
   try {
     const response = await axios.post(
-      `${process.env.REACT_APP_BACKEND_URL}/auth/refresh`,
+      `${url}/auth/refresh`,
       {},
       logoutToken(refreshToken)
     );
@@ -44,4 +48,10 @@ const getNewTokens = async ({ setUser, refreshToken }) => {
   }
 };
 
-export { getCurrentUser, getNewTokens };
+const logout = async () => {
+  await axios.post(`${url}/auth/sign-out`, {}, logoutToken(refreshToken));
+  localStorage.removeItem("token");
+  localStorage.removeItem("refreshToken");
+};
+
+export { getCurrentUser, getNewTokens, logout };

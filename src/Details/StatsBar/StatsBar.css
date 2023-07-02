@@ -13,5 +13,5 @@
 }
 
 .stats-bar-stats h2 {
-  color: #0078ef;
+  color: var(--blue);
 }

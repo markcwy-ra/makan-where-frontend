@@ -10,7 +10,7 @@
   width: 100%;
   min-height: 0;
   flex: 1;
-  background-color: #0078ef;
+  background-color: var(--blue);
 }
 
 .card-review-full-image img,

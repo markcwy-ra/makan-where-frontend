@@ -14,9 +14,9 @@ const SplashOutlet = () => {
     // Navigate home if tokens exist
     if (token && refreshToken) {
       if (!user) {
-        getCurrentUser({ setUser, token, refreshToken }).catch(() => {
+        getCurrentUser({ setUser }).catch(() => {
           console.log("Access token expired! Getting new tokens.");
-          getNewTokens({ setUser, refreshToken }).catch(() => {
+          getNewTokens({ setUser }).catch(() => {
             console.log("Refresh token expired! Login required.");
           });
           navigate("/home");

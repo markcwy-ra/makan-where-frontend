@@ -20,18 +20,18 @@
 }
 
 .button-active {
-  background-color: #0078ef;
+  background-color: var(--blue);
 }
 
 .button-inactive {
-  background-color: #9edef5;
+  background-color: var(--lightblue);
 }
 
 .icon-button {
   width: 24px;
   height: 24px;
   cursor: pointer;
-  color: #0078ef;
+  color: var(--blue);
 }
 
 .white-icon {

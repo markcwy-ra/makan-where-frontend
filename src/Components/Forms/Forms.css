@@ -56,7 +56,7 @@
   height: 50px;
   border-radius: 25px;
   border: none;
-  background-color: #9edef5;
+  background-color: var(--lightblue);
 }
 
 .form-popup form textarea {
@@ -64,7 +64,7 @@
   padding: 15px 20px;
   border-radius: 25px;
   border: none;
-  background-color: #9edef5;
+  background-color: var(--lightblue);
 }
 
 .form-popup form input::placeholder,
@@ -80,7 +80,7 @@
   height: 50px;
   border-radius: 25px;
   border: none;
-  background-color: #9edef5;
+  background-color: var(--lightblue);
   border: 1px solid white;
   color: black;
   display: flex;

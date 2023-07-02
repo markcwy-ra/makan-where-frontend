@@ -5,6 +5,11 @@
   font-family: "Plus Jakarta Sans", sans-serif;
 }
 
+:root {
+  --blue: #0078ef;
+  --lightblue: #9edef5;
+}
+
 html,
 body,
 body #root {
@@ -89,13 +94,13 @@ u {
 .divider-line {
   height: 1px;
   width: 100%;
-  background-color: #0078ef;
+  background-color: var(--blue);
 }
 
 .divider-dotted {
   height: 1px;
   width: 100%;
-  border-top: 2px dotted #0078ef;
+  border-top: 2px dotted var(--blue);
 }
 
 .clickable {
