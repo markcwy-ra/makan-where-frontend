@@ -13,6 +13,8 @@ import { UserContext } from "../../../App";
 import { bearerToken } from "../../../Utilities/token";
 import axios from "axios";
 import LoadingScreen from "../../LoadingScreen/LoadingScreen";
+import EditButton from "../../../Details/Buttons/EditButton";
+import ReviewEditor from "../../../Components/Forms/ReviewEditor";
 
 //------------------------------//
 
@@ -23,6 +25,8 @@ const RestaurantReview = () => {
   const [heart, setHeart] = useState(false);
   const [data, setData] = useState(null);
   const [upvoteCount, setUpvoteCount] = useState(null);
+  const [isUser, setIsUser] = useState(false);
+  const [reviewEditToggle, setReviewEditToggle] = useState(false);
 
   useEffect(() => {
     const getUpvoteStatus = async (reviewId) => {
@@ -60,6 +64,12 @@ const RestaurantReview = () => {
     }
   }, [heart, data, user]);
 
+  useEffect(() => {
+    if (Number(userId) === user.id) {
+      setIsUser(true);
+    }
+  }, [user, userId]);
+
   const handleHeart = async () => {
     if (heart) {
       await axios.delete(
@@ -76,6 +86,10 @@ const RestaurantReview = () => {
     setHeart((prev) => !prev);
   };
 
+  const handleEdit = () => {
+    setReviewEditToggle((prev) => !prev);
+  };
+
   const handleClick = () => {
     navigate(`/places/${data.restaurant.placeId}`);
   };
@@ -85,6 +99,13 @@ const RestaurantReview = () => {
   } else {
     return (
       <div className="content restaurant-review">
+        {reviewEditToggle && (
+          <ReviewEditor
+            handleToggle={handleEdit}
+            reviewData={data}
+            setReviewData={setData}
+          />
+        )}
         <div className="review-cover">
           {data.photoUrl && (
             <img src={data.photoUrl} alt={data.restaurant.name} />
@@ -98,12 +119,14 @@ const RestaurantReview = () => {
               <div className="review-title-buttons">
                 {upvoteCount > 0 && <h4>{upvoteCount}</h4>}
                 <HeartButton heart={heart} handleClick={handleHeart} />
+                {isUser && <EditButton handleClick={handleEdit} />}
               </div>
             </div>
             <div className="review-content-details-row">
               <Rating score={data.rating} />
             </div>
-            <h4>Review by @{data.user.username}</h4>
+
+            <h4>Review by {isUser ? "you" : `@${data.user.username}`}</h4>
           </div>
           <div className="divider-dotted" />
           <div className="review-content-details">

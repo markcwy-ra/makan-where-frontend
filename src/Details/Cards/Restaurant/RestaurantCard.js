@@ -19,8 +19,8 @@ const RestaurantCard = ({
 
   const handleClick = async () => {
     if (type === "default") {
-      navigate(`/places/${content.id}`);
-    } else {
+      navigate(`/places/${content.placeId}`);
+    } else if (type !== "form-selected") {
       const response = await axios.get(
         `${process.env.REACT_APP_BACKEND_URL}/restaurants/${content.place_id}`,
         bearerToken(user.token)
@@ -41,7 +41,12 @@ const RestaurantCard = ({
 
   if (content.photoUrl) {
     return (
-      <div className={`card-restaurant-${config}`} onClick={handleClick}>
+      <div
+        className={`card-restaurant-${config} ${
+          type !== "form-selected" && "clickable"
+        }`}
+        onClick={handleClick}
+      >
         <img src={content.photoUrl} alt={content.name} />
         <div className={`card-restaurant-${config}-title`}>
           <h3>{content.name}</h3>

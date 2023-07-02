@@ -23,6 +23,7 @@ import axios from "axios";
 import { bearerToken } from "../../../Utilities/token";
 import { formatToAmPm, capitalise } from "../../../Utilities/formatting";
 import { UserContext } from "../../../App";
+import ReviewEditor from "../../../Components/Forms/ReviewEditor";
 
 //------------------------------//
 
@@ -39,11 +40,13 @@ const RestaurantScreen = () => {
   const [openingHours, setOpeningHours] = useState(null);
   const [reviews, setReviews] = useState(null);
   const [hasReview, setHasReview] = useState(false);
+  const [userReview, setUserReview] = useState(null);
 
   //---------- Display Toggles ----------//
 
   const [showMenu, setShowMenu] = useState(false);
   const [reviewToggle, setReviewToggle] = useState(false);
+  const [reviewEditToggle, setReviewEditToggle] = useState(false);
   const [listToggle, setListToggle] = useState(false);
 
   //--------- useEffect Functions ---------//
@@ -126,6 +129,7 @@ const RestaurantScreen = () => {
       reviews.forEach((review) => {
         if (review.userId === user.id) {
           setHasReview(true);
+          setUserReview(review);
         }
       });
     }
@@ -162,6 +166,8 @@ const RestaurantScreen = () => {
       setReviewToggle((prev) => !prev);
     } else if (target === "add-to-makanlist") {
       setListToggle((prev) => !prev);
+    } else if (target === "review-editor") {
+      setReviewEditToggle((prev) => !prev);
     }
   };
 
@@ -174,6 +180,9 @@ const RestaurantScreen = () => {
       <div className="content restaurant-page">
         {reviewToggle && (
           <ReviewComposer handleToggle={handleToggle} place={data} />
+        )}
+        {reviewEditToggle && (
+          <ReviewEditor handleToggle={handleToggle} reviewData={userReview} />
         )}
         {listToggle && (
           <AddToList handleToggle={handleToggle} restaurantId={data.id} />

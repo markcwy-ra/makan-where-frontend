@@ -97,3 +97,7 @@ u {
   width: 100%;
   border-top: 2px dotted #0078ef;
 }
+
+.clickable {
+  cursor: pointer;
+}
