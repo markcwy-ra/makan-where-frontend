@@ -26,6 +26,7 @@ import MainOutlet from "./Outlets/MainOutlet";
 //---------- Others ----------//
 
 import "./App.css";
+import FollowsScreen from "./Pages/Profile/FollowsScreen/FollowsScreen";
 
 //---------- Context ----------//
 
@@ -55,8 +56,12 @@ function App() {
             <Route path="/profile">
               <Route index element={<ProfileScreen />} />
               <Route path="favourites" element={<FavouritesScreen />} />
+              <Route path="follows" element={<FollowsScreen />} />
             </Route>
-            <Route path="/user/:userId" element={<ProfileScreen />} />
+            <Route path="/user/:userId">
+              <Route index element={<ProfileScreen />} />
+              <Route path="follows" element={<FollowsScreen />} />
+            </Route>
             <Route path="/places">
               <Route index element={<Navigate to="/" />} />
               <Route path=":placeId">

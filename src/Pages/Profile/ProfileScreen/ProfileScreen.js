@@ -195,6 +195,7 @@ const ProfileScreen = () => {
       <div className="profile-page-header">
         <div className="divider-line" />
         <StatsBar
+          userId={userId}
           reviewCount={reviewCount}
           makanlistCount={listCount}
           followerCount={followerCount}
