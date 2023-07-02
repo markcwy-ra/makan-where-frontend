@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 import RestaurantCard from "../../Details/Cards/Restaurant/RestaurantCard";
 import { getMapMarkers } from "../../Utilities/fetch";
 import Button from "../../Details/Buttons/Button";
+import LocationMarker from "../../Icons/Location.svg";
+import LocationUser from "../../Icons/LocationCurrent.svg";
 
 const MapDisplay = () => {
   const [location, setLocation] = useState(null);
@@ -115,7 +117,7 @@ const MapDisplay = () => {
                 lat: location.lat,
                 lng: location.lng,
               }}
-              icon={"http://maps.google.com/mapfiles/ms/icons/green-dot.png"}
+              icon={LocationUser}
             />
             {markers?.map((restaurant) => (
               <MarkerF
@@ -124,6 +126,7 @@ const MapDisplay = () => {
                   lat: restaurant.location.latitude,
                   lng: restaurant.location.longitude,
                 }}
+                icon={LocationMarker}
                 onClick={() =>
                   handleMarkerClick(
                     restaurant.id,
