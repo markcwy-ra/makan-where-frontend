@@ -15,7 +15,11 @@ import axios from "axios";
 import LoadingScreen from "../../LoadingScreen/LoadingScreen";
 import EditButton from "../../../Details/Buttons/EditButton";
 import ReviewEditor from "../../../Components/Forms/ReviewEditor";
-import { getUpvoteCount, getUpvoteStatus } from "../../../Utilities/fetch";
+import {
+  getUpvoteCount,
+  getUpvoteStatus,
+  handleHeart,
+} from "../../../Utilities/fetch";
 
 //------------------------------//
 
@@ -64,20 +68,8 @@ const RestaurantReview = () => {
     }
   }, [user, userId]);
 
-  const handleHeart = async () => {
-    if (heart) {
-      await axios.delete(
-        `${process.env.REACT_APP_BACKEND_URL}/reviews/${data.id}/upvote/remove/${user.id}`,
-        bearerToken(user.token)
-      );
-    } else {
-      await axios.post(
-        `${process.env.REACT_APP_BACKEND_URL}/reviews/${data.id}/upvote`,
-        { userId: user.id },
-        bearerToken(user.token)
-      );
-    }
-    setHeart((prev) => !prev);
+  const handleUpvote = () => {
+    handleHeart({ route, id: data.id, userId: user.id, heart, setHeart });
   };
 
   const handleEdit = () => {
@@ -112,7 +104,7 @@ const RestaurantReview = () => {
               <h1>{data.title}</h1>
               <div className="review-title-buttons">
                 {upvoteCount > 0 && <h4>{upvoteCount}</h4>}
-                <HeartButton heart={heart} handleClick={handleHeart} />
+                <HeartButton heart={heart} handleClick={handleUpvote} />
                 {isUser && <EditButton handleClick={handleEdit} />}
               </div>
             </div>

@@ -1,3 +1,5 @@
+// Auth related functions
+
 import axios from "axios";
 import { bothTokens, logoutToken } from "./token.js";
 

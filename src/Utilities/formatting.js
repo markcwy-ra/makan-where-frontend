@@ -1,3 +1,5 @@
+// Content formatting functions
+
 const formatToAmPm = (string) => {
   const timeArray = string.split(":");
   let hour = Number(timeArray[0]);

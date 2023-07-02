@@ -2,8 +2,9 @@
 import "./MapDisplay.css";
 import { GoogleMap, MarkerF, useLoadScript } from "@react-google-maps/api";
 import { useEffect, useState } from "react";
-import { tempRestaurantList } from "../../tempData";
 import RestaurantCard from "../../Details/Cards/Restaurant/RestaurantCard";
+import { getMapMarkers } from "../../Utilities/fetch";
+import Button from "../../Details/Buttons/Button";
 
 const MapDisplay = () => {
   const [location, setLocation] = useState(null);
@@ -11,6 +12,9 @@ const MapDisplay = () => {
   const [markers, setMarkers] = useState(null);
   const [isInfoOpen, setIsInfoOpen] = useState(false);
   const [selectedMarker, setSelectedMarker] = useState(null);
+  const [initialLoad, setInitialLoad] = useState(false);
+  const [searchButton, setSearchButton] = useState(false);
+
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_MAPS_API_KEY,
   });
@@ -43,12 +47,6 @@ const MapDisplay = () => {
       );
     };
     getLocation();
-    const generateMarkers = tempRestaurantList.map((restaurant) => ({
-      lat: restaurant.coordinate.lat,
-      lng: restaurant.coordinate.lng,
-      id: restaurant.restaurantId,
-    }));
-    setMarkers(generateMarkers);
   }, []);
 
   const onLoad = (map) => {
@@ -59,21 +57,46 @@ const MapDisplay = () => {
     map?.panTo({ lat, lng });
     setSelectedMarker(id);
     setIsInfoOpen(true);
-    console.log("Marker id:" + id + " clicked at " + lat + "," + lng);
+  };
+
+  const handleIdle = async () => {
+    if (!initialLoad) {
+      const coords = map.getBounds();
+      const places = await getMapMarkers(coords);
+      setMarkers(places.data.restaurants);
+      setInitialLoad(true);
+    }
   };
 
   const handleDrag = () => {
-    console.log(map?.getBounds());
+    setSearchButton(true);
   };
 
   const handleMapMove = () => {
     setIsInfoOpen(false);
   };
 
+  const handleSearch = async () => {
+    const coords = map.getBounds();
+    const places = await getMapMarkers(coords);
+    setMarkers(places.data.restaurants);
+    setSearchButton(false);
+  };
+
   return (
     <div className="content">
       <div className="map-display">
-        {!isLoaded || !location || !markers ? (
+        {searchButton && (
+          <div className="map-search-button">
+            <Button
+              id="search-button"
+              label="Search this area"
+              size="medium"
+              handleClick={handleSearch}
+            />
+          </div>
+        )}
+        {!isLoaded || !location ? (
           <h1>Loading...</h1>
         ) : (
           <GoogleMap
@@ -81,21 +104,36 @@ const MapDisplay = () => {
             center={location}
             zoom={15}
             onLoad={onLoad}
+            onIdle={handleIdle}
             onZoomChanged={handleMapMove}
             onDragStart={handleMapMove}
             onDragEnd={handleDrag}
           >
-            {markers.map(({ lat, lng, id }) => (
+            <MarkerF
+              key={location.lat}
+              position={{
+                lat: location.lat,
+                lng: location.lng,
+              }}
+              icon={"http://maps.google.com/mapfiles/ms/icons/green-dot.png"}
+            />
+            {markers?.map((restaurant) => (
               <MarkerF
-                key={id}
-                position={{ lat, lng }}
-                onClick={() => handleMarkerClick(id, lat, lng)}
+                key={restaurant.id}
+                position={{
+                  lat: restaurant.location.latitude,
+                  lng: restaurant.location.longitude,
+                }}
+                onClick={() =>
+                  handleMarkerClick(
+                    restaurant.id,
+                    restaurant.location.latitude,
+                    restaurant.location.longitude
+                  )
+                }
               >
-                {isInfoOpen && selectedMarker === id && (
-                  <RestaurantCard
-                    config="small"
-                    content={tempRestaurantList[0]}
-                  />
+                {isInfoOpen && selectedMarker === restaurant.id && (
+                  <RestaurantCard config="small" content={restaurant} />
                 )}
               </MarkerF>
             ))}

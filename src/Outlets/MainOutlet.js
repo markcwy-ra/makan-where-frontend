@@ -1,4 +1,4 @@
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import NavBar from "../Components/NavBar/NavBar";
 import ReviewComposer from "../Components/Forms/ReviewComposer";
 import { useState, useEffect, useContext } from "react";
@@ -8,14 +8,31 @@ import { getCurrentUser, getNewTokens } from "../Utilities/auth";
 
 const MainOutlet = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { user, setUser } = useContext(UserContext);
   const [reviewToggle, setReviewToggle] = useState(false);
   const [listToggle, setListToggle] = useState(false);
+  const [initialLoad, setInitialLoad] = useState(null);
+  const token = localStorage.getItem("token");
+  const refreshToken = localStorage.getItem("refreshToken");
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    const refreshToken = localStorage.getItem("refreshToken");
+    setInitialLoad(new Date());
+  }, []);
 
+  useEffect(() => {
+    const currentLoad = new Date();
+    const elapsedTime = currentLoad / 60000 - initialLoad / 60000;
+    if (elapsedTime > 45) {
+      getNewTokens({ setUser, refreshToken }).catch(() => {
+        console.log("Refresh token expired! Login required.");
+        navigate("/");
+      });
+    }
+    //eslint-disable-next-line
+  }, [location]);
+
+  useEffect(() => {
     // Check if tokens exist
     if (!token || !refreshToken) {
       navigate("/");

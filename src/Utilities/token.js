@@ -1,3 +1,5 @@
+// Header constructors for tokens
+
 const bearerToken = (token) => {
   const output = {
     headers: {

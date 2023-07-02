@@ -1,3 +1,5 @@
+// Fetching data functions
+
 import axios from "axios";
 import { bearerToken } from "./token";
 
@@ -19,4 +21,28 @@ const getUpvoteCount = async ({ route, id, setUpvoteCount }) => {
   setUpvoteCount(upvoteCount.data.count);
 };
 
-export { getUpvoteStatus, getUpvoteCount };
+const getMapMarkers = async (coords) => {
+  const response = await axios.get(
+    `${process.env.REACT_APP_BACKEND_URL}/map?north=${coords.Va.hi}&south=${coords.Va.lo}&east=${coords.Ha.hi}&west=${coords.Ha.lo}`,
+    bearerToken(token)
+  );
+  return response;
+};
+
+const handleHeart = async ({ route, id, userId, heart, setHeart }) => {
+  if (heart) {
+    await axios.delete(
+      `${process.env.REACT_APP_BACKEND_URL}/${route}/${id}/upvote/remove/${userId}`,
+      bearerToken(token)
+    );
+  } else {
+    await axios.post(
+      `${process.env.REACT_APP_BACKEND_URL}/${route}/${id}/upvote`,
+      { userId },
+      bearerToken(token)
+    );
+  }
+  setHeart((prev) => !prev);
+};
+
+export { getUpvoteStatus, getUpvoteCount, getMapMarkers, handleHeart };
