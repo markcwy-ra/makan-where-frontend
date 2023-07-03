@@ -210,6 +210,14 @@ const getRestaurantReviews = async (placeId) => {
   return response.data.reviews;
 };
 
+const getRestaurantMakanlists = async (placeId) => {
+  const response = await axios.get(
+    `${url}/makanlists/${placeId}`,
+    bearerToken(token)
+  );
+  return response.data;
+};
+
 //---------- Review Page----------//
 
 const deleteReview = async ({ userId, reviewId }) => {
@@ -259,6 +267,7 @@ export {
   // Restaurant Page
   getRestaurantData,
   getRestaurantReviews,
+  getRestaurantMakanlists,
 
   // Review Page
   deleteReview,

@@ -23,6 +23,7 @@ import { UserContext } from "../../../App";
 import ReviewEditor from "../../../Components/Forms/ReviewEditor";
 import {
   getRestaurantData,
+  getRestaurantMakanlists,
   getRestaurantReviews,
   getUpvoteCount,
   getUpvoteStatus,
@@ -45,6 +46,7 @@ const RestaurantScreen = () => {
   const [reviews, setReviews] = useState(null);
   const [hasReview, setHasReview] = useState(false);
   const [userReview, setUserReview] = useState(null);
+  const [makanlists, setMakanlists] = useState(null);
 
   //---------- Display Toggles ----------//
 
@@ -60,7 +62,7 @@ const RestaurantScreen = () => {
     // Get restaurant page data
     const getData = async (placeId) => {
       try {
-        const restaurantData = getRestaurantData(placeId);
+        const restaurantData = await getRestaurantData(placeId);
         setData(restaurantData);
         const status = await getUpvoteStatus({
           route,
@@ -95,6 +97,10 @@ const RestaurantScreen = () => {
         // Get restaraunt reviews
         const reviews = await getRestaurantReviews(placeId);
         setReviews(reviews.length > 0 ? reviews : null);
+
+        // Get restaurant makanlists
+        const makanlists = await getRestaurantMakanlists(placeId);
+        setMakanlists(makanlists.length > 0 ? makanlists : null);
       } catch (err) {
         console.log(err);
       }
@@ -190,8 +196,8 @@ const RestaurantScreen = () => {
               </div>
               <div className="restaurant-content-details-row">
                 {data.averageRating && <Rating score={data.averageRating} />}
-                {data.averageRating && <h4>({reviews.length})</h4>}
-                {data.averageRating && <h4 className="lightblue-text">•</h4>}
+                {data.averageRating && reviews && <h4>({reviews.length})</h4>}
+                {data.pricerange && <h4 className="lightblue-text">•</h4>}
                 {data.pricerange && <h4>{data.pricerange.priceRange}</h4>}
               </div>
               <p className="address">{data.address}</p>
@@ -218,6 +224,7 @@ const RestaurantScreen = () => {
             />
           </div>
           <HorzFeed type="reviews" data={reviews} />
+          <HorzFeed type="makanlists" data={makanlists} />
         </div>
       </div>
     );
