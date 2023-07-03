@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 //---------- Components ----------//
 
@@ -7,6 +8,7 @@ import RestaurantCard from "../../Details/Cards/Restaurant/RestaurantCard";
 import Close from "../../Icons/Close.svg";
 import StarFull from "../../Icons/StarFull.svg";
 import StarEmpty from "../../Icons/StarEmpty.svg";
+import ErrorPill from "../../Details/Errors/ErrorPill";
 
 //---------- Firebase ----------//
 
@@ -19,14 +21,16 @@ import "./Forms.css";
 import { bearerToken } from "../../Utilities/token";
 import { UserContext } from "../../App";
 import axios from "axios";
-import ErrorPill from "../../Details/Errors/ErrorPill";
+import { deleteReview } from "../../Utilities/fetch";
 
 //------------------------------//
 
 const ReviewEditor = ({ handleToggle, reviewData, setReviewData = null }) => {
   const { user } = useContext(UserContext);
+  const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState("");
   const [isError, setIsError] = useState(false);
+  const [deleteWarning, setDeleteWarning] = useState("Delete Review");
 
   //---------- Form States ----------//
 
@@ -131,6 +135,19 @@ const ReviewEditor = ({ handleToggle, reviewData, setReviewData = null }) => {
     }
   };
 
+  const handleDelete = async (e) => {
+    e.preventDefault();
+    if (deleteWarning === "Delete Review") {
+      setDeleteWarning("Tap Again to Confirm");
+    } else {
+      await deleteReview({
+        userId: user.id,
+        reviewId: reviewData.id,
+      });
+      navigate("/profile");
+    }
+  };
+
   const handleChange = (e) => {
     const id = e.currentTarget.id;
     switch (id) {
@@ -197,6 +214,12 @@ const ReviewEditor = ({ handleToggle, reviewData, setReviewData = null }) => {
             id="form-submit"
             label="Update Review"
             handleClick={handleSubmit}
+          />
+          <Button
+            id="delete-review"
+            label={deleteWarning}
+            handleClick={handleDelete}
+            type="warning"
           />
         </form>
       </div>

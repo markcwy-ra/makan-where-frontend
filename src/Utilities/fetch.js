@@ -101,7 +101,7 @@ const getFollowStatus = async (followerId, userId) => {
 
 const removeFromMakanlist = async ({ userId, listId, restaurantId }) => {
   const response = await axios.put(
-    `${process.env.REACT_APP_BACKEND_URL}/makanlists/user/${userId}/${listId}/restaurant/${restaurantId}`,
+    `${url}/makanlists/user/${userId}/${listId}/restaurant/${restaurantId}`,
     {},
     bearerToken(token)
   );
@@ -110,7 +110,17 @@ const removeFromMakanlist = async ({ userId, listId, restaurantId }) => {
 
 const deleteMakanlist = async ({ userId, listId }) => {
   const response = await axios.delete(
-    `${process.env.REACT_APP_BACKEND_URL}/makanlists/user/${userId}/${listId}`,
+    `${url}/makanlists/user/${userId}/${listId}`,
+    bearerToken(token)
+  );
+  return response;
+};
+
+//---------- Review Page----------//
+
+const deleteReview = async ({ userId, reviewId }) => {
+  const response = await axios.delete(
+    `${url}/reviews/${userId}/${reviewId}`,
     bearerToken(token)
   );
   return response;
@@ -129,4 +139,5 @@ export {
   handleHeart,
   removeFromMakanlist,
   deleteMakanlist,
+  deleteReview,
 };
