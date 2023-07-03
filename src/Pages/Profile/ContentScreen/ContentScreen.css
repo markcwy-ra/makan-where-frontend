@@ -1,0 +1,37 @@
+.feed-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 0 20px;
+  padding-bottom: var(--site-p-bottom);
+}
+
+.back-button {
+  padding: 20px 0 10px;
+  cursor: pointer;
+  color: var(--blue);
+}
+
+.follows-screen {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  height: 100%;
+  flex: 1;
+  padding: 0 20px;
+}
+
+.follows-screen-feed {
+  padding-bottom: var(--site-p-bottom);
+  overflow: auto;
+}
+
+.follows-screen-feed::-webkit-scrollbar {
+  display: none;
+}
+
+.content-none {
+  text-align: center;
+  padding: 20px 0;
+  color: rgb(172, 172, 172);
+}

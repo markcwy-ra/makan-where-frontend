@@ -7,6 +7,7 @@ import User from "../../../Icons/User.svg";
 const ReviewCard = ({ config = "full", content }) => {
   const navigate = useNavigate();
 
+  console.log(content);
   const handleClick = () => {
     navigate(`/places/${content.restaurant.placeId}/${content.userId}`);
   };

@@ -10,10 +10,19 @@ import { UserContext } from "../../../App";
 const FollowsScreen = () => {
   const navigate = useNavigate();
   const { user } = useContext(UserContext);
-  const { userId } = useParams();
+  const { userId, followlist } = useParams();
   const [activeToggle, setActiveToggle] = useState("followers");
   const [followers, setFollowers] = useState(null);
   const [following, setFollowing] = useState(null);
+  console.log(following);
+  useEffect(() => {
+    if (followlist === "followers" || followlist === "following") {
+      setActiveToggle(followlist);
+    } else {
+      navigate("/home");
+    }
+    //eslint-disable-next-line
+  }, [followlist]);
 
   useEffect(() => {
     const getFollowers = async (userId) => {
@@ -86,11 +95,11 @@ const FollowsScreen = () => {
           followers.length === 0 && (
             <h2 className="follows-none">No followers</h2>
           )}
-        {activeToggle === "following" && (
+        {activeToggle === "following" && following && (
           <VertFeed data={following} type="users" />
         )}
         {activeToggle === "following" &&
-          followers &&
+          following &&
           following.length === 0 && (
             <h2 className="follows-none">Not following anyone</h2>
           )}
