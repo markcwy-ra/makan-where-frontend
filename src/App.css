@@ -8,6 +8,8 @@
 :root {
   --blue: #0078ef;
   --lightblue: #9edef5;
+  --orange: rgb(234, 140, 18);
+  --site-p-bottom: 140px;
 }
 
 html,

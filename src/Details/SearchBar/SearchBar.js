@@ -56,6 +56,20 @@ const SearchBar = ({
         setErrorMessage("Please wait while we get your location!");
         setIsError(true);
       }
+    } else if (db === "makanlists") {
+      try {
+        const response = await axios.get(
+          `${process.env.REACT_APP_BACKEND_URL}/makanlists/search/${query}`,
+          bearerToken(token)
+        );
+        setResults(response.data);
+      } catch (err) {
+        const code = err.response.status;
+        if (code === 404) {
+          setErrorMessage("No makanlists found!");
+          setIsError(true);
+        }
+      }
     } else if (db === "users") {
       try {
         const response = await axios.get(
@@ -65,6 +79,7 @@ const SearchBar = ({
       } catch (err) {
         const code = err.response.status;
         if (code === 404) {
+          setResults(null);
           setErrorMessage("No users found!");
           setIsError(true);
         }

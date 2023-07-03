@@ -1,4 +1,4 @@
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import NavBar from "../Components/NavBar/NavBar";
 import ReviewComposer from "../Components/Forms/ReviewComposer";
 import { useState, useEffect, useContext } from "react";
@@ -35,19 +35,42 @@ const MainOutlet = () => {
 
   useEffect(() => {
     // Check if tokens exist
-    if (!token || !refreshToken) {
-      navigate("/");
-    } else {
-      if (!user) {
-        getCurrentUser({ setUser }).catch(() => {
-          console.log("Access token expired! Getting new tokens.");
-          getNewTokens({ setUser }).catch(() => {
-            console.log("Refresh token expired! Login required.");
-            navigate("/");
-          });
-        });
+
+    const checkStatus = async () => {
+      if (!token || !refreshToken) {
+        navigate("/");
+      } else {
+        if (!user) {
+          try {
+            const returnedUser = await getCurrentUser();
+            setUser({
+              username: returnedUser.username,
+              email: returnedUser.email,
+              id: returnedUser.id,
+              photoUrl: returnedUser.photoUrl,
+              token: token,
+            });
+          } catch (err) {
+            console.log("Access token expired! Getting new tokens.");
+            try {
+              const returnedUser = await getNewTokens();
+              setUser({
+                username: returnedUser.data.username,
+                email: returnedUser.data.email,
+                id: returnedUser.data.id,
+                photoUrl: returnedUser.data.photoUrl,
+                token: returnedUser.token,
+              });
+            } catch {
+              console.log("Refresh token expired! Login required.");
+              navigate("/");
+            }
+          }
+        }
       }
-    }
+    };
+
+    checkStatus();
 
     // eslint-disable-next-line
   }, [user]);

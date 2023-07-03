@@ -12,18 +12,44 @@ const SplashOutlet = () => {
     const refreshToken = localStorage.getItem("refreshToken");
 
     // Navigate home if tokens exist
-    if (token && refreshToken) {
-      if (!user) {
-        getCurrentUser({ setUser }).catch(() => {
-          console.log("Access token expired! Getting new tokens.");
-          getNewTokens({ setUser }).catch(() => {
-            console.log("Refresh token expired! Login required.");
-          });
+
+    const checkStatus = async () => {
+      if (token && refreshToken) {
+        if (!user) {
+          try {
+            const returnedUser = await getCurrentUser();
+            setUser({
+              username: returnedUser.username,
+              email: returnedUser.email,
+              id: returnedUser.id,
+              photoUrl: returnedUser.photoUrl,
+              token: token,
+            });
+            navigate("/home");
+          } catch (err) {
+            console.log("Access token expired! Getting new tokens.");
+            try {
+              const returnedUser = await getNewTokens();
+              setUser({
+                username: returnedUser.data.username,
+                email: returnedUser.data.email,
+                id: returnedUser.data.id,
+                photoUrl: returnedUser.data.photoUrl,
+                token: returnedUser.token,
+              });
+              navigate("/home");
+            } catch {
+              console.log("Refresh token expired! Login required.");
+              navigate("/");
+            }
+          }
+        } else {
           navigate("/home");
-        });
-        navigate("/home");
+        }
       }
-    }
+    };
+
+    checkStatus();
 
     // eslint-disable-next-line
   }, [user]);

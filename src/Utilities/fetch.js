@@ -8,12 +8,11 @@ import { bearerToken } from "./token";
 const token = localStorage.getItem("token");
 const url = process.env.REACT_APP_BACKEND_URL;
 
-//---------- Home Feed Data ----------//
-
-const getFeed = async (type) => {
-  const response = await axios.get(`${url}/feed/${type}`, bearerToken(token));
-  return response;
-};
+/**
+ *
+ *  //---------- Generic Routes ----------//
+ *
+ */
 
 //---------- Upvote Data ----------//
 
@@ -49,7 +48,20 @@ const handleHeart = async ({ route, id, userId, heart, setHeart }) => {
   setHeart((prev) => !prev);
 };
 
-//---------- Map Data ----------//
+/**
+ *
+ *  //---------- Page-Specific Routes ----------//
+ *
+ */
+
+//---------- Home Page----------//
+
+const getFeed = async (type) => {
+  const response = await axios.get(`${url}/feed/${type}`, bearerToken(token));
+  return response.data;
+};
+
+//---------- Map Page ----------//
 
 const getMapMarkers = async (coords) => {
   const response = await axios.get(
@@ -59,7 +71,7 @@ const getMapMarkers = async (coords) => {
   return response;
 };
 
-//---------- Follower Data ----------//
+//---------- Profile Page ----------//
 
 const getFollowerCount = async (userId) => {
   const followers = await axios.get(
@@ -85,6 +97,25 @@ const getFollowStatus = async (followerId, userId) => {
   return response.data.isFollowing;
 };
 
+//---------- List Page----------//
+
+const removeFromMakanlist = async ({ userId, listId, restaurantId }) => {
+  const response = await axios.put(
+    `${process.env.REACT_APP_BACKEND_URL}/makanlists/user/${userId}/${listId}/restaurant/${restaurantId}`,
+    {},
+    bearerToken(token)
+  );
+  return response;
+};
+
+const deleteMakanlist = async ({ userId, listId }) => {
+  const response = await axios.delete(
+    `${process.env.REACT_APP_BACKEND_URL}/makanlists/user/${userId}/${listId}`,
+    bearerToken(token)
+  );
+  return response;
+};
+
 //------------------------------//
 
 export {
@@ -96,4 +127,6 @@ export {
   getFollowingCount,
   getFollowStatus,
   handleHeart,
+  removeFromMakanlist,
+  deleteMakanlist,
 };

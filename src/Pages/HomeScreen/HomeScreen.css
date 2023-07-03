@@ -3,7 +3,7 @@
   flex-direction: column;
   gap: 10px;
   padding: 0 20px;
-  padding-bottom: 140px;
+  padding-bottom: var(--site-p-bottom);
 }
 
 #featured,
@@ -14,6 +14,7 @@
 .home-page {
   padding: 0 20px;
   overflow: auto;
+  padding-bottom: var(--site-p-bottom);
 }
 
 .home-page::-webkit-scrollbar {

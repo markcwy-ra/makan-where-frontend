@@ -5,6 +5,7 @@ const Button = ({
   label,
   size = "large",
   isActive = true,
+  type = "default",
   handleClick,
 }) => {
   let buttonLabel;
@@ -17,7 +18,7 @@ const Button = ({
     <button
       className={`button button-${size} ${
         isActive ? "button-active" : "button-inactive"
-      }`}
+      } button-color-${type}`}
       onClick={handleClick}
       id={id}
     >

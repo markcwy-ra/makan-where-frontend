@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 //---------- Firebase ----------//
 
@@ -21,10 +21,12 @@ import "./Forms.css";
 import axios from "axios";
 import { UserContext } from "../../App";
 import { bearerToken } from "../../Utilities/token";
+import { deleteMakanlist, removeFromMakanlist } from "../../Utilities/fetch";
 
 //------------------------------//
 
 const ListEditor = ({ handleClick, list, setList, data, setData }) => {
+  const navigate = useNavigate();
   const { user } = useContext(UserContext);
   const { listId } = useParams();
   const [errorMessage, setErrorMessage] = useState("");
@@ -37,6 +39,8 @@ const ListEditor = ({ handleClick, list, setList, data, setData }) => {
   const [results, setResults] = useState(null);
   const [resultsDisplay, setResultsDisplay] = useState(null);
   const [listDisplay, setListDisplay] = useState(null);
+  const [deleteListWarning, setDeleteListWarning] =
+    useState("Delete Makanlist");
 
   //---------- useEffect Functions ----------//
 
@@ -105,7 +109,14 @@ const ListEditor = ({ handleClick, list, setList, data, setData }) => {
 
   // Update List of Places in Editor
   useEffect(() => {
-    setListDisplay(<VertFeed data={list} type="restaurants" />);
+    setListDisplay(
+      <VertFeed
+        data={list}
+        type="restaurants-list-edit"
+        handleRemove={handleRemove}
+      />
+    );
+    //eslint-disable-next-line
   }, [list]);
 
   //---------- Action Functions ----------//
@@ -129,6 +140,29 @@ const ListEditor = ({ handleClick, list, setList, data, setData }) => {
       );
       setData(response.data.updatedMakanlist);
       handleClick();
+    }
+  };
+
+  const handleRemove = async (data) => {
+    await removeFromMakanlist({
+      userId: user.id,
+      listId,
+      restaurantId: data.id,
+    });
+    setList((prevList) =>
+      prevList.filter((restaurant) => restaurant.id !== data.id)
+    );
+  };
+
+  const handleDelete = async () => {
+    if (deleteListWarning === "Delete Makanlist") {
+      setDeleteListWarning("Tap Again to Confirm");
+    } else {
+      await deleteMakanlist({
+        userId: user.id,
+        listId,
+      });
+      navigate("/profile");
     }
   };
 
@@ -231,6 +265,14 @@ const ListEditor = ({ handleClick, list, setList, data, setData }) => {
             id="form-submit"
             label="Save Edits"
             handleClick={handleSubmit}
+          />
+        )}
+        {activeToggle === "edit-details" && (
+          <Button
+            id="delete-list"
+            label={deleteListWarning}
+            handleClick={handleDelete}
+            type="warning"
           />
         )}
       </div>

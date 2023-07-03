@@ -46,3 +46,25 @@
   background-color: rgb(255, 255, 255);
   border-radius: 4px;
 }
+
+.following-feed-card {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  background-color: var(--lightblue);
+  padding: 10px;
+  border-radius: 25px;
+}
+
+.list-edit-card {
+  width: 100%;
+  position: relative;
+}
+
+.list-edit-card-delete {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 5;
+}

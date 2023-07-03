@@ -37,3 +37,7 @@
 .white-icon {
   color: white;
 }
+
+.button-color-warning {
+  background-color: var(--orange);
+}

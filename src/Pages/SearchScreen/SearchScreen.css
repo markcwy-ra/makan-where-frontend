@@ -14,5 +14,10 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-  padding-bottom: 140px;
+  padding-bottom: var(--site-p-bottom);
+}
+
+.search-none {
+  text-align: center;
+  padding: 20px 0;
 }

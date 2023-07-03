@@ -4,10 +4,12 @@ import RestaurantCard from "../../Details/Cards/Restaurant/RestaurantCard";
 import MakanlistCard from "../../Details/Cards/Makanlist/MakanlistCard";
 import ReviewCard from "../../Details/Cards/Review/ReviewCard";
 import UserCard from "../../Details/Cards/Users/UserCard";
+import { capitalise } from "../../Utilities/formatting";
+import Close from "../../Icons/Close.svg";
 
-const VertFeed = ({ data, type = "all" }) => {
+const VertFeed = ({ data, type = "all", handleRemove }) => {
   const [feed, setFeed] = useState(null);
-  console.log(data);
+
   useEffect(() => {
     if (data) {
       let feedContent = [];
@@ -15,6 +17,20 @@ const VertFeed = ({ data, type = "all" }) => {
         if (data.length !== 0) {
           feedContent = data.map((data, index) => (
             <RestaurantCard key={index} content={data} />
+          ));
+        }
+      } else if (type === "restaurants-list-edit") {
+        if (data.length !== 0) {
+          feedContent = data.map((data, index) => (
+            <div className="list-edit-card" key={index}>
+              <img
+                className="list-edit-card-delete clickable"
+                src={Close}
+                alt="Delete button"
+                onClick={() => handleRemove(data)}
+              />
+              <RestaurantCard content={data} />
+            </div>
           ));
         }
       } else if (type === "makanlists") {
@@ -31,46 +47,38 @@ const VertFeed = ({ data, type = "all" }) => {
         ));
       } else if (type === "following-feed") {
         feedContent = data.map((data, index) => {
-          if (data.targetType === "makanlist") {
-            return (
-              <div key={index}>
-                <p>
-                  {data.user.username} {data.activityType} a {data.targetType}
-                </p>
+          return (
+            <div className="following-feed-card" key={index}>
+              <p>
+                @{data.user.username} {capitalise(data.activityType)} a{" "}
+                {capitalise(data.targetType)}
+              </p>
+              {data.targetType === "makanlist" && (
                 <MakanlistCard content={data.targetDetails} />
-              </div>
-            );
-          } else if (data.targetType === "restaurant") {
-            return (
-              <div key={index}>
-                <p>
-                  {data.user.username} {data.activityType} a {data.targetType}
-                </p>
+              )}
+              {data.targetType === "restaurant" && (
                 <RestaurantCard content={data.targetDetails} />
-              </div>
-            );
-          } else if (data.targetType === "review") {
-            return (
-              <div key={index}>
-                <p>
-                  {data.user.username} {data.activityType} a {data.targetType}
-                </p>
+              )}
+              {data.targetType === "review" && (
                 <ReviewCard content={data.targetDetails} />
-              </div>
-            );
-          }
+              )}
+            </div>
+          );
         });
       } else {
-        feedContent = data.map((data, index) => {
-          if (data.type === "makanlist") {
-            return <MakanlistCard key={index} content={data} />;
-          } else {
-            return <ReviewCard key={index} content={data} />;
-          }
-        });
+        feedContent = <h1>loading</h1>;
+
+        // feedContent = data.map((data, index) => {
+        //   if (data.type === "makanlist") {
+        //     return <MakanlistCard key={index} content={data} />;
+        //   } else {
+        //     return <ReviewCard key={index} content={data} />;
+        //   }
+        // });
       }
       setFeed(feedContent);
     }
+    //eslint-disable-next-line
   }, [data, type]);
 
   return <div className="vert-feed">{feed}</div>;

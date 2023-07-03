@@ -1,6 +1,5 @@
 import Header from "../../Components/Header/Header";
 import "./HomeScreen.css";
-import { tempData } from "../../tempData";
 import VertFeed from "../../Components/Feeds/VertFeed";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../App";
@@ -16,13 +15,13 @@ const HomeScreen = () => {
     const getFeeds = async () => {
       try {
         const featuredFeed = await getFeed("featured");
-        console.log(featuredFeed);
+        setFeatured(featuredFeed);
       } catch (err) {
         console.log(err);
       }
       try {
         const followingFeed = await getFeed(`user/${user.id}`);
-        setFollowing(followingFeed.data);
+        setFollowing(followingFeed);
       } catch (err) {
         console.log(err);
       }
@@ -54,7 +53,7 @@ const HomeScreen = () => {
       </Header>
       <div className="home-page">
         {tab === "featured" ? (
-          <VertFeed data={tempData} />
+          <VertFeed data={featured} type="featured-feed" />
         ) : (
           <VertFeed data={following} type="following-feed" />
         )}

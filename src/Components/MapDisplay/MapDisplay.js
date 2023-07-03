@@ -104,6 +104,12 @@ const MapDisplay = () => {
           <GoogleMap
             mapContainerClassName="map-display"
             center={location}
+            options={{
+              streetViewControl: false,
+              fullscreenControl: false,
+              mapTypeControl: false,
+              clickableIcons: false,
+            }}
             zoom={15}
             onLoad={onLoad}
             onIdle={handleIdle}

@@ -1,6 +1,7 @@
 import "./MakanlistCard.css";
 import "../Cards.css";
 import { useNavigate } from "react-router-dom";
+import User from "../../../Icons/User.svg";
 
 const MakanlistCard = ({ config = "full", content }) => {
   const navigate = useNavigate();
@@ -40,10 +41,17 @@ const MakanlistCard = ({ config = "full", content }) => {
     >
       <div className={`card-makanlist-${config}-title`}>
         {cardTitle}
-        {config === "full" && <h4>Makanlist by @{content.author}</h4>}
+        {config === "full" && <h4>Makanlist by @{content.user.username}</h4>}
       </div>
 
-      {config === "full" && <div className="profile-pic"></div>}
+      {config === "full" && (
+        <img
+          id={content.id}
+          className="profile-pic"
+          src={content.user.photoUrl ? content.user.photoUrl : User}
+          alt={`${content.user.username}'s Profile Pic`}
+        />
+      )}
     </div>
   );
 };
