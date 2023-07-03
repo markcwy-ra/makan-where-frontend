@@ -12,7 +12,7 @@ const ReviewCard = ({ config = "full", content }) => {
   };
 
   return (
-    <div className={`card-review-${config}`} onClick={handleClick}>
+    <div className={`card-review-${config} clickable`} onClick={handleClick}>
       <div className={`card-review-${config}-image`}>
         {content.photoUrl && (
           <img src={content.photoUrl} alt={content.restaurant.name} />

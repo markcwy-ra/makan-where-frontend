@@ -1,7 +1,12 @@
 import { useContext, useEffect } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
+
+//---------- Others ----------//
+
 import { UserContext } from "../App";
 import { getCurrentUser, getNewTokens } from "../Utilities/auth";
+
+//------------------------------//
 
 const SplashOutlet = () => {
   const navigate = useNavigate();

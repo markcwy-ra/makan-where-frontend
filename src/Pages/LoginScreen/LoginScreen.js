@@ -1,9 +1,9 @@
 import { useContext, useState } from "react";
-import "./LoginScreen.css";
 import { useNavigate } from "react-router-dom";
 import ErrorPill from "../../Details/Errors/ErrorPill";
-import axios from "axios";
 import { UserContext } from "../../App";
+import { login } from "../../Utilities/auth";
+import "./LoginScreen.css";
 
 const LoginScreen = () => {
   const navigate = useNavigate();
@@ -26,19 +26,15 @@ const LoginScreen = () => {
     e.preventDefault();
     if (email && password) {
       try {
-        const response = await axios.post(
-          `${process.env.REACT_APP_BACKEND_URL}/auth/sign-in`,
-          { email, password }
-        );
-        const data = response.data.data;
-        localStorage.setItem("token", data.token);
-        localStorage.setItem("refreshToken", data.refreshToken);
+        const response = await login({ email, password });
+        localStorage.setItem("token", response.token);
+        localStorage.setItem("refreshToken", response.refreshToken);
         setUser({
-          username: data.username,
-          email: data.email,
-          id: data.id,
-          photoUrl: data.photoUrl,
-          token: data.token,
+          username: response.username,
+          email: response.email,
+          id: response.id,
+          photoUrl: response.photoUrl,
+          token: response.token,
         });
         navigate("/home");
       } catch (err) {

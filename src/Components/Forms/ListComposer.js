@@ -15,9 +15,8 @@ import Close from "../../Icons/Close.svg";
 //---------- Others ----------//
 
 import "./Forms.css";
-import axios from "axios";
 import { UserContext } from "../../App";
-import { bearerToken } from "../../Utilities/token";
+import { createMakanlist } from "../../Utilities/fetch";
 
 //------------------------------//
 
@@ -47,18 +46,14 @@ const ListComposer = ({ handleToggle }) => {
           await uploadBytesResumable(fileRef, file);
           photoUrl = await getDownloadURL(fileRef);
         }
-        const response = await axios.post(
-          `${process.env.REACT_APP_BACKEND_URL}/makanlists/`,
-          {
-            userId: user.id,
-            title,
-            description,
-            photoUrl,
-          },
-          bearerToken(user.token)
-        );
+        const newMakanlist = await createMakanlist({
+          userId: user.id,
+          title,
+          description,
+          photoUrl,
+        });
         handleToggle("makanlist-composer");
-        navigate(`/makanlists/${user.id}/${response.data.newMakanlist.id}`);
+        navigate(`/makanlists/${user.id}/${newMakanlist.id}`);
       } catch (err) {
         console.log(err);
         setErrorMessage("Error creating Makanlist");

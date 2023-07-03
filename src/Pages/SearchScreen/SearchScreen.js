@@ -1,13 +1,24 @@
+//---------- React ----------//
+
 import { useState, useEffect, useContext } from "react";
-import "./SearchScreen.css";
+
+//---------- Components ----------//
+
 import Header from "../../Components/Header/Header";
 import Button from "../../Details/Buttons/Button";
 import SearchBar from "../../Details/SearchBar/SearchBar";
 import ErrorPill from "../../Details/Errors/ErrorPill";
 import UserCard from "../../Details/Cards/Users/UserCard.js";
-import { UserContext } from "../../App";
 import RestaurantCard from "../../Details/Cards/Restaurant/RestaurantCard";
 import MakanlistCard from "../../Details/Cards/Makanlist/MakanlistCard";
+
+//---------- Others ----------//
+
+import getLocation from "../../Utilities/location";
+import { UserContext } from "../../App";
+import "./SearchScreen.css";
+
+//------------------------------//
 
 const SearchScreen = () => {
   const { user } = useContext(UserContext);
@@ -28,33 +39,7 @@ const SearchScreen = () => {
 
   // Get current location
   useEffect(() => {
-    const getLocation = async () => {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          setLocation({
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
-          });
-        },
-        (error) => {
-          if (error.code === error.PERMISSION_DENIED) {
-            alert(
-              "Can't find your location! Enable location services for your browser in settings."
-            );
-            setLocation({
-              lat: 1.3521,
-              lng: 103.8198,
-            });
-          }
-        },
-        {
-          enableHighAccuracy: false,
-          timeout: 5000,
-          maximumAge: Infinity,
-        }
-      );
-    };
-    getLocation();
+    getLocation(setLocation);
   }, []);
 
   useEffect(() => {

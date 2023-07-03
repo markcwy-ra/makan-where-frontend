@@ -1,11 +1,12 @@
-import "./FollowsScreen.css";
 import { useContext, useEffect, useState } from "react";
-import VertFeed from "../../../Components/Feeds/VertFeed";
 import { useNavigate, useParams } from "react-router-dom";
+
+import VertFeed from "../../../Components/Feeds/VertFeed";
 import Button from "../../../Details/Buttons/Button";
-import axios from "axios";
-import { bearerToken } from "../../../Utilities/token";
+
+import { getFollowers, getFollowing } from "../../../Utilities/fetch";
 import { UserContext } from "../../../App";
+import "./FollowsScreen.css";
 
 const FollowsScreen = () => {
   const navigate = useNavigate();
@@ -14,7 +15,7 @@ const FollowsScreen = () => {
   const [activeToggle, setActiveToggle] = useState("followers");
   const [followers, setFollowers] = useState(null);
   const [following, setFollowing] = useState(null);
-  console.log(following);
+
   useEffect(() => {
     if (followlist === "followers" || followlist === "following") {
       setActiveToggle(followlist);
@@ -25,35 +26,21 @@ const FollowsScreen = () => {
   }, [followlist]);
 
   useEffect(() => {
-    const getFollowers = async (userId) => {
+    const getFollows = async (userId) => {
       try {
-        const response = await axios.get(
-          `${process.env.REACT_APP_BACKEND_URL}/follows/${userId}/followers`,
-          bearerToken(user.token)
-        );
-        setFollowers(response.data.followers);
+        const followers = await getFollowers(userId);
+        setFollowers(followers);
+        const following = await getFollowing(userId);
+        setFollowing(following);
       } catch (err) {
         console.log(err);
       }
     };
 
-    const getFollowing = async (userId) => {
-      try {
-        const response = await axios.get(
-          `${process.env.REACT_APP_BACKEND_URL}/follows/${userId}/following`,
-          bearerToken(user.token)
-        );
-        setFollowing(response.data.following);
-      } catch (err) {
-        console.log(err);
-      }
-    };
     if (userId) {
-      getFollowers(userId);
-      getFollowing(userId);
+      getFollows(userId);
     } else {
-      getFollowers(user.id);
-      getFollowing(user.id);
+      getFollows(user.id);
     }
   }, [user, userId]);
 

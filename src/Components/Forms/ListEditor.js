@@ -18,10 +18,13 @@ import RestaurantCard from "../../Details/Cards/Restaurant/RestaurantCard";
 //---------- Others ----------//
 
 import "./Forms.css";
-import axios from "axios";
 import { UserContext } from "../../App";
-import { bearerToken } from "../../Utilities/token";
-import { deleteMakanlist, removeFromMakanlist } from "../../Utilities/fetch";
+import {
+  deleteMakanlist,
+  removeFromMakanlist,
+  updateMakanlist,
+} from "../../Utilities/fetch";
+import getLocation from "../../Utilities/location";
 
 //------------------------------//
 
@@ -46,33 +49,7 @@ const ListEditor = ({ handleClick, list, setList, data, setData }) => {
 
   // Get Location
   useEffect(() => {
-    const getLocation = async () => {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          setLocation({
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
-          });
-        },
-        (error) => {
-          if (error.code === error.PERMISSION_DENIED) {
-            alert(
-              "Can't find your location! Enable location services for your browser in settings."
-            );
-            setLocation({
-              lat: 1.3521,
-              lng: 103.8198,
-            });
-          }
-        },
-        {
-          enableHighAccuracy: false,
-          timeout: 5000,
-          maximumAge: Infinity,
-        }
-      );
-    };
-    getLocation();
+    getLocation(setLocation);
   }, []);
 
   // Prefill Editor with current details
@@ -133,12 +110,14 @@ const ListEditor = ({ handleClick, list, setList, data, setData }) => {
         await uploadBytesResumable(fileRef, file);
         photoUrl = await getDownloadURL(fileRef);
       }
-      const response = await axios.put(
-        `${process.env.REACT_APP_BACKEND_URL}/makanlists/user/${user.id}/${data.id}`,
-        { title, description, photoUrl },
-        bearerToken(user.token)
-      );
-      setData(response.data.updatedMakanlist);
+      const updatedMakanlist = await updateMakanlist({
+        userId: user.id,
+        listId: data.id,
+        title,
+        description,
+        photoUrl,
+      });
+      setData(updatedMakanlist);
       handleClick();
     }
   };

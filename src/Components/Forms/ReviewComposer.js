@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 //---------- Components ----------//
 
@@ -8,6 +9,7 @@ import RestaurantCard from "../../Details/Cards/Restaurant/RestaurantCard";
 import Close from "../../Icons/Close.svg";
 import StarFull from "../../Icons/StarFull.svg";
 import StarEmpty from "../../Icons/StarEmpty.svg";
+import ErrorPill from "../../Details/Errors/ErrorPill";
 
 //---------- Firebase ----------//
 
@@ -17,14 +19,14 @@ import { storage } from "../../firebase";
 //---------- Others ----------//
 
 import "./Forms.css";
-import { bearerToken } from "../../Utilities/token";
 import { UserContext } from "../../App";
-import axios from "axios";
-import ErrorPill from "../../Details/Errors/ErrorPill";
+import getLocation from "../../Utilities/location";
+import { createReview } from "../../Utilities/fetch";
 
 //------------------------------//
 
 const ReviewComposer = ({ handleToggle, place = null }) => {
+  const navigate = useNavigate();
   const { user } = useContext(UserContext);
   const [location, setLocation] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
@@ -45,34 +47,8 @@ const ReviewComposer = ({ handleToggle, place = null }) => {
   //---------- UseEffect Functions ----------//
 
   useEffect(() => {
-    const getLocation = async () => {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          setLocation({
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
-          });
-        },
-        (error) => {
-          if (error.code === error.PERMISSION_DENIED) {
-            alert(
-              "Can't find your location! Enable location services for your browser in settings."
-            );
-            setLocation({
-              lat: 1.3521,
-              lng: 103.8198,
-            });
-          }
-        },
-        {
-          enableHighAccuracy: false,
-          timeout: 5000,
-          maximumAge: Infinity,
-        }
-      );
-    };
     if (!placeData) {
-      getLocation();
+      getLocation(setLocation);
     }
   }, [placeData]);
 
@@ -159,20 +135,16 @@ const ReviewComposer = ({ handleToggle, place = null }) => {
           await uploadBytesResumable(fileRef, file);
           photoUrl = await getDownloadURL(fileRef);
         }
-        const response = await axios.post(
-          `${process.env.REACT_APP_BACKEND_URL}/reviews/${placeData.id}/add`,
-          {
-            userId: user.id,
-            restaurantId: placeData.id,
-            rating,
-            title,
-            body: review,
-            recommendedDishes,
-            photoUrl,
-          },
-          bearerToken(user.token)
-        );
-        console.log(response);
+        const newReview = await createReview({
+          userId: user.id,
+          restaurantId: placeData.id,
+          rating,
+          title,
+          review,
+          recommendedDishes,
+          photoUrl,
+        });
+        navigate(`/places/${newReview.restaurant.placeId}/${user.id}`);
         handleToggle("review-composer");
       } catch (err) {
         setErrorMessage("Error uploading review");

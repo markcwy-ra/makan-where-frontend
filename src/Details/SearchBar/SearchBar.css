@@ -9,7 +9,7 @@
   height: 50px;
   border-radius: 25px;
   border: none;
-  background-color: #9edef5;
+  background-color: var(--lightblue);
 }
 
 .search-bar form input::placeholder {

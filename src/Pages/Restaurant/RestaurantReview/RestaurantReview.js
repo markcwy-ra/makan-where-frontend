@@ -4,18 +4,17 @@ import { useNavigate, useParams } from "react-router-dom";
 
 import Rating from "../../../Details/Ratings/Rating";
 import HeartButton from "../../../Details/Buttons/HeartButton";
+import LoadingScreen from "../../LoadingScreen/LoadingScreen";
+import EditButton from "../../../Details/Buttons/EditButton";
+import ReviewEditor from "../../../Components/Forms/ReviewEditor";
 
 //---------- Others ----------//
 
 import "./RestaurantReview.css";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../../App";
-import { bearerToken } from "../../../Utilities/token";
-import axios from "axios";
-import LoadingScreen from "../../LoadingScreen/LoadingScreen";
-import EditButton from "../../../Details/Buttons/EditButton";
-import ReviewEditor from "../../../Components/Forms/ReviewEditor";
 import {
+  getReview,
   getUpvoteCount,
   getUpvoteStatus,
   handleHeart,
@@ -35,12 +34,9 @@ const RestaurantReview = () => {
   const route = "reviews";
 
   useEffect(() => {
-    const getReviewData = async () => {
-      const response = await axios.get(
-        `${process.env.REACT_APP_BACKEND_URL}/reviews/restaurant/${placeId}/user/${userId}`,
-        bearerToken(user.token)
-      );
-      setData(response.data);
+    const getData = async () => {
+      const response = await getReview({ placeId, userId });
+      setData(response);
       const status = getUpvoteStatus({
         route,
         id: response.data.id,
@@ -48,7 +44,7 @@ const RestaurantReview = () => {
       });
       setHeart(status);
     };
-    getReviewData();
+    getData();
     //eslint-disable-next-line
   }, [user]);
 

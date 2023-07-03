@@ -14,13 +14,13 @@ import MenuRestaurant from "../../../Details/Menus/MenuRestaurant";
 import ReviewComposer from "../../../Components/Forms/ReviewComposer";
 import AddToList from "../../../Components/Forms/AddToList";
 import LoadingScreen from "../../LoadingScreen/LoadingScreen";
+import ReviewEditor from "../../../Components/Forms/ReviewEditor";
 
 //---------- Others ----------//
 
 import "./RestaurantScreen.css";
 import { formatToAmPm } from "../../../Utilities/formatting";
 import { UserContext } from "../../../App";
-import ReviewEditor from "../../../Components/Forms/ReviewEditor";
 import {
   getRestaurantData,
   getRestaurantMakanlists,

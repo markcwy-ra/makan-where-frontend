@@ -18,10 +18,8 @@ import { storage } from "../../firebase";
 //---------- Others ----------//
 
 import "./Forms.css";
-import { bearerToken } from "../../Utilities/token";
 import { UserContext } from "../../App";
-import axios from "axios";
-import { deleteReview } from "../../Utilities/fetch";
+import { deleteReview, updateReview } from "../../Utilities/fetch";
 
 //------------------------------//
 
@@ -113,19 +111,16 @@ const ReviewEditor = ({ handleToggle, reviewData, setReviewData = null }) => {
           await uploadBytesResumable(fileRef, file);
           photoUrl = await getDownloadURL(fileRef);
         }
-        const response = await axios.put(
-          `${process.env.REACT_APP_BACKEND_URL}/reviews/${reviewData.id}/update`,
-          {
-            userId: user.id,
-            rating,
-            title,
-            body: review,
-            recommendedDishes,
-            photoUrl,
-          },
-          bearerToken(user.token)
-        );
-        setReviewData && setReviewData(response.data);
+        const updatedReview = await updateReview({
+          userId: user.id,
+          reviewId: reviewData.id,
+          rating,
+          title,
+          review,
+          recommendedDishes,
+          photoUrl,
+        });
+        setReviewData && setReviewData(updatedReview);
         handleToggle("review-editor");
       } catch (err) {
         console.log(err);

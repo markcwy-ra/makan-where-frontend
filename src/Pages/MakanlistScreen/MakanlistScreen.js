@@ -12,10 +12,9 @@ import ListEditor from "../../Components/Forms/ListEditor";
 //---------- Others ----------//
 
 import "./MakanlistScreen.css";
-import axios from "axios";
-import { bearerToken } from "../../Utilities/token";
 import { UserContext } from "../../App";
 import {
+  getMakanlist,
   getUpvoteCount,
   getUpvoteStatus,
   handleHeart,
@@ -36,11 +35,8 @@ const MakanlistScreen = () => {
 
   useEffect(() => {
     const getListData = async () => {
-      const response = await axios.get(
-        `${process.env.REACT_APP_BACKEND_URL}/makanlists/user/${userId}/${listId}`,
-        bearerToken(user.token)
-      );
-      setData(response.data);
+      const response = await getMakanlist({ userId, listId });
+      setData(response);
       const status = getUpvoteStatus({
         route,
         id: listId,

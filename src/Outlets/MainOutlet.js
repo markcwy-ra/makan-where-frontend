@@ -1,10 +1,18 @@
+import { useState, useEffect, useContext } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
+
+//---------- Components ----------//
+
 import NavBar from "../Components/NavBar/NavBar";
 import ReviewComposer from "../Components/Forms/ReviewComposer";
-import { useState, useEffect, useContext } from "react";
 import ListComposer from "../Components/Forms/ListComposer";
+
+//---------- Others ----------//
+
 import { UserContext } from "../App";
 import { getCurrentUser, getNewTokens } from "../Utilities/auth";
+
+//------------------------------//
 
 const MainOutlet = () => {
   const navigate = useNavigate();

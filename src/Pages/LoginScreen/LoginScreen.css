@@ -6,7 +6,7 @@
   text-align: center;
   padding: 40px;
   gap: 30px;
-  background-color: #0078ef;
+  background-color: var(--blue);
   color: white;
 }
 
@@ -55,7 +55,7 @@
 
 .login-active {
   background-color: #ffffff;
-  color: #0078ef;
+  color: var(--blue);
 }
 
 .loginscreen u {

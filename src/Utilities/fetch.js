@@ -67,6 +67,14 @@ const getUserContent = async ({ route, userId }) => {
 
 //---------- Upvote Data ----------//
 
+const getUpvotedData = async ({ route, userId }) => {
+  const response = await axios.get(
+    `${url}/${route}/user/${userId}/upvotes`,
+    bearerToken(token)
+  );
+  return response.data;
+};
+
 const getUpvoteStatus = async ({ route, id, userId }) => {
   const upvoteStatus = await axios.get(
     `${url}/${route}/${id}/upvote/${userId}`,
@@ -125,6 +133,22 @@ const getMapMarkers = async (coords) => {
 
 //---------- Profile Page ----------//
 
+const updateUserProfile = async ({
+  userId,
+  username,
+  email,
+  currentPassword,
+  newPassword,
+  photoUrl,
+}) => {
+  const response = await axios.put(
+    `${url}/users/${userId}/update`,
+    { username, email, currentPassword, newPassword, photoUrl },
+    bearerToken(token)
+  );
+  return response.data.data;
+};
+
 const getUserProfile = async (userId) => {
   const response = await axios.get(
     `${url}/users/${userId}`,
@@ -147,6 +171,22 @@ const unfollowUser = async ({ followerId, userId }) => {
     { followerId },
     bearerToken(token)
   );
+};
+
+const getFollowers = async (userId) => {
+  const response = await axios.get(
+    `${url}/follows/${userId}/followers`,
+    bearerToken(token)
+  );
+  return response.data.followers;
+};
+
+const getFollowing = async (userId) => {
+  const response = await axios.get(
+    `${url}/follows/${userId}/following`,
+    bearerToken(token)
+  );
+  return response.data.following;
 };
 
 const getFollowerCount = async (userId) => {
@@ -174,6 +214,47 @@ const getFollowStatus = async (followerId, userId) => {
 };
 
 //---------- List Page----------//
+
+const getMakanlist = async ({ userId, listId }) => {
+  const response = await axios.get(
+    `${url}/makanlists/user/${userId}/${listId}`,
+    bearerToken(token)
+  );
+  return response.data;
+};
+
+const createMakanlist = async ({ userId, title, description, photoUrl }) => {
+  const response = await axios.post(
+    `${url}/makanlists/`,
+    { userId, title, description, photoUrl },
+    bearerToken(token)
+  );
+  return response.data.newMakanlist;
+};
+
+const updateMakanlist = async ({
+  userId,
+  listId,
+  title,
+  description,
+  photoUrl,
+}) => {
+  const response = await axios.put(
+    `${url}/makanlists/user/${userId}/${listId}`,
+    { title, description, photoUrl },
+    bearerToken(token)
+  );
+  return response.data.updatedMakanlist;
+};
+
+const addToMakanlist = async ({ userId, listId, restaurantId }) => {
+  const response = await axios.post(
+    `${url}/makanlists/user/${userId}/${listId}`,
+    { restaurantId },
+    bearerToken(token)
+  );
+  return response;
+};
 
 const removeFromMakanlist = async ({ userId, listId, restaurantId }) => {
   const response = await axios.put(
@@ -220,6 +301,63 @@ const getRestaurantMakanlists = async (placeId) => {
 
 //---------- Review Page----------//
 
+const getReview = async ({ placeId, userId }) => {
+  const response = await axios.get(
+    `${url}/reviews/restaurant/${placeId}/user/${userId}`,
+    bearerToken(token)
+  );
+  return response.data;
+};
+
+const createReview = async ({
+  userId,
+  restaurantId,
+  rating,
+  title,
+  review,
+  recommendedDishes,
+  photoUrl,
+}) => {
+  const response = await axios.post(
+    `${url}/reviews/${restaurantId}/add`,
+    {
+      userId,
+      restaurantId,
+      rating,
+      title,
+      body: review,
+      recommendedDishes,
+      photoUrl,
+    },
+    bearerToken(token)
+  );
+  return response.data;
+};
+
+const updateReview = async ({
+  userId,
+  reviewId,
+  rating,
+  title,
+  review,
+  recommendedDishes,
+  photoUrl,
+}) => {
+  const response = await axios.put(
+    `${url}/reviews/${reviewId}/update`,
+    {
+      userId,
+      rating,
+      title,
+      body: review,
+      recommendedDishes,
+      photoUrl,
+    },
+    bearerToken(token)
+  );
+  return response.data;
+};
+
 const deleteReview = async ({ userId, reviewId }) => {
   const response = await axios.delete(
     `${url}/reviews/${userId}/${reviewId}`,
@@ -240,6 +378,7 @@ export {
   getUserContent,
 
   // User Profile Data
+  getUpvotedData,
   getUpvoteStatus,
   getUpvoteCount,
   handleHeart,
@@ -253,14 +392,21 @@ export {
   getMapMarkers,
 
   // User Page
+  updateUserProfile,
   getUserProfile,
   followUser,
   unfollowUser,
+  getFollowers,
+  getFollowing,
   getFollowerCount,
   getFollowingCount,
   getFollowStatus,
 
   // List Page
+  getMakanlist,
+  createMakanlist,
+  updateMakanlist,
+  addToMakanlist,
   removeFromMakanlist,
   deleteMakanlist,
 
@@ -270,5 +416,8 @@ export {
   getRestaurantMakanlists,
 
   // Review Page
+  getReview,
+  createReview,
+  updateReview,
   deleteReview,
 };

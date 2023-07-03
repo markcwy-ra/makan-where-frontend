@@ -9,13 +9,14 @@ import Close from "../../Icons/Close.svg";
 //---------- Others ----------//
 
 import "./Forms.css";
-import axios from "axios";
 import { UserContext } from "../../App";
-import { bearerToken } from "../../Utilities/token";
+import { addToMakanlist, getUserContent } from "../../Utilities/fetch";
+import { useNavigate } from "react-router-dom";
 
 //------------------------------//
 
 const AddToList = ({ handleToggle, restaurantId }) => {
+  const navigate = useNavigate();
   const { user } = useContext(UserContext);
   const [errorMessage, setErrorMessage] = useState("");
   const [isError, setIsError] = useState(false);
@@ -23,15 +24,14 @@ const AddToList = ({ handleToggle, restaurantId }) => {
   const [allLists, setAllLists] = useState(null);
 
   useEffect(() => {
-    const getUserLists = async () => {
+    const getData = async () => {
       try {
         // Get restaraunt details
-        const response = await axios.get(
-          `${process.env.REACT_APP_BACKEND_URL}/makanlists/user/${user.id}`,
-          bearerToken(user.token)
-        );
-        console.log(response);
-        const listOptions = response.data.map((list, i) => (
+        const response = await getUserContent({
+          route: "makanlists",
+          userId: user.id,
+        });
+        const listOptions = response.map((list, i) => (
           <option key={i} value={list.id}>
             {list.title}
           </option>
@@ -42,19 +42,15 @@ const AddToList = ({ handleToggle, restaurantId }) => {
       }
     };
 
-    getUserLists();
+    getData();
   }, [user]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // Get restaraunt details
-      await axios.post(
-        `${process.env.REACT_APP_BACKEND_URL}/makanlists/user/${user.id}/${listId}`,
-        { restaurantId },
-        bearerToken(user.token)
-      );
+      await addToMakanlist({ userId: user.id, listId, restaurantId });
       handleToggle("add-to-makanlist");
+      navigate(`/makanlists/${user.id}/${listId}`);
     } catch (err) {
       setErrorMessage("Couldn't add to makanlist");
       setIsError(true);

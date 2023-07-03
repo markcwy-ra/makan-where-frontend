@@ -16,9 +16,8 @@ import { storage } from "../../firebase";
 
 //---------- Others ----------//
 
-import { bearerToken } from "../../Utilities/token";
 import "./Forms.css";
-import axios from "axios";
+import { updateUserProfile } from "../../Utilities/fetch";
 // import { getNames } from "country-list";
 
 //------------------------------//
@@ -59,17 +58,19 @@ const ProfileEditor = ({ handleToggle, profileData }) => {
         await uploadBytesResumable(fileRef, file);
         photoUrl = await getDownloadURL(fileRef);
       }
-      const response = await axios.put(
-        `${process.env.REACT_APP_BACKEND_URL}/users/${user.id}/update`,
-        { username, email, currentPassword, newPassword, photoUrl },
-        bearerToken(user.token)
-      );
-      const data = response.data.data;
+      const updatedUser = await updateUserProfile({
+        userId: user.id,
+        username,
+        email,
+        currentPassword,
+        newPassword,
+        photoUrl,
+      });
       setUser({
-        username: data.username,
-        email: data.email,
-        id: data.id,
-        photoUrl: data.photoUrl,
+        username: updatedUser.username,
+        email: updatedUser.email,
+        id: updatedUser.id,
+        photoUrl: updatedUser.photoUrl,
       });
       handleToggle();
     } catch (err) {

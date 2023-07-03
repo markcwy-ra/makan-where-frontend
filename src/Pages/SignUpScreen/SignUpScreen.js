@@ -1,11 +1,11 @@
 import { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import ErrorPill from "../../Details/Errors/ErrorPill";
-import axios from "axios";
 import { UserContext } from "../../App";
-import "./SignUpScreen.css";
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { storage } from "../../firebase";
+import { signup } from "../../Utilities/auth.js";
+import "./SignUpScreen.css";
 // import { getNames } from "country-list";
 
 const SignUpScreen = () => {
@@ -95,18 +95,19 @@ const SignUpScreen = () => {
           photoUrl = await getDownloadURL(fileRef);
         }
         if ((file && photoUrl !== null) || !file) {
-          const response = await axios.post(
-            `${process.env.REACT_APP_BACKEND_URL}/auth/sign-up`,
-            { username, email, password, photoUrl }
-          );
-          const data = response.data.data;
-          localStorage.setItem("token", response.data.data.token);
-          localStorage.setItem("refreshToken", response.data.data.refreshToken);
+          const response = await signup({
+            username,
+            email,
+            password,
+            photoUrl,
+          });
+          localStorage.setItem("token", response.token);
+          localStorage.setItem("refreshToken", response.refreshToken);
           setUser({
-            username: data.username,
-            email: data.email,
-            id: data.id,
-            photoUrl: data.photoUrl,
+            username: response.username,
+            email: response.email,
+            id: response.id,
+            photoUrl: response.photoUrl,
           });
           navigate("/home");
         }

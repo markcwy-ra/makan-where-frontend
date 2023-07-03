@@ -2,10 +2,9 @@ import "./RestaurantCard.css";
 import "../Cards.css";
 import Rating from "../../Ratings/Rating";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import { bearerToken } from "../../../Utilities/token";
 import { useContext } from "react";
 import { UserContext } from "../../../App";
+import { addToMakanlist, getRestaurantData } from "../../../Utilities/fetch";
 
 const RestaurantCard = ({
   config = "full",
@@ -16,26 +15,25 @@ const RestaurantCard = ({
 }) => {
   const navigate = useNavigate();
   const { user } = useContext(UserContext);
-  console.log(content);
 
   const handleClick = async () => {
     if (type === "default") {
-      navigate(`/places/${content.place_id}`);
+      if (content.placeId) {
+        navigate(`/places/${content.placeId}`);
+      } else {
+        navigate(`/places/${content.place_id}`);
+      }
     } else if (type !== "form-selected") {
-      const response = await axios.get(
-        `${process.env.REACT_APP_BACKEND_URL}/restaurants/${content.place_id}`,
-        bearerToken(user.token)
-      );
+      const response = await getRestaurantData(content.place_id);
       if (type === "form-result") {
-        setData(response.data.data);
+        setData(response);
       } else if (type === "list-add") {
-        setData((prev) => [...prev, response.data.data]);
-        const addToList = await axios.post(
-          `${process.env.REACT_APP_BACKEND_URL}/makanlists/user/${user.id}/${listId}`,
-          { restaurantId: response.data.data.id },
-          bearerToken(user.token)
-        );
-        console.log(addToList);
+        await addToMakanlist({
+          userId: user.id,
+          listId,
+          restaurantId: response.id,
+        });
+        setData((prev) => [...prev, response]);
       }
     }
   };
@@ -51,7 +49,7 @@ const RestaurantCard = ({
         <img src={content.photoUrl} alt={content.name} />
         <div className={`card-restaurant-${config}-title`}>
           <h3>{content.name}</h3>
-          {content.averageRating && (
+          {content.averageRating !== 0 && (
             <h4 className="rating-byline">
               <Rating score={content.averageRating} size="small" />
             </h4>
@@ -63,7 +61,7 @@ const RestaurantCard = ({
     return (
       <div className={`card-restaurant-search`} onClick={handleClick}>
         <h3>{content.name}</h3>
-        <p>{content.address}</p>
+        <p>{content.address ? content.address : content.vicinity}</p>
       </div>
     );
   }

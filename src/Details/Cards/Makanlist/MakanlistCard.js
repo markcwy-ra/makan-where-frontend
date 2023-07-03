@@ -35,7 +35,7 @@ const MakanlistCard = ({ config = "full", content }) => {
 
   return (
     <div
-      className={`card-makanlist-${config}`}
+      className={`card-makanlist-${config} clickable`}
       style={styling}
       onClick={handleClick}
     >

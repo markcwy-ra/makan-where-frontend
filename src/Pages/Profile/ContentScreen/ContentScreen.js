@@ -1,10 +1,10 @@
-import "./ContentScreen.css";
+import { useNavigate, useParams } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import VertFeed from "../../../Components/Feeds/VertFeed";
-import { useNavigate, useParams } from "react-router-dom";
 import Button from "../../../Details/Buttons/Button";
 import { UserContext } from "../../../App";
 import { getUserContent } from "../../../Utilities/fetch";
+import "./ContentScreen.css";
 
 const ContentScreen = () => {
   const navigate = useNavigate();
@@ -17,10 +17,9 @@ const ContentScreen = () => {
   useEffect(() => {
     if (content === "reviews" || content === "makanlists") {
       setActiveToggle(content);
+    } else {
+      navigate("/home");
     }
-    //  else {
-    //   navigate("/home");
-    // }
     //eslint-disable-next-line
   }, [content]);
 

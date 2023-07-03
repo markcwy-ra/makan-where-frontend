@@ -19,7 +19,7 @@ const UserCard = ({ config = "full", content }) => {
   };
 
   return (
-    <div className={`card-user-${config}`} onClick={handleClick}>
+    <div className={`card-user-${config} clickable`} onClick={handleClick}>
       <div className={`card-user-${config}-title`}>{cardTitle}</div>
       <img
         id={content.id}

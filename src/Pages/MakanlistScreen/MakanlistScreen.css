@@ -17,12 +17,13 @@
   align-items: center;
   padding: 20px;
   gap: 25px;
+  padding-bottom: var(--site-p-bottom);
 }
 
 .makanlist-content h6 {
   text-align: center;
   width: 75%;
-  color: #0078ef;
+  color: var(--blue);
 }
 
 .makanlist-title {
