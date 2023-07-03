@@ -195,8 +195,10 @@ const RestaurantScreen = () => {
                 </div>
               </div>
               <div className="restaurant-content-details-row">
-                {data.averageRating && <Rating score={data.averageRating} />}
-                {data.averageRating && reviews && <h4>({reviews.length})</h4>}
+                {data.averageRating > 0 && (
+                  <Rating score={data.averageRating} />
+                )}
+                {reviews && reviews.length > 0 && <h4>({reviews.length})</h4>}
                 {data.pricerange && <h4 className="lightblue-text">•</h4>}
                 {data.pricerange && <h4>{data.pricerange.priceRange}</h4>}
               </div>

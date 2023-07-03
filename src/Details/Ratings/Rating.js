@@ -16,6 +16,7 @@ const Rating = ({ score, size = "small" }) => {
       return <img key={index} src={StarEmpty} alt="Full Star" />;
     }
   });
+
   return <div className={`star-rating star-${size}`}>{starDisplay}</div>;
 };
 
