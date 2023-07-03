@@ -16,10 +16,11 @@ const RestaurantCard = ({
 }) => {
   const navigate = useNavigate();
   const { user } = useContext(UserContext);
+  console.log(content);
 
   const handleClick = async () => {
     if (type === "default") {
-      navigate(`/places/${content.placeId}`);
+      navigate(`/places/${content.place_id}`);
     } else if (type !== "form-selected") {
       const response = await axios.get(
         `${process.env.REACT_APP_BACKEND_URL}/restaurants/${content.place_id}`,

@@ -66,7 +66,7 @@ const SearchScreen = () => {
         display = results.map((foundPlace, index) => {
           const content = {
             name: foundPlace.name,
-            id: foundPlace.place_id,
+            place_id: foundPlace.place_id,
             address: foundPlace.vicinity,
           };
           return <RestaurantCard key={index} content={content} />;
