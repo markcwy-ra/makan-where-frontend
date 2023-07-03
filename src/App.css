@@ -93,6 +93,14 @@ u {
   color: #dedede;
 }
 
+.blue-text {
+  color: var(--blue);
+}
+
+.lightblue-text {
+  color: var(--lightblue);
+}
+
 .divider-line {
   height: 1px;
   width: 100%;

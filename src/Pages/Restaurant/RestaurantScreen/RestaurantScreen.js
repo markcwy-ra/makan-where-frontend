@@ -18,20 +18,22 @@ import LoadingScreen from "../../LoadingScreen/LoadingScreen";
 //---------- Others ----------//
 
 import "./RestaurantScreen.css";
-import { tempRestPageData } from "../../../tempData";
-import axios from "axios";
-import { bearerToken } from "../../../Utilities/token";
-import { formatToAmPm, capitalise } from "../../../Utilities/formatting";
+import { formatToAmPm } from "../../../Utilities/formatting";
 import { UserContext } from "../../../App";
 import ReviewEditor from "../../../Components/Forms/ReviewEditor";
-import { getUpvoteCount, getUpvoteStatus } from "../../../Utilities/fetch";
+import {
+  getRestaurantData,
+  getRestaurantReviews,
+  getUpvoteCount,
+  getUpvoteStatus,
+  handleHeart,
+} from "../../../Utilities/fetch";
 
 //------------------------------//
 
 const RestaurantScreen = () => {
   const { placeId } = useParams();
   const { user } = useContext(UserContext);
-  const tempData = { ...tempRestPageData };
   const route = "restaurants";
 
   //-------------- States --------------//
@@ -56,27 +58,22 @@ const RestaurantScreen = () => {
   // Get restaurant data and upvote status
   useEffect(() => {
     // Get restaurant page data
-    const getRestaurantData = async (placeId) => {
+    const getData = async (placeId) => {
       try {
-        // Get restaraunt details
-        const response = await axios.get(
-          `${process.env.REACT_APP_BACKEND_URL}/restaurants/${placeId}`,
-          bearerToken(user.token)
-        );
-        setData(response.data.data);
-        // Get user upvote status
-        getUpvoteStatus({
+        const restaurantData = getRestaurantData(placeId);
+        setData(restaurantData);
+        const status = await getUpvoteStatus({
           route,
-          id: response.data.data.id,
+          id: restaurantData.id,
           userId: user.id,
-          setHeart,
         });
+        setHeart(status);
       } catch (err) {
         console.log(err);
       }
     };
 
-    getRestaurantData(placeId);
+    getData(placeId);
     // eslint-disable-next-line
   }, [user]);
 
@@ -93,16 +90,11 @@ const RestaurantScreen = () => {
 
   // Get restaurant reviews and format opening hours
   useEffect(() => {
-    const getRestaurantReviews = async (placeId) => {
+    const getData = async (placeId) => {
       try {
         // Get restaraunt reviews
-        const response = await axios.get(
-          `${process.env.REACT_APP_BACKEND_URL}/reviews/${placeId}`,
-          bearerToken(user.token)
-        );
-        setReviews(
-          response.data.reviews.length > 0 ? response.data.reviews : null
-        );
+        const reviews = await getRestaurantReviews(placeId);
+        setReviews(reviews.length > 0 ? reviews : null);
       } catch (err) {
         console.log(err);
       }
@@ -120,7 +112,7 @@ const RestaurantScreen = () => {
       ));
 
       setOpeningHours(hourDisplay);
-      getRestaurantReviews(data.id);
+      getData(data.id);
     }
   }, [data, user]);
 
@@ -141,20 +133,8 @@ const RestaurantScreen = () => {
     window.open(data.googleMapsUrl);
   };
 
-  const handleHeart = async () => {
-    if (heart) {
-      await axios.delete(
-        `${process.env.REACT_APP_BACKEND_URL}/restaurants/${data.id}/upvote/remove/${user.id}`,
-        bearerToken(user.token)
-      );
-    } else {
-      await axios.post(
-        `${process.env.REACT_APP_BACKEND_URL}/restaurants/${data.id}/upvote`,
-        { userId: user.id },
-        bearerToken(user.token)
-      );
-    }
-    setHeart((prev) => !prev);
+  const handleUpvote = () => {
+    handleHeart({ route, id: data.id, userId: user.id, heart, setHeart });
   };
 
   const handleMenu = () => {
@@ -197,7 +177,7 @@ const RestaurantScreen = () => {
                 <h1>{data.name}</h1>
                 <div className="restaurant-title-buttons">
                   {upvoteCount > 0 && <h4>{upvoteCount}</h4>}
-                  <HeartButton heart={heart} handleClick={handleHeart} />
+                  <HeartButton heart={heart} handleClick={handleUpvote} />
                   <img onClick={handleMenu} src={AddSmall} alt="Add Button" />
                   {showMenu && (
                     <MenuRestaurant
@@ -209,17 +189,10 @@ const RestaurantScreen = () => {
                 </div>
               </div>
               <div className="restaurant-content-details-row">
-                {data.averageRating && (
-                  <>
-                    <Rating score={data.averageRating} />
-                    <h4>({tempData.reviews.length})</h4>
-                  </>
-                )}
-              </div>
-              <div className="restaurant-content-details-row">
-                <p>{capitalise(data.restaurantstatus.status)}</p>
-                <p>•</p>
-                {data.pricerange && <p>{data.pricerange.priceRange}</p>}
+                {data.averageRating && <Rating score={data.averageRating} />}
+                {data.averageRating && <h4>({reviews.length})</h4>}
+                {data.averageRating && <h4 className="lightblue-text">•</h4>}
+                {data.pricerange && <h4>{data.pricerange.priceRange}</h4>}
               </div>
               <p className="address">{data.address}</p>
             </div>

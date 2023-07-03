@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
-import "./SearchBar.css";
+import { getSearchResults } from "../../Utilities/fetch";
 import Search from "../../Icons/Search.svg";
-import axios from "axios";
-import { bearerToken } from "../../Utilities/token";
+import "./SearchBar.css";
 
 const SearchBar = ({
   db = "places",
@@ -12,6 +11,7 @@ const SearchBar = ({
   setErrorMessage,
 }) => {
   const [query, setQuery] = useState("");
+  const [searchLocation, setSearchLocation] = useState(null);
   let placeholderCopy;
 
   switch (db) {
@@ -32,24 +32,35 @@ const SearchBar = ({
     setQuery("");
   }, [db]);
 
+  useEffect(() => {
+    if (location) {
+      setSearchLocation(location);
+    } else {
+      setSearchLocation({
+        lat: 1.3521,
+        lng: 103.8198,
+      });
+    }
+  }, [location]);
+
   const handleChange = (e) => {
+    setIsError(false);
     setQuery(e.currentTarget.value);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const token = localStorage.getItem("token");
     if (db === "places") {
-      if (location) {
+      if (searchLocation) {
         try {
-          const response = await axios.get(
-            `${process.env.REACT_APP_BACKEND_URL}/restaurants/search?searchTerm=${query}&lat=${location.lat}&lng=${location.lng}`,
-            bearerToken(token)
-          );
-          setResults(response.data.data);
+          const results = await getSearchResults({
+            route: "restaurants",
+            query,
+            location: searchLocation,
+          });
+          setResults(results.data);
         } catch (err) {
-          console.log(err);
-          setErrorMessage("?");
+          setErrorMessage("No places found!");
           setIsError(true);
         }
       } else {
@@ -58,11 +69,8 @@ const SearchBar = ({
       }
     } else if (db === "makanlists") {
       try {
-        const response = await axios.get(
-          `${process.env.REACT_APP_BACKEND_URL}/makanlists/search/${query}`,
-          bearerToken(token)
-        );
-        setResults(response.data);
+        const results = await getSearchResults({ route: "makanlists", query });
+        setResults(results);
       } catch (err) {
         const code = err.response.status;
         if (code === 404) {
@@ -72,10 +80,8 @@ const SearchBar = ({
       }
     } else if (db === "users") {
       try {
-        const response = await axios.get(
-          `${process.env.REACT_APP_BACKEND_URL}/users/search/${query}`
-        );
-        setResults(response.data);
+        const results = await getSearchResults({ route: "users", query });
+        setResults(results);
       } catch (err) {
         const code = err.response.status;
         if (code === 404) {

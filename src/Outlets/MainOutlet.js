@@ -8,34 +8,13 @@ import { getCurrentUser, getNewTokens } from "../Utilities/auth";
 
 const MainOutlet = () => {
   const navigate = useNavigate();
-  // const location = useLocation();
   const { user, setUser } = useContext(UserContext);
   const [reviewToggle, setReviewToggle] = useState(false);
   const [listToggle, setListToggle] = useState(false);
-  // const [initialLoad, setInitialLoad] = useState(null);
   const token = localStorage.getItem("token");
   const refreshToken = localStorage.getItem("refreshToken");
 
-  // useEffect(() => {
-  //   setInitialLoad(new Date());
-  // }, []);
-
-  // useEffect(() => {
-  //   const currentLoad = new Date();
-  //   const elapsedTime = initialLoad / 60000 - currentLoad / 60000;
-  //   console.log(elapsedTime);
-  //   if (elapsedTime < 45) {
-  //     getNewTokens({ setUser }).catch(() => {
-  //       console.log("Refresh token expired! Login required.");
-  //       navigate("/");
-  //     });
-  //   }
-  //   //eslint-disable-next-line
-  // }, [location]);
-
   useEffect(() => {
-    // Check if tokens exist
-
     const checkStatus = async () => {
       if (!token || !refreshToken) {
         navigate("/");

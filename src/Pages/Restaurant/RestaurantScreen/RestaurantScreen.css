@@ -21,13 +21,13 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
-  margin-bottom: 150px;
+  margin-bottom: var(--site-p-bottom);
 }
 
 .restaurant-title {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
   gap: 10px;
 }
 

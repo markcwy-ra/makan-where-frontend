@@ -46,35 +46,43 @@ const VertFeed = ({ data, type = "all", handleRemove }) => {
           <UserCard key={index} content={data} />
         ));
       } else if (type === "following-feed") {
-        feedContent = data.map((data, index) => {
-          return (
-            <div className="following-feed-card" key={index}>
-              <p>
-                @{data.user.username} {capitalise(data.activityType)} a{" "}
-                {capitalise(data.targetType)}
-              </p>
-              {data.targetType === "makanlist" && (
-                <MakanlistCard content={data.targetDetails} />
-              )}
-              {data.targetType === "restaurant" && (
-                <RestaurantCard content={data.targetDetails} />
-              )}
-              {data.targetType === "review" && (
-                <ReviewCard content={data.targetDetails} />
-              )}
-            </div>
-          );
-        });
+        if (data.length !== 0) {
+          feedContent = data.map((data, index) => {
+            return (
+              <div className="following-feed-card" key={index}>
+                <p>
+                  @{data.user.username} {capitalise(data.activityType)} a{" "}
+                  {capitalise(data.targetType)}
+                </p>
+                {data.targetType === "makanlist" && (
+                  <MakanlistCard content={data.targetDetails} />
+                )}
+                {data.targetType === "restaurant" && (
+                  <RestaurantCard content={data.targetDetails} />
+                )}
+                {data.targetType === "review" && (
+                  <ReviewCard content={data.targetDetails} />
+                )}
+              </div>
+            );
+          });
+        } else {
+          feedContent = <h2 className="feed-none">No activity yet!</h2>;
+        }
       } else {
-        feedContent = <h1>loading</h1>;
-
-        // feedContent = data.map((data, index) => {
-        //   if (data.type === "makanlist") {
-        //     return <MakanlistCard key={index} content={data} />;
-        //   } else {
-        //     return <ReviewCard key={index} content={data} />;
-        //   }
-        // });
+        if (data.length !== 0) {
+          feedContent = data.topActivities.map((data, index) => {
+            if (data.targetType === "makanlist") {
+              return <MakanlistCard key={index} content={data.target} />;
+            } else if (data.targetType === "restaurant") {
+              return <RestaurantCard key={index} content={data.target} />;
+            } else {
+              return <ReviewCard key={index} content={data.target} />;
+            }
+          });
+        } else {
+          feedContent = <h2 className="feed-none">No activity yet!</h2>;
+        }
       }
       setFeed(feedContent);
     }

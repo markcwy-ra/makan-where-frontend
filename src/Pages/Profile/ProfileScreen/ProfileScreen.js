@@ -15,13 +15,15 @@ import MenuProfile from "../../../Details/Menus/MenuProfile";
 //---------- Others ----------//
 
 import "./ProfileScreen.css";
-import axios from "axios";
-import { bearerToken } from "../../../Utilities/token";
 import { UserContext } from "../../../App";
 import {
+  followUser,
   getFollowStatus,
   getFollowerCount,
   getFollowingCount,
+  getUserContent,
+  getUserProfile,
+  unfollowUser,
 } from "../../../Utilities/fetch";
 import { logout } from "../../../Utilities/auth";
 
@@ -44,56 +46,36 @@ const ProfileScreen = () => {
 
   // Get profile data
   useEffect(() => {
-    const getUserProfile = async (userId) => {
-      try {
-        // Get restaraunt reviews
-        const response = await axios.get(
-          `${process.env.REACT_APP_BACKEND_URL}/users/${userId}`,
-          bearerToken(user.token)
-        );
-        setUserData(response.data.data);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    const getUserReviews = async (userId) => {
-      try {
-        // Get restaraunt reviews
-        const response = await axios.get(
-          `${process.env.REACT_APP_BACKEND_URL}/reviews/user/${userId}`,
-          bearerToken(user.token)
-        );
-        setReviews(
-          response.data.reviews.length > 0 ? response.data.reviews : null
-        );
-        setReviewCount(response.data.reviews.length);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    const getUserMakanlists = async (userId) => {
-      try {
-        // Get restaraunt reviews
-        const response = await axios.get(
-          `${process.env.REACT_APP_BACKEND_URL}/makanlists/user/${userId}`,
-          bearerToken(user.token)
-        );
-        setLists(response.data.length > 0 ? response.data : null);
-        setListCount(response.data.length);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-
     const userProfile = async (id) => {
       try {
-        getUserProfile(id);
-        getUserReviews(id);
-        getUserMakanlists(id);
+        const profile = await getUserProfile(id);
+        setUserData(profile);
+
+        // Get Review Data
+        const reviewData = await getUserContent({
+          route: "reviews",
+          userId: id,
+        });
+        setReviews(reviewData.reviews.length > 0 ? reviewData.reviews : null);
+        setReviewCount(reviewData.reviews.length);
+
+        // Get Makanlist Data
+        const makanlistData = await getUserContent({
+          route: "makanlists",
+          userId: id,
+        });
+        setLists(makanlistData.length > 0 ? makanlistData : null);
+        setListCount(makanlistData.length);
+
+        // Get Follower Count
         const followerCount = await getFollowerCount(id);
         setFollowerCount(followerCount);
+
+        // Get Following Count
         const followingCount = await getFollowingCount(id);
         setFollowingCount(followingCount);
+
+        // Get Following Status
         if (Number(id) !== user.id) {
           const isFollowing = await getFollowStatus(user.id, id);
           setFollowed(isFollowing);
@@ -129,23 +111,17 @@ const ProfileScreen = () => {
     } else if (id === "follow") {
       if (!followed) {
         try {
-          await axios.post(
-            `${process.env.REACT_APP_BACKEND_URL}/follows/${userId}`,
-            { followerId: user.id },
-            bearerToken(user.token)
-          );
+          await followUser({ followerId: user.id, userId });
           setFollowed(true);
+          setFollowerCount((prev) => prev + 1);
         } catch (err) {
           console.log(err);
         }
       } else {
         try {
-          await axios.post(
-            `${process.env.REACT_APP_BACKEND_URL}/follows/unfollow/${userId}`,
-            { followerId: user.id },
-            bearerToken(user.token)
-          );
+          await unfollowUser({ followerId: user.id, userId });
           setFollowed(false);
+          setFollowerCount((prev) => prev - 1);
         } catch (err) {
           console.log(err);
         }

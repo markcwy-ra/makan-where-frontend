@@ -23,7 +23,12 @@ const HomeScreen = () => {
         const followingFeed = await getFeed(`user/${user.id}`);
         setFollowing(followingFeed);
       } catch (err) {
-        console.log(err);
+        if (err.response.status === 404) {
+          console.log("Not found");
+          setFollowing([]);
+        } else {
+          console.log(err);
+        }
       }
     };
     getFeeds();
@@ -31,6 +36,7 @@ const HomeScreen = () => {
 
   const handleClick = (e) => {
     setTab(e.currentTarget.id);
+    console.log(tab);
   };
 
   return (

@@ -41,12 +41,12 @@ const RestaurantReview = () => {
         bearerToken(user.token)
       );
       setData(response.data);
-      getUpvoteStatus({
+      const status = getUpvoteStatus({
         route,
         id: response.data.id,
         userId: user.id,
-        setHeart,
       });
+      setHeart(status);
     };
     getReviewData();
     //eslint-disable-next-line

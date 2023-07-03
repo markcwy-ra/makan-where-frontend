@@ -68,3 +68,11 @@
   right: 20px;
   z-index: 5;
 }
+
+.feed-none {
+  background-color: var(--lightblue);
+  padding: 20px;
+  border-radius: 25px;
+  text-align: left;
+  width: 100%;
+}

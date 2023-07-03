@@ -15,7 +15,11 @@ import "./MakanlistScreen.css";
 import axios from "axios";
 import { bearerToken } from "../../Utilities/token";
 import { UserContext } from "../../App";
-import { getUpvoteCount, getUpvoteStatus } from "../../Utilities/fetch";
+import {
+  getUpvoteCount,
+  getUpvoteStatus,
+  handleHeart,
+} from "../../Utilities/fetch";
 
 //------------------------------//
 
@@ -37,12 +41,12 @@ const MakanlistScreen = () => {
         bearerToken(user.token)
       );
       setData(response.data);
-      getUpvoteStatus({
+      const status = getUpvoteStatus({
         route,
         id: listId,
         userId: user.id,
-        setHeart,
       });
+      setHeart(status);
     };
 
     getListData();
@@ -69,20 +73,8 @@ const MakanlistScreen = () => {
     }
   }, [user, userId]);
 
-  const handleHeart = async () => {
-    if (heart) {
-      await axios.delete(
-        `${process.env.REACT_APP_BACKEND_URL}/makanlists/${listId}/upvote/${user.id}`,
-        bearerToken(user.token)
-      );
-    } else {
-      await axios.post(
-        `${process.env.REACT_APP_BACKEND_URL}/makanlists/${listId}/upvote`,
-        { userId: user.id },
-        bearerToken(user.token)
-      );
-    }
-    setHeart((prev) => !prev);
+  const handleUpvote = () => {
+    handleHeart({ route, id: listId, userId: user.id, heart, setHeart });
   };
 
   const handleEdit = async () => {
@@ -127,7 +119,7 @@ const MakanlistScreen = () => {
               {upvoteCount > 0 && <h4>{upvoteCount}</h4>}
               <HeartButton
                 heart={heart}
-                handleClick={handleHeart}
+                handleClick={handleUpvote}
                 white={true}
               />
             </div>

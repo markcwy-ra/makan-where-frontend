@@ -2,26 +2,77 @@
 
 import axios from "axios";
 import { bearerToken } from "./token";
+import { getNewTokens } from "./auth";
 
 //---------- Constants ----------//
 
-const token = localStorage.getItem("token");
+let token = localStorage.getItem("token");
 const url = process.env.REACT_APP_BACKEND_URL;
+
+axios.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const config = error?.config;
+    if (error?.response?.status === 403 && !config?.sent) {
+      config.sent = true;
+      const result = await getNewTokens();
+      if (result?.token) {
+        config.headers = {
+          ...config.headers,
+          Authorization: `Bearer ${result?.token}`,
+        };
+        localStorage.setItem("token", result?.token);
+        token = result?.token;
+      }
+      return axios(config);
+    }
+    return Promise.reject(error);
+  }
+);
 
 /**
  *
- *  //---------- Generic Routes ----------//
+ *  //---------- Reusable Routes ----------//
  *
  */
+//
+
+//---------- Search Data ----------//
+
+const getSearchResults = async ({ route, query, location }) => {
+  let response;
+  if (route === "restaurants") {
+    response = await axios.get(
+      `${url}/${route}/search?searchTerm=${query}&lat=${location.lat}&lng=${location.lng}`,
+      bearerToken(token)
+    );
+  } else {
+    response = await axios.get(
+      `${url}/${route}/search/${query}`,
+      bearerToken(token)
+    );
+  }
+  return response.data;
+};
+
+//---------- User Profile Data ----------//
+
+const getUserContent = async ({ route, userId }) => {
+  const response = await axios.get(
+    `${url}/${route}/user/${userId}`,
+    bearerToken(token)
+  );
+  return response.data;
+};
 
 //---------- Upvote Data ----------//
 
-const getUpvoteStatus = async ({ route, id, userId, setHeart }) => {
+const getUpvoteStatus = async ({ route, id, userId }) => {
   const upvoteStatus = await axios.get(
     `${url}/${route}/${id}/upvote/${userId}`,
     bearerToken(token)
   );
-  setHeart(upvoteStatus.data.hasUpvoted);
+  return upvoteStatus.data.hasUpvoted;
 };
 
 const getUpvoteCount = async ({ route, id, setUpvoteCount }) => {
@@ -50,9 +101,10 @@ const handleHeart = async ({ route, id, userId, heart, setHeart }) => {
 
 /**
  *
- *  //---------- Page-Specific Routes ----------//
+ *  //---------- Specific Routes ----------//
  *
  */
+//
 
 //---------- Home Page----------//
 
@@ -72,6 +124,30 @@ const getMapMarkers = async (coords) => {
 };
 
 //---------- Profile Page ----------//
+
+const getUserProfile = async (userId) => {
+  const response = await axios.get(
+    `${url}/users/${userId}`,
+    bearerToken(token)
+  );
+  return response.data.data;
+};
+
+const followUser = async ({ followerId, userId }) => {
+  await axios.post(
+    `${url}/follows/${userId}`,
+    { followerId },
+    bearerToken(token)
+  );
+};
+
+const unfollowUser = async ({ followerId, userId }) => {
+  await axios.post(
+    `${url}/follows/unfollow/${userId}`,
+    { followerId },
+    bearerToken(token)
+  );
+};
 
 const getFollowerCount = async (userId) => {
   const followers = await axios.get(
@@ -116,6 +192,24 @@ const deleteMakanlist = async ({ userId, listId }) => {
   return response;
 };
 
+//---------- Restaurant Page ----------//
+
+const getRestaurantData = async (placeId) => {
+  const response = await axios.get(
+    `${url}/restaurants/${placeId}`,
+    bearerToken(token)
+  );
+  return response.data.data;
+};
+
+const getRestaurantReviews = async (placeId) => {
+  const response = await axios.get(
+    `${url}/reviews/${placeId}`,
+    bearerToken(token)
+  );
+  return response.data.reviews;
+};
+
 //---------- Review Page----------//
 
 const deleteReview = async ({ userId, reviewId }) => {
@@ -129,15 +223,43 @@ const deleteReview = async ({ userId, reviewId }) => {
 //------------------------------//
 
 export {
-  getFeed,
+  // ———————————— Reusable Routes
+
+  // Search Data
+  getSearchResults,
+
+  // User Data
+  getUserContent,
+
+  // User Profile Data
   getUpvoteStatus,
   getUpvoteCount,
+  handleHeart,
+
+  // ———————————— Specific Routes
+
+  // Home Page
+  getFeed,
+
+  // Map Page
   getMapMarkers,
+
+  // User Page
+  getUserProfile,
+  followUser,
+  unfollowUser,
   getFollowerCount,
   getFollowingCount,
   getFollowStatus,
-  handleHeart,
+
+  // List Page
   removeFromMakanlist,
   deleteMakanlist,
+
+  // Restaurant Page
+  getRestaurantData,
+  getRestaurantReviews,
+
+  // Review Page
   deleteReview,
 };

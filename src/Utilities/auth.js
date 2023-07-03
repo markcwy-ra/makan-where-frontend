@@ -2,12 +2,11 @@
 
 import axios from "axios";
 import { bothTokens, logoutToken } from "./token.js";
-
-const token = localStorage.getItem("token");
-const refreshToken = localStorage.getItem("refreshToken");
 const url = process.env.REACT_APP_BACKEND_URL;
 
 const getCurrentUser = async () => {
+  const token = localStorage.getItem("token");
+  const refreshToken = localStorage.getItem("refreshToken");
   const response = await axios.get(
     `${url}/users`,
     bothTokens(token, refreshToken)
@@ -16,6 +15,7 @@ const getCurrentUser = async () => {
 };
 
 const getNewTokens = async () => {
+  const refreshToken = localStorage.getItem("refreshToken");
   const response = await axios.post(
     `${url}/auth/refresh`,
     {},
@@ -28,6 +28,7 @@ const getNewTokens = async () => {
 };
 
 const logout = async () => {
+  const refreshToken = localStorage.getItem("refreshToken");
   await axios.post(`${url}/auth/sign-out`, {}, logoutToken(refreshToken));
   localStorage.removeItem("token");
   localStorage.removeItem("refreshToken");
