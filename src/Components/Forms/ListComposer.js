@@ -17,6 +17,7 @@ import Close from "../../Icons/Close.svg";
 import "./Forms.css";
 import { UserContext } from "../../App";
 import { createMakanlist } from "../../Utilities/fetch";
+import UploadImageButton from "../../Details/Buttons/UploadImageButton";
 
 //------------------------------//
 
@@ -107,7 +108,11 @@ const ListComposer = ({ handleToggle }) => {
             onChange={handleChange}
             value={description}
           />
-          <input id="file" type="file" onChange={handleChange} />
+          <UploadImageButton
+            file={file}
+            handleChange={handleChange}
+            label="Upload a Cover Image"
+          />
         </form>
 
         {isError && <ErrorPill message={errorMessage} />}

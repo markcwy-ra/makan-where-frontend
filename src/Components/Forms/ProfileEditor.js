@@ -18,6 +18,7 @@ import { storage } from "../../firebase";
 
 import "./Forms.css";
 import { updateUserProfile } from "../../Utilities/fetch";
+import UploadImageButton from "../../Details/Buttons/UploadImageButton";
 // import { getNames } from "country-list";
 
 //------------------------------//
@@ -159,11 +160,10 @@ const ProfileEditor = ({ handleToggle, profileData }) => {
             onChange={handleChange}
             value={repeatPassword}
           />
-          <input
-            id="file"
-            type="file"
-            placeholder="Add Profile Image"
-            onChange={handleChange}
+          <UploadImageButton
+            file={file}
+            handleChange={handleChange}
+            label="Upload a Profile Image"
           />
           {/* <select id="country" onChange={handleChange} required value={country}>
             <option value="" disabled>

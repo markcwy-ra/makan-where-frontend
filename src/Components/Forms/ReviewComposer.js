@@ -22,6 +22,7 @@ import "./Forms.css";
 import { UserContext } from "../../App";
 import getLocation from "../../Utilities/location";
 import { createReview } from "../../Utilities/fetch";
+import UploadImageButton from "../../Details/Buttons/UploadImageButton";
 
 //------------------------------//
 
@@ -216,7 +217,11 @@ const ReviewComposer = ({ handleToggle, place = null }) => {
               onChange={handleChange}
               value={review}
             />
-            <input id="file" type="file" onChange={handleChange} />
+            <UploadImageButton
+              file={file}
+              handleChange={handleChange}
+              label="Upload an Image"
+            />
             <div className="form-rating">{ratingDisplay}</div>
             {isError && <ErrorPill message={errorMessage} />}
             <Button

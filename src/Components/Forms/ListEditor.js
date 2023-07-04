@@ -30,6 +30,7 @@ import { useIsFirstRender } from "../../Utilities/utils";
 
 import { UserContext } from "../../App";
 import "./Forms.css";
+import UploadImageButton from "../../Details/Buttons/UploadImageButton";
 
 //------------------------------//
 
@@ -269,7 +270,11 @@ const ListEditor = ({ handleClick, list, setList, data, setData }) => {
               onChange={handleChange}
               value={description}
             />
-            <input id="file" type="file" onChange={handleChange} />
+            <UploadImageButton
+              file={file}
+              handleChange={handleChange}
+              label="Upload a Cover Image"
+            />
           </form>
         )}
 

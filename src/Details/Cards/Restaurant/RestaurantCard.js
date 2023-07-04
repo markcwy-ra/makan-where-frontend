@@ -15,7 +15,7 @@ const RestaurantCard = ({
 }) => {
   const navigate = useNavigate();
   const { user } = useContext(UserContext);
-  console.log(content);
+
   const handleClick = async () => {
     if (type === "default") {
       if (content.placeId) {

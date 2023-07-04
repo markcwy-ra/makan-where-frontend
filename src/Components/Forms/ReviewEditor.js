@@ -20,6 +20,7 @@ import { storage } from "../../firebase";
 import "./Forms.css";
 import { UserContext } from "../../App";
 import { deleteReview, updateReview } from "../../Utilities/fetch";
+import UploadImageButton from "../../Details/Buttons/UploadImageButton";
 
 //------------------------------//
 
@@ -203,7 +204,11 @@ const ReviewEditor = ({ handleToggle, reviewData, setReviewData = null }) => {
               onChange={handleChange}
               value={review}
             />
-            <input id="file" type="file" onChange={handleChange} />
+            <UploadImageButton
+              file={file}
+              handleChange={handleChange}
+              label="Upload an Image"
+            />
             <div className="form-rating">{ratingDisplay}</div>
             {isError && <ErrorPill message={errorMessage} />}
             <Button

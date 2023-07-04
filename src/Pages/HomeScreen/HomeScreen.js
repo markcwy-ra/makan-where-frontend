@@ -24,7 +24,6 @@ const HomeScreen = () => {
         setFollowing(followingFeed);
       } catch (err) {
         if (err.response.status === 404) {
-          console.log("Not found");
           setFollowing([]);
         } else {
           console.log(err);

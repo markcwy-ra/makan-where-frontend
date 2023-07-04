@@ -40,7 +40,6 @@ body #root {
   .App {
     width: 80%;
     margin-left: auto;
-    padding-top: 20px;
     padding-right: 5%;
   }
 }
