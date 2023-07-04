@@ -48,23 +48,43 @@ const VertFeed = ({ data, type = "all", handleRemove }) => {
       } else if (type === "following-feed") {
         if (data.length !== 0) {
           feedContent = data.map((data, index) => {
-            return (
-              <div className="following-feed-card" key={index}>
-                <p>
-                  @{data.user.username} {capitalise(data.activityType)} a{" "}
-                  {capitalise(data.targetType)}
-                </p>
-                {data.targetType === "makanlist" && (
-                  <MakanlistCard content={data.targetDetails} />
-                )}
-                {data.targetType === "restaurant" && (
-                  <RestaurantCard content={data.targetDetails} />
-                )}
-                {data.targetType === "review" && (
-                  <ReviewCard content={data.targetDetails} />
-                )}
-              </div>
-            );
+            if (
+              !(
+                data.activityType.includes("removed") ||
+                data.activityType.includes("deleted")
+              )
+            ) {
+              if (data.targetType === "makanlistrestaurant") {
+                return (
+                  <div className="following-feed-card" key={index}>
+                    <p>
+                      @{data.user.username} {data.activityType} a Restaurant to{" "}
+                      {data.targetDetails.makanlist.title}
+                    </p>
+
+                    <RestaurantCard content={data.targetDetails.restaurant} />
+                  </div>
+                );
+              } else {
+                return (
+                  <div className="following-feed-card" key={index}>
+                    <p>
+                      @{data.user.username} {data.activityType} a{" "}
+                      {capitalise(data.targetType)}
+                    </p>
+                    {data.targetType === "makanlist" && (
+                      <MakanlistCard content={data.targetDetails} />
+                    )}
+                    {data.targetType === "restaurant" && (
+                      <RestaurantCard content={data.targetDetails} />
+                    )}
+                    {data.targetType === "review" && (
+                      <ReviewCard content={data.targetDetails} />
+                    )}
+                  </div>
+                );
+              }
+            } else return <></>;
           });
         } else {
           feedContent = <h2 className="feed-none">No activity yet!</h2>;
