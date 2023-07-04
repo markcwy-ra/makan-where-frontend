@@ -10,6 +10,18 @@
   color: white;
 }
 
+@media (min-width: 700px) {
+  .loginscreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    padding: 100px;
+    gap: 30px;
+  }
+}
+
 .loginscreen-buttons {
   display: flex;
   flex-direction: column;

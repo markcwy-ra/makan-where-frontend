@@ -49,4 +49,25 @@ const getNewTokens = async () => {
   return { data: returnedData, token: returnedData.token };
 };
 
-export { login, logout, signup, getCurrentUser, getNewTokens };
+const sendResetEmail = async (email) => {
+  const response = await axios.post(`${url}/auth/email-reset`, { email });
+  return response;
+};
+
+const resetPassword = async ({ resetToken, newPassword }) => {
+  const response = await axios.post(`${url}/auth/reset-password`, {
+    resetToken,
+    newPassword,
+  });
+  return response;
+};
+
+export {
+  login,
+  logout,
+  signup,
+  getCurrentUser,
+  getNewTokens,
+  sendResetEmail,
+  resetPassword,
+};
