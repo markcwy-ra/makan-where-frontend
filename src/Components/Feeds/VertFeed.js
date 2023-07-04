@@ -47,6 +47,7 @@ const VertFeed = ({ data, type = "all", handleRemove }) => {
         ));
       } else if (type === "following-feed") {
         if (data.length !== 0) {
+          // eslint-disable-next-line
           feedContent = data.map((data, index) => {
             if (
               !(

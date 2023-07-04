@@ -39,6 +39,7 @@ const NavBar = ({ handleToggle }) => {
     if (id === "add") {
       setShowMenu((prev) => !prev);
     } else {
+      setShowMenu(false);
       setActiveIcon(location.pathname);
       navigate("/" + id);
     }

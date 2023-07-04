@@ -15,7 +15,7 @@ const RestaurantCard = ({
 }) => {
   const navigate = useNavigate();
   const { user } = useContext(UserContext);
-
+  console.log(content);
   const handleClick = async () => {
     if (type === "default") {
       if (content.placeId) {
@@ -49,10 +49,12 @@ const RestaurantCard = ({
         <img src={content.photoUrl} alt={content.name} />
         <div className={`card-restaurant-${config}-title`}>
           <h3>{content.name}</h3>
-          {content.averageRating !== 0 && (
+          {content.averageRating && content.averageRating !== 0 ? (
             <h4 className="rating-byline">
               <Rating score={content.averageRating} size="small" />
             </h4>
+          ) : (
+            <h4 className="rating-byline">No reviews yet</h4>
           )}
         </div>
       </div>
