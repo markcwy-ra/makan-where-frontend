@@ -62,13 +62,13 @@ const ReviewComposer = ({ handleToggle, place = null }) => {
   useEffect(() => {
     const generateStars = (number) => {
       const generatedStars = [];
-      if (number > 1) {
-        for (let i = 1; i <= number; i++) {
+      if (number > 0) {
+        for (let i = 0; i < number; i++) {
           generatedStars.push(
             <img
               onClick={handleRating}
-              id={i}
-              key={i}
+              id={i + 1}
+              key={i + 1}
               src={StarFull}
               alt="Full Star"
             />

@@ -12,6 +12,12 @@
   --site-p-bottom: 140px;
 }
 
+@media (min-width: 700px) {
+  :root {
+    --site-p-bottom: 40px;
+  }
+}
+
 html,
 body,
 body #root {
@@ -26,6 +32,17 @@ body #root {
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  min-width: 375px;
+  position: relative;
+}
+
+@media (min-width: 700px) {
+  .App {
+    width: 80%;
+    margin-left: auto;
+    padding-top: 20px;
+    padding-right: 5%;
+  }
 }
 
 .content {

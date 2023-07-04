@@ -40,3 +40,14 @@
   width: 160px;
   height: 90px;
 }
+
+@media (min-width: 700px) {
+  .menu-navbar {
+    top: 50%;
+    left: calc(100% + 20px);
+    margin-top: -40px;
+    margin-left: 0;
+    width: 160px;
+    height: 90px;
+  }
+}

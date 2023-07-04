@@ -58,13 +58,13 @@ const ReviewEditor = ({ handleToggle, reviewData, setReviewData = null }) => {
   useEffect(() => {
     const generateStars = (number) => {
       const generatedStars = [];
-      if (number > 1) {
-        for (let i = 1; i <= number; i++) {
+      if (number > 0) {
+        for (let i = 0; i < number; i++) {
           generatedStars.push(
             <img
               onClick={handleRating}
-              id={i}
-              key={i}
+              id={i + 1}
+              key={i + 1}
               src={StarFull}
               alt="Full Star"
             />
@@ -177,46 +177,48 @@ const ReviewEditor = ({ handleToggle, reviewData, setReviewData = null }) => {
             onClick={() => handleToggle("review-editor")}
           />
         </div>
-        {placeData && (
-          <RestaurantCard content={placeData} type="form-selected" />
-        )}
-        <form>
-          <input
-            id="title"
-            type="text"
-            placeholder="Review Title"
-            onChange={handleChange}
-            value={title}
-          />
-          <input
-            id="recommended"
-            type="text"
-            placeholder="Recommended Dishes"
-            onChange={handleChange}
-            value={recommendedDishes}
-          />
-          <textarea
-            id="review"
-            rows="15"
-            placeholder="Enter Review"
-            onChange={handleChange}
-            value={review}
-          />
-          <input id="file" type="file" onChange={handleChange} />
-          <div className="form-rating">{ratingDisplay}</div>
-          {isError && <ErrorPill message={errorMessage} />}
-          <Button
-            id="form-submit"
-            label="Update Review"
-            handleClick={handleSubmit}
-          />
-          <Button
-            id="delete-review"
-            label={deleteWarning}
-            handleClick={handleDelete}
-            type="warning"
-          />
-        </form>
+        <div className="content form-popup-content">
+          {placeData && (
+            <RestaurantCard content={placeData} type="form-selected" />
+          )}
+          <form>
+            <input
+              id="title"
+              type="text"
+              placeholder="Review Title"
+              onChange={handleChange}
+              value={title}
+            />
+            <input
+              id="recommended"
+              type="text"
+              placeholder="Recommended Dishes"
+              onChange={handleChange}
+              value={recommendedDishes}
+            />
+            <textarea
+              id="review"
+              rows="15"
+              placeholder="Enter Review"
+              onChange={handleChange}
+              value={review}
+            />
+            <input id="file" type="file" onChange={handleChange} />
+            <div className="form-rating">{ratingDisplay}</div>
+            {isError && <ErrorPill message={errorMessage} />}
+            <Button
+              id="form-submit"
+              label="Update Review"
+              handleClick={handleSubmit}
+            />
+            <Button
+              id="delete-review"
+              label={deleteWarning}
+              handleClick={handleDelete}
+              type="warning"
+            />
+          </form>
+        </div>
       </div>
     </div>
   );
