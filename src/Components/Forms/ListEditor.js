@@ -13,34 +13,56 @@ import Button from "../../Details/Buttons/Button";
 import SearchBar from "../../Details/SearchBar/SearchBar";
 import VertFeed from "../Feeds/VertFeed";
 import RestaurantCard from "../../Details/Cards/Restaurant/RestaurantCard";
+import ErrorPill from "../../Details/Errors/ErrorPill";
+import StatusPill from "../../Details/Status/StatusPill";
 
-//---------- Others ----------//
+//---------- Helper Functions ----------//
 
-import "./Forms.css";
-import { UserContext } from "../../App";
 import {
   deleteMakanlist,
   removeFromMakanlist,
   updateMakanlist,
 } from "../../Utilities/fetch";
 import getLocation from "../../Utilities/location";
+import { useIsFirstRender } from "../../Utilities/utils";
+
+//---------- Others ----------//
+
+import { UserContext } from "../../App";
+import "./Forms.css";
 
 //------------------------------//
 
 const ListEditor = ({ handleClick, list, setList, data, setData }) => {
+  // Get initial variables & hooks
   const navigate = useNavigate();
   const { user } = useContext(UserContext);
   const { listId } = useParams();
+
+  // Form tab toggles
+  const [activeToggle, setActiveToggle] = useState("add-places");
+
+  // Form states
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [file, setFile] = useState(null);
-  const [activeToggle, setActiveToggle] = useState("add-places");
+  const [listDisplay, setListDisplay] = useState(null);
+
+  // Search & search result states
   const [location, setLocation] = useState(null);
   const [results, setResults] = useState(null);
   const [resultsDisplay, setResultsDisplay] = useState(null);
-  const [listDisplay, setListDisplay] = useState(null);
+
+  // Messages & Message Pills
   const [deleteListWarning, setDeleteListWarning] =
     useState("Delete Makanlist");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isError, setIsError] = useState(false);
+  const [hasStatus, setHasStatus] = useState(false);
+  const [statusMessage, setStatusMessage] = useState("");
+
+  // useRef to check for first render
+  const isFirstRender = useIsFirstRender();
 
   //---------- useEffect Functions ----------//
 
@@ -55,12 +77,27 @@ const ListEditor = ({ handleClick, list, setList, data, setData }) => {
     setDescription(data.description);
   }, [data]);
 
+  useEffect(() => {
+    if (!isFirstRender) {
+      setHasStatus(true);
+      setStatusMessage("Added to list!");
+    }
+    //eslint-disable-next-line
+  }, [list]);
+
   // Display Search Results
   useEffect(() => {
     let display = null;
     if (results) {
-      console.log(results);
-      display = results.map((foundPlace, index) => {
+      const filteredResults = results.filter((place) => {
+        for (let i = 0; i < list.length; i++) {
+          if (list[i].placeId === place.place_id) {
+            return false;
+          }
+        }
+        return true;
+      });
+      display = filteredResults.map((foundPlace, index) => {
         const content = {
           name: foundPlace.name,
           place_id: foundPlace.place_id,
@@ -78,8 +115,12 @@ const ListEditor = ({ handleClick, list, setList, data, setData }) => {
       });
     }
     setResultsDisplay(display);
+    if (display && display.length === 0) {
+      setErrorMessage("No places found!");
+      setIsError(true);
+    }
     //eslint-disable-next-line
-  }, [results]);
+  }, [results, list]);
 
   // Update List of Places in Editor
   useEffect(() => {
@@ -204,6 +245,8 @@ const ListEditor = ({ handleClick, list, setList, data, setData }) => {
         {activeToggle === "add-places" && (
           <div className="form-overflow">
             <SearchBar location={location} setResults={setResults} />
+            {hasStatus && <StatusPill message={statusMessage} />}
+            {isError && <ErrorPill message={errorMessage} />}
             <div className="form-overflow">{resultsDisplay}</div>
           </div>
         )}
