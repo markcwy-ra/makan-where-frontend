@@ -36,7 +36,6 @@ const HomeScreen = () => {
 
   const handleClick = (e) => {
     setTab(e.currentTarget.id);
-    console.log(tab);
   };
 
   return (

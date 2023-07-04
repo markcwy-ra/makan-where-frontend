@@ -84,7 +84,7 @@ const VertFeed = ({ data, type = "all", handleRemove }) => {
                   </div>
                 );
               }
-            } else return <></>;
+            }
           });
         } else {
           feedContent = <h2 className="feed-none">No activity yet!</h2>;

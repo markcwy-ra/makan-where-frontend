@@ -39,7 +39,7 @@ const RestaurantReview = () => {
       setData(response);
       const status = getUpvoteStatus({
         route,
-        id: response.data.id,
+        id: response.id,
         userId: user.id,
       });
       setHeart(status);
