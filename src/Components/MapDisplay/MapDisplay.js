@@ -21,6 +21,7 @@ const MapDisplay = () => {
 
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_MAPS_API_KEY,
+    mapsIds: ["c57992ed5055fe70"],
   });
 
   useEffect(() => {
@@ -81,6 +82,7 @@ const MapDisplay = () => {
             mapContainerClassName="map-display"
             center={location}
             options={{
+              mapId: "c57992ed5055fe70",
               streetViewControl: false,
               fullscreenControl: false,
               mapTypeControl: false,
