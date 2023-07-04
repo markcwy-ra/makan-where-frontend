@@ -56,11 +56,6 @@ const SearchScreen = () => {
           };
           return <RestaurantCard key={index} content={content} />;
         });
-        if (display[0] === undefined) {
-          setErrorMessage("No places found!");
-          setIsError(true);
-          setResults(null);
-        }
       } else if (activeToggle === "makanlists") {
         //eslint-disable-next-line
         display = results.map((foundList) => {
@@ -123,8 +118,6 @@ const SearchScreen = () => {
           db={activeToggle}
           location={location}
           setResults={setResults}
-          setIsError={setIsError}
-          setErrorMessage={setErrorMessage}
         />
         {isError && <ErrorPill message={errorMessage} />}
         <div className="content search-results">

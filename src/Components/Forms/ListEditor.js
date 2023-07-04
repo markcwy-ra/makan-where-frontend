@@ -10,7 +10,6 @@ import { storage } from "../../firebase";
 
 import Close from "../../Icons/Close.svg";
 import Button from "../../Details/Buttons/Button";
-import ErrorPill from "../../Details/Errors/ErrorPill";
 import SearchBar from "../../Details/SearchBar/SearchBar";
 import VertFeed from "../Feeds/VertFeed";
 import RestaurantCard from "../../Details/Cards/Restaurant/RestaurantCard";
@@ -32,8 +31,6 @@ const ListEditor = ({ handleClick, list, setList, data, setData }) => {
   const navigate = useNavigate();
   const { user } = useContext(UserContext);
   const { listId } = useParams();
-  const [errorMessage, setErrorMessage] = useState("");
-  const [isError, setIsError] = useState(false);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [file, setFile] = useState(null);
@@ -206,13 +203,7 @@ const ListEditor = ({ handleClick, list, setList, data, setData }) => {
         </div>
         {activeToggle === "add-places" && (
           <div className="form-overflow">
-            {/* {listDisplay} */}
-            <SearchBar
-              location={location}
-              setIsError={setIsError}
-              setErrorMessage={setErrorMessage}
-              setResults={setResults}
-            />
+            <SearchBar location={location} setResults={setResults} />
             <div className="form-overflow">{resultsDisplay}</div>
           </div>
         )}
@@ -238,7 +229,7 @@ const ListEditor = ({ handleClick, list, setList, data, setData }) => {
             <input id="file" type="file" onChange={handleChange} />
           </form>
         )}
-        {isError && <ErrorPill message={errorMessage} />}
+
         {activeToggle === "edit-details" && (
           <Button
             id="form-submit"

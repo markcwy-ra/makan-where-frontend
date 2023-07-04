@@ -1,0 +1,7 @@
+.status-pill {
+  background-color: var(--lightblue);
+  color: var(--blue);
+  text-align: center;
+  padding: 5px 15px;
+  border-radius: 20px;
+}

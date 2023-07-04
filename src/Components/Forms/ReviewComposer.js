@@ -187,48 +187,45 @@ const ReviewComposer = ({ handleToggle, place = null }) => {
             onClick={() => handleToggle("review-composer")}
           />
         </div>
-        {placeData ? (
-          <RestaurantCard content={placeData} type="form-selected" />
-        ) : (
-          <SearchBar
-            location={location}
-            setResults={setResults}
-            setIsError={setIsError}
-            setErrorMessage={setErrorMessage}
-          />
-        )}
-        {resultsDisplay && resultsDisplay}
-        <form>
-          <input
-            id="title"
-            type="text"
-            placeholder="Review Title"
-            onChange={handleChange}
-            value={title}
-          />
-          <input
-            id="recommended"
-            type="text"
-            placeholder="Recommended Dishes"
-            onChange={handleChange}
-            value={recommendedDishes}
-          />
-          <textarea
-            id="review"
-            rows="15"
-            placeholder="Enter Review"
-            onChange={handleChange}
-            value={review}
-          />
-          <input id="file" type="file" onChange={handleChange} />
-          <div className="form-rating">{ratingDisplay}</div>
-          {isError && <ErrorPill message={errorMessage} />}
-          <Button
-            id="form-submit"
-            label="Submit Review"
-            handleClick={handleSubmit}
-          />
-        </form>
+        <div className="content form-popup-content">
+          {placeData ? (
+            <RestaurantCard content={placeData} type="form-selected" />
+          ) : (
+            <SearchBar location={location} setResults={setResults} />
+          )}
+          {resultsDisplay && resultsDisplay}
+          <form>
+            <input
+              id="title"
+              type="text"
+              placeholder="Review Title"
+              onChange={handleChange}
+              value={title}
+            />
+            <input
+              id="recommended"
+              type="text"
+              placeholder="Recommended Dishes"
+              onChange={handleChange}
+              value={recommendedDishes}
+            />
+            <textarea
+              id="review"
+              rows="15"
+              placeholder="Enter Review"
+              onChange={handleChange}
+              value={review}
+            />
+            <input id="file" type="file" onChange={handleChange} />
+            <div className="form-rating">{ratingDisplay}</div>
+            {isError && <ErrorPill message={errorMessage} />}
+            <Button
+              id="form-submit"
+              label="Submit Review"
+              handleClick={handleSubmit}
+            />
+          </form>
+        </div>
       </div>
     </div>
   );

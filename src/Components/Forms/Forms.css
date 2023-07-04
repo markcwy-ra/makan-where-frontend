@@ -43,6 +43,12 @@
 
 /* Pop Up Form */
 
+.form-popup-content {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
 .form-popup form {
   display: flex;
   flex-direction: column;

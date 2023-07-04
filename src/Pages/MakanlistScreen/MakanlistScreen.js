@@ -37,7 +37,7 @@ const MakanlistScreen = () => {
     const getListData = async () => {
       const response = await getMakanlist({ userId, listId });
       setData(response);
-      const status = getUpvoteStatus({
+      const status = await getUpvoteStatus({
         route,
         id: listId,
         userId: user.id,
