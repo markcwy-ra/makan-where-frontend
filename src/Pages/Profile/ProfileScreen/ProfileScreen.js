@@ -26,6 +26,7 @@ import {
   unfollowUser,
 } from "../../../Utilities/fetch";
 import { logout } from "../../../Utilities/auth";
+import Fade from "../../../Details/Animation/Fade";
 
 //------------------------------//
 
@@ -156,7 +157,7 @@ const ProfileScreen = () => {
   //------------------------------//
 
   return (
-    <>
+    <Fade>
       {showMenu && <MenuProfile handleClick={handleMenu} />}
       {toggleEdit && (
         <ProfileEditor handleToggle={handleToggle} profileData={user} />
@@ -196,7 +197,7 @@ const ProfileScreen = () => {
         <HorzFeed type="reviews" data={reviews} />
         <HorzFeed type="makanlists" data={lists} />
       </div>
-    </>
+    </Fade>
   );
 };
 

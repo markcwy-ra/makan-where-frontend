@@ -9,18 +9,23 @@ import Close from "../../Icons/Close.svg";
 import StarFull from "../../Icons/StarFull.svg";
 import StarEmpty from "../../Icons/StarEmpty.svg";
 import ErrorPill from "../../Details/Errors/ErrorPill";
+import UploadImageButton from "../../Details/Buttons/UploadImageButton";
 
 //---------- Firebase ----------//
 
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { storage } from "../../firebase";
 
+//---------- Motion ----------//
+
+import SlideUp from "../../Details/Animation/SlideUp";
+import Fade from "../../Details/Animation/Fade";
+
 //---------- Others ----------//
 
 import "./Forms.css";
 import { UserContext } from "../../App";
 import { deleteReview, updateReview } from "../../Utilities/fetch";
-import UploadImageButton from "../../Details/Buttons/UploadImageButton";
 
 //------------------------------//
 
@@ -167,8 +172,8 @@ const ReviewEditor = ({ handleToggle, reviewData, setReviewData = null }) => {
   //------------------------------//
 
   return (
-    <div className="bg-overlay">
-      <div className="form-popup">
+    <Fade className="bg-overlay">
+      <SlideUp className="form-popup">
         <div className="form-popup-header">
           <h2>Edit Review</h2>
           <img
@@ -224,8 +229,8 @@ const ReviewEditor = ({ handleToggle, reviewData, setReviewData = null }) => {
             />
           </form>
         </div>
-      </div>
-    </div>
+      </SlideUp>
+    </Fade>
   );
 };
 

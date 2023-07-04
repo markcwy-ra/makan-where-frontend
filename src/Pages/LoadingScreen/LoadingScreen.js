@@ -1,10 +1,11 @@
+import Fade from "../../Details/Animation/Fade";
 import "./LoadingScreen.css";
 
 const LoadingScreen = () => {
   return (
-    <div className="content loading-screen">
+    <Fade className="content loading-screen">
       <h1>Loading</h1>
-    </div>
+    </Fade>
   );
 };
 

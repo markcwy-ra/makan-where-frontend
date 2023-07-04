@@ -19,6 +19,7 @@ import {
   getUpvoteStatus,
   handleHeart,
 } from "../../../Utilities/fetch";
+import Fade from "../../../Details/Animation/Fade";
 
 //------------------------------//
 
@@ -80,7 +81,7 @@ const RestaurantReview = () => {
     return <LoadingScreen />;
   } else {
     return (
-      <div className="content restaurant-review">
+      <Fade className="content restaurant-review">
         {reviewEditToggle && (
           <ReviewEditor
             handleToggle={handleEdit}
@@ -118,7 +119,7 @@ const RestaurantReview = () => {
           <div className="divider-dotted" />
           <p className="review-paragraph">{data.body}</p>
         </div>
-      </div>
+      </Fade>
     );
   }
 };

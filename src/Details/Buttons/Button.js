@@ -1,4 +1,5 @@
 import "./Button.css";
+import { motion } from "framer-motion";
 
 const Button = ({
   id,
@@ -15,7 +16,8 @@ const Button = ({
     buttonLabel = <p>{label}</p>;
   }
   return (
-    <button
+    <motion.button
+      whileHover={{ scale: 0.97 }}
       className={`button button-${size} ${
         isActive ? "button-active" : "button-inactive"
       } button-color-${type}`}
@@ -23,7 +25,7 @@ const Button = ({
       id={id}
     >
       {buttonLabel}
-    </button>
+    </motion.button>
   );
 };
 

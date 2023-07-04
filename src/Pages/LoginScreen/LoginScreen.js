@@ -4,6 +4,7 @@ import ErrorPill from "../../Details/Errors/ErrorPill";
 import { UserContext } from "../../App";
 import { login } from "../../Utilities/auth";
 import "./LoginScreen.css";
+import Fade from "../../Details/Animation/Fade";
 
 const LoginScreen = () => {
   const navigate = useNavigate();
@@ -65,7 +66,7 @@ const LoginScreen = () => {
   };
 
   return (
-    <div className="loginscreen">
+    <Fade className="loginscreen">
       <h1>Login</h1>
       <form>
         <input
@@ -106,7 +107,7 @@ const LoginScreen = () => {
           </u>
         </p>
       </div>
-    </div>
+    </Fade>
   );
 };
 

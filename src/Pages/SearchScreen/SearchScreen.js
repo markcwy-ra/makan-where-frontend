@@ -17,6 +17,8 @@ import MakanlistCard from "../../Details/Cards/Makanlist/MakanlistCard";
 import getLocation from "../../Utilities/location";
 import { UserContext } from "../../App";
 import "./SearchScreen.css";
+import Fade from "../../Details/Animation/Fade";
+// import geos from "geos-major";
 
 //------------------------------//
 
@@ -30,6 +32,9 @@ const SearchScreen = () => {
   // Error Handling
   const [errorMessage, setErrorMessage] = useState("");
   const [isError, setIsError] = useState(false);
+
+  // const geo = geos.country("CA");
+  // console.log(geo);
 
   const handleToggle = (e) => {
     setResults(null);
@@ -87,9 +92,11 @@ const SearchScreen = () => {
 
   return (
     <>
-      <Header icon="search">
-        <h1>Search</h1>
-      </Header>
+      <Fade>
+        <Header icon="search">
+          <h1>Search</h1>
+        </Header>
+      </Fade>
       <div className="content search-page">
         <div className="search-toggles">
           <Button

@@ -5,6 +5,7 @@ import Button from "../../../Details/Buttons/Button";
 import { UserContext } from "../../../App";
 import { getUserContent } from "../../../Utilities/fetch";
 import "./ContentScreen.css";
+import Fade from "../../../Details/Animation/Fade";
 
 const ContentScreen = () => {
   const navigate = useNavigate();
@@ -66,7 +67,7 @@ const ContentScreen = () => {
   };
 
   return (
-    <div className="follows-screen">
+    <Fade className="follows-screen">
       <h4 className="back-button" onClick={handleClick}>
         ← Back
       </h4>
@@ -100,7 +101,7 @@ const ContentScreen = () => {
           <h2 className="content-none">No Makanlists</h2>
         )}
       </div>
-    </div>
+    </Fade>
   );
 };
 

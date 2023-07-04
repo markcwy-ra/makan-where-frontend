@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import Button from "../../../Details/Buttons/Button";
 import { UserContext } from "../../../App";
 import { getUpvotedData } from "../../../Utilities/fetch";
+import Fade from "../../../Details/Animation/Fade";
 
 const FavouritesScreen = () => {
   const navigate = useNavigate();
@@ -39,7 +40,7 @@ const FavouritesScreen = () => {
   };
 
   return (
-    <div className="favourites-screen">
+    <Fade className="favourites-screen">
       <h4 className="back-button" onClick={handleClick}>
         ← Back
       </h4>
@@ -78,7 +79,7 @@ const FavouritesScreen = () => {
           <VertFeed data={reviews} type="reviews" />
         )}
       </div>
-    </div>
+    </Fade>
   );
 };
 

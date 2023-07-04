@@ -7,6 +7,7 @@ import Button from "../../../Details/Buttons/Button";
 import { getFollowers, getFollowing } from "../../../Utilities/fetch";
 import { UserContext } from "../../../App";
 import "./FollowsScreen.css";
+import Fade from "../../../Details/Animation/Fade";
 
 const FollowsScreen = () => {
   const navigate = useNavigate();
@@ -53,7 +54,7 @@ const FollowsScreen = () => {
   };
 
   return (
-    <div className="follows-screen">
+    <Fade className="follows-screen">
       <h4 className="back-button" onClick={handleClick}>
         ← Back
       </h4>
@@ -91,7 +92,7 @@ const FollowsScreen = () => {
             <h2 className="follows-none">Not following anyone</h2>
           )}
       </div>
-    </div>
+    </Fade>
   );
 };
 

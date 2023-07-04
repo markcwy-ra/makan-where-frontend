@@ -23,6 +23,22 @@
   padding: 20px;
 }
 
+@media (min-width: 700px) {
+  .bg-overlay {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .form-popup {
+    width: 600px;
+    height: 80%;
+    position: relative;
+    border-radius: 25px;
+    padding: 30px;
+  }
+}
+
 /* Pop Up Header */
 
 .form-popup-header {

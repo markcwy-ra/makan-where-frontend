@@ -17,6 +17,8 @@ import FavouritesScreen from "./Pages/Profile/FavouritesScreen/FavouritesScreen"
 import RestaurantScreen from "./Pages/Restaurant/RestaurantScreen/RestaurantScreen";
 import RestaurantReview from "./Pages/Restaurant/RestaurantReview/RestaurantReview";
 import MakanlistScreen from "./Pages/MakanlistScreen/MakanlistScreen";
+import FollowsScreen from "./Pages/Profile/FollowsScreen/FollowsScreen";
+import ContentScreen from "./Pages/Profile/ContentScreen/ContentScreen";
 
 //---------- Components ----------//
 
@@ -26,8 +28,6 @@ import MainOutlet from "./Outlets/MainOutlet";
 //---------- Others ----------//
 
 import "./App.css";
-import FollowsScreen from "./Pages/Profile/FollowsScreen/FollowsScreen";
-import ContentScreen from "./Pages/Profile/ContentScreen/ContentScreen";
 
 //---------- Context ----------//
 

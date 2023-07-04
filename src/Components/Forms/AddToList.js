@@ -1,4 +1,7 @@
+//---------- React ----------//
+
 import { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 //---------- Components ----------//
 
@@ -6,12 +9,16 @@ import Button from "../../Details/Buttons/Button";
 import ErrorPill from "../../Details/Errors/ErrorPill";
 import Close from "../../Icons/Close.svg";
 
+//---------- Motion ----------//
+
+import Fade from "../../Details/Animation/Fade";
+import SlideUp from "../../Details/Animation/SlideUp";
+
 //---------- Others ----------//
 
 import "./Forms.css";
 import { UserContext } from "../../App";
 import { addToMakanlist, getUserContent } from "../../Utilities/fetch";
-import { useNavigate } from "react-router-dom";
 
 //------------------------------//
 
@@ -69,8 +76,8 @@ const AddToList = ({ handleToggle, restaurantId }) => {
   };
 
   return (
-    <div className="bg-overlay">
-      <div className="form-popup">
+    <Fade className="bg-overlay">
+      <SlideUp className="form-popup">
         <div className="form-popup-header">
           <h2>Add to Makanlist</h2>
           <img
@@ -96,8 +103,8 @@ const AddToList = ({ handleToggle, restaurantId }) => {
           label="Add to Makanlist"
           handleClick={handleSubmit}
         />
-      </div>
-    </div>
+      </SlideUp>
+    </Fade>
   );
 };
 

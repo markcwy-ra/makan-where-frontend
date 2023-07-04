@@ -29,6 +29,7 @@ import {
   getUpvoteStatus,
   handleHeart,
 } from "../../../Utilities/fetch";
+import Fade from "../../../Details/Animation/Fade";
 
 //------------------------------//
 
@@ -163,7 +164,7 @@ const RestaurantScreen = () => {
     return <LoadingScreen />;
   } else {
     return (
-      <div className="content restaurant-page">
+      <Fade className="content restaurant-page">
         {reviewToggle && (
           <ReviewComposer handleToggle={handleToggle} place={data} />
         )}
@@ -228,7 +229,7 @@ const RestaurantScreen = () => {
           <HorzFeed type="reviews" data={reviews} />
           <HorzFeed type="makanlists" data={makanlists} />
         </div>
-      </div>
+      </Fade>
     );
   }
 };

@@ -1,3 +1,5 @@
+//---------- React ----------//
+
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -11,13 +13,18 @@ import { storage } from "../../firebase";
 import Button from "../../Details/Buttons/Button";
 import ErrorPill from "../../Details/Errors/ErrorPill";
 import Close from "../../Icons/Close.svg";
+import UploadImageButton from "../../Details/Buttons/UploadImageButton";
+
+//---------- Motion ----------//
+
+import Fade from "../../Details/Animation/Fade";
+import SlideUp from "../../Details/Animation/SlideUp";
 
 //---------- Others ----------//
 
 import "./Forms.css";
 import { UserContext } from "../../App";
 import { createMakanlist } from "../../Utilities/fetch";
-import UploadImageButton from "../../Details/Buttons/UploadImageButton";
 
 //------------------------------//
 
@@ -81,8 +88,8 @@ const ListComposer = ({ handleToggle }) => {
   };
 
   return (
-    <div className="bg-overlay">
-      <div className="form-popup">
+    <Fade className="bg-overlay">
+      <SlideUp className="form-popup">
         <div className="form-popup-header">
           <h2>Create New Makanlist</h2>
           <img
@@ -121,8 +128,8 @@ const ListComposer = ({ handleToggle }) => {
           label="Create Makanlist"
           handleClick={handleSubmit}
         />
-      </div>
-    </div>
+      </SlideUp>
+    </Fade>
   );
 };
 

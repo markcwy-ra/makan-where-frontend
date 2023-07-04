@@ -4,6 +4,7 @@ import ErrorPill from "../../Details/Errors/ErrorPill";
 import StatusPill from "../../Details/Status/StatusPill";
 import "./LoginScreen.css";
 import { resetPassword, sendResetEmail } from "../../Utilities/auth";
+import Fade from "../../Details/Animation/Fade";
 
 const ResetPassword = () => {
   const navigate = useNavigate();
@@ -85,7 +86,7 @@ const ResetPassword = () => {
   };
 
   return (
-    <div className="loginscreen">
+    <Fade className="loginscreen">
       <h1>Reset Password</h1>
       {!sentEmail ? (
         <form>
@@ -164,7 +165,7 @@ const ResetPassword = () => {
           </u>
         </p>
       </div>
-    </div>
+    </Fade>
   );
 };
 

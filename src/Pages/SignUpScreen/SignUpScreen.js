@@ -6,6 +6,7 @@ import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { storage } from "../../firebase";
 import { signup } from "../../Utilities/auth.js";
 import "./SignUpScreen.css";
+import Fade from "../../Details/Animation/Fade";
 // import { getNames } from "country-list";
 
 const SignUpScreen = () => {
@@ -131,7 +132,7 @@ const SignUpScreen = () => {
   };
 
   return (
-    <div className="signupscreen">
+    <Fade className="signupscreen">
       <h1>Sign Up</h1>
       <form>
         <input
@@ -190,7 +191,7 @@ const SignUpScreen = () => {
           </u>
         </p>
       </div>
-    </div>
+    </Fade>
   );
 };
 

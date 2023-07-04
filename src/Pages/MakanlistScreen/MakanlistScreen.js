@@ -19,6 +19,7 @@ import {
   getUpvoteStatus,
   handleHeart,
 } from "../../Utilities/fetch";
+import Fade from "../../Details/Animation/Fade";
 
 //------------------------------//
 
@@ -81,7 +82,7 @@ const MakanlistScreen = () => {
     return <LoadingScreen />;
   } else {
     return (
-      <div className="content">
+      <Fade className="content">
         {edit && (
           <ListEditor
             handleClick={handleEdit}
@@ -126,7 +127,7 @@ const MakanlistScreen = () => {
           <div className="divider-line" />
           <VertFeed data={list} type="restaurants" />
         </div>
-      </div>
+      </Fade>
     );
   }
 };

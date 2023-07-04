@@ -1,5 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
+import { AnimatePresence } from "framer-motion";
 
 //---------- Components ----------//
 
@@ -73,8 +74,10 @@ const MainOutlet = () => {
   if (user) {
     return (
       <div className="App">
-        {reviewToggle && <ReviewComposer handleToggle={handleToggle} />}
-        {listToggle && <ListComposer handleToggle={handleToggle} />}
+        <AnimatePresence>
+          {reviewToggle && <ReviewComposer handleToggle={handleToggle} />}
+          {listToggle && <ListComposer handleToggle={handleToggle} />}
+        </AnimatePresence>
         <NavBar handleToggle={handleToggle} />
         <Outlet />
       </div>

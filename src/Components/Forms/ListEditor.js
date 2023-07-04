@@ -15,6 +15,7 @@ import VertFeed from "../Feeds/VertFeed";
 import RestaurantCard from "../../Details/Cards/Restaurant/RestaurantCard";
 import ErrorPill from "../../Details/Errors/ErrorPill";
 import StatusPill from "../../Details/Status/StatusPill";
+import UploadImageButton from "../../Details/Buttons/UploadImageButton";
 
 //---------- Helper Functions ----------//
 
@@ -26,11 +27,15 @@ import {
 import getLocation from "../../Utilities/location";
 import { useIsFirstRender } from "../../Utilities/utils";
 
+//---------- Motion ----------//
+
+import Fade from "../../Details/Animation/Fade";
+import SlideUp from "../../Details/Animation/SlideUp";
+
 //---------- Others ----------//
 
 import { UserContext } from "../../App";
 import "./Forms.css";
-import UploadImageButton from "../../Details/Buttons/UploadImageButton";
 
 //------------------------------//
 
@@ -209,8 +214,8 @@ const ListEditor = ({ handleClick, list, setList, data, setData }) => {
   //------------------------------//
 
   return (
-    <div className="bg-overlay">
-      <div className="form-popup">
+    <Fade className="bg-overlay">
+      <SlideUp className="form-popup">
         <div className="form-popup-header">
           <h2>Edit Makanlist</h2>
           <img
@@ -293,8 +298,8 @@ const ListEditor = ({ handleClick, list, setList, data, setData }) => {
             type="warning"
           />
         )}
-      </div>
-    </div>
+      </SlideUp>
+    </Fade>
   );
 };
 

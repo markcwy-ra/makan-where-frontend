@@ -8,18 +8,22 @@ import { UserContext } from "../../App";
 import Close from "../../Icons/Close.svg";
 import Button from "../../Details/Buttons/Button";
 import ErrorPill from "../../Details/Errors/ErrorPill";
+import UploadImageButton from "../../Details/Buttons/UploadImageButton";
 
 //---------- Firebase ----------//
 
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { storage } from "../../firebase";
 
+//---------- Motion ----------//
+
+import Fade from "../../Details/Animation/Fade";
+import SlideUp from "../../Details/Animation/SlideUp";
+
 //---------- Others ----------//
 
 import "./Forms.css";
 import { updateUserProfile } from "../../Utilities/fetch";
-import UploadImageButton from "../../Details/Buttons/UploadImageButton";
-// import { getNames } from "country-list";
 
 //------------------------------//
 
@@ -33,19 +37,8 @@ const ProfileEditor = ({ handleToggle, profileData }) => {
   const [file, setFile] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
   const [isError, setIsError] = useState(false);
-  // const [countryList, setCountryList] = useState(null);
-  // const [country, setCountry] = useState("");
 
   useEffect(() => {
-    // const countries = getNames();
-    // const countryOptions = countries.map((country, i) => (
-    //   <option key={i} value={country}>
-    //     {country}
-    //   </option>
-    // ));
-    // setCountryList(countryOptions);
-    // setCountry(profileData.country);
-
     setUsername(profileData.username);
     setEmail(profileData.email);
   }, [profileData]);
@@ -103,17 +96,14 @@ const ProfileEditor = ({ handleToggle, profileData }) => {
       case "file":
         setFile(e.currentTarget.files[0]);
         break;
-      // case "country":
-      //   setCountry(value);
-      //   break;
       default:
         break;
     }
   };
 
   return (
-    <div className="bg-overlay">
-      <div className="form-popup">
+    <Fade className="bg-overlay">
+      <SlideUp className="form-popup">
         <div className="form-popup-header">
           <h2>Edit Profile</h2>
           <img
@@ -178,8 +168,8 @@ const ProfileEditor = ({ handleToggle, profileData }) => {
           label="Save Edits"
           handleClick={handleSubmit}
         />
-      </div>
-    </div>
+      </SlideUp>
+    </Fade>
   );
 };
 
