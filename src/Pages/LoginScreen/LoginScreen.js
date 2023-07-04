@@ -65,7 +65,7 @@ const LoginScreen = () => {
   };
 
   return (
-    <div className="content loginscreen">
+    <div className="loginscreen">
       <h1>Login</h1>
       <form>
         <input

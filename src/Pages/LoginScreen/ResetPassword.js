@@ -85,7 +85,7 @@ const ResetPassword = () => {
   };
 
   return (
-    <div className="content loginscreen">
+    <div className="loginscreen">
       <h1>Reset Password</h1>
       {!sentEmail ? (
         <form>

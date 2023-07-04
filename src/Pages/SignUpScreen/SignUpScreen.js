@@ -131,7 +131,7 @@ const SignUpScreen = () => {
   };
 
   return (
-    <div className="content signupscreen">
+    <div className="signupscreen">
       <h1>Sign Up</h1>
       <form>
         <input
