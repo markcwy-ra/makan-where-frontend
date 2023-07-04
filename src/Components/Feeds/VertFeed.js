@@ -1,14 +1,16 @@
 import "./Feeds.css";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import RestaurantCard from "../../Details/Cards/Restaurant/RestaurantCard";
 import MakanlistCard from "../../Details/Cards/Makanlist/MakanlistCard";
 import ReviewCard from "../../Details/Cards/Review/ReviewCard";
 import UserCard from "../../Details/Cards/Users/UserCard";
 import { capitalise } from "../../Utilities/formatting";
 import Close from "../../Icons/Close.svg";
+import { UserContext } from "../../App";
 
 const VertFeed = ({ data, type = "all", handleRemove }) => {
   const [feed, setFeed] = useState(null);
+  const { user } = useContext(UserContext);
 
   useEffect(() => {
     if (data) {
@@ -52,7 +54,8 @@ const VertFeed = ({ data, type = "all", handleRemove }) => {
             if (
               !(
                 data.activityType.includes("removed") ||
-                data.activityType.includes("deleted")
+                data.activityType.includes("deleted") ||
+                data.activityType.includes("unfollow")
               )
             ) {
               if (data.targetType === "makanlistrestaurant") {
@@ -64,6 +67,21 @@ const VertFeed = ({ data, type = "all", handleRemove }) => {
                     </p>
 
                     <RestaurantCard content={data.targetDetails.restaurant} />
+                  </div>
+                );
+              } else if (data.targetType === "user") {
+                return (
+                  <div className="following-feed-card" key={index}>
+                    <p>
+                      @{data.user.username} started following{" "}
+                      {data.targetDetails.username === user.username
+                        ? "you"
+                        : `@
+                      ${data.targetDetails.username}`}
+                    </p>
+                    {data.targetDetails.username !== user.username && (
+                      <UserCard content={data.targetDetails} />
+                    )}
                   </div>
                 );
               } else {

@@ -8,6 +8,12 @@
   padding: 20px;
 }
 
+@media (min-width: 700px) {
+  #header {
+    padding-top: 0;
+  }
+}
+
 #header .header-title {
   display: flex;
   gap: 15px;

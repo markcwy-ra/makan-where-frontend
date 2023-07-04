@@ -2,9 +2,12 @@ import "./MakanlistCard.css";
 import "../Cards.css";
 import { useNavigate } from "react-router-dom";
 import User from "../../../Icons/User.svg";
+import { useContext } from "react";
+import { UserContext } from "../../../App";
 
 const MakanlistCard = ({ config = "full", content }) => {
   const navigate = useNavigate();
+  const { user } = useContext(UserContext);
 
   let styling;
   if (content.photoUrl) {
@@ -41,7 +44,14 @@ const MakanlistCard = ({ config = "full", content }) => {
     >
       <div className={`card-makanlist-${config}-title`}>
         {cardTitle}
-        {config === "full" && <h4>Makanlist by @{content.user.username}</h4>}
+        {config === "full" && (
+          <h4>
+            Makanlist by{" "}
+            {content.user.username === user.username
+              ? "you"
+              : `@${content.user.username}`}
+          </h4>
+        )}
       </div>
 
       {config === "full" && (

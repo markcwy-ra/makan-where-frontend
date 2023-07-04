@@ -10,11 +10,13 @@
   --lightblue: #9edef5;
   --orange: rgb(234, 140, 18);
   --site-p-bottom: 140px;
+  --inner-p: 15px;
 }
 
 @media (min-width: 700px) {
   :root {
     --site-p-bottom: 40px;
+    --inner-p: 20px;
   }
 }
 
@@ -36,17 +38,24 @@ body #root {
   position: relative;
 }
 
+.content {
+  overflow: auto;
+  flex: 1;
+}
+
 @media (min-width: 700px) {
   .App {
     width: 80%;
     margin-left: auto;
+    padding-top: 40px;
     padding-right: 5%;
   }
-}
 
-.content {
-  overflow: auto;
-  flex: 1;
+  .content {
+    border-radius: 25px 25px 0 0;
+    overflow: auto;
+    flex: 1;
+  }
 }
 
 .content::-webkit-scrollbar {
@@ -76,6 +85,7 @@ h3 {
 
 h4 {
   font-size: 12px;
+  line-height: 1.2;
   letter-spacing: 0.01em;
 }
 
@@ -85,10 +95,20 @@ h6 {
 }
 
 p {
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 500;
-  line-height: 1.5;
+  line-height: 1.3;
   letter-spacing: 0.01em;
+}
+
+@media (min-width: 700px) {
+  h1 {
+    font-size: 48px;
+  }
+
+  h2 {
+    font-size: 30px;
+  }
 }
 
 img {
