@@ -56,12 +56,17 @@
   align-items: center;
 }
 
+.custom-file-outline {
+  border: 1px solid white;
+}
+
 .file-attached {
   color: black;
   background-color: var(--lightblue);
 }
 
-.form-popup form input[type="file"] {
+.form-popup form input[type="file"],
+.signupscreen form input[type="file"] {
   display: none;
 }
 

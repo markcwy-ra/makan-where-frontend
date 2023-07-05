@@ -7,15 +7,18 @@ import UserCard from "../../Details/Cards/Users/UserCard";
 import { capitalise } from "../../Utilities/formatting";
 import Close from "../../Icons/Close.svg";
 import { UserContext } from "../../App";
+import { useNavigate } from "react-router-dom";
 
 const VertFeed = ({ data, type = "all", handleRemove }) => {
+  const navigate = useNavigate();
   const [feed, setFeed] = useState(null);
   const { user } = useContext(UserContext);
 
   useEffect(() => {
+    let feedContent = [];
     if (data) {
       console.log(data);
-      let feedContent = [];
+
       if (type === "restaurants") {
         if (data.length !== 0) {
           feedContent = data.map((data, index) => (
@@ -62,7 +65,10 @@ const VertFeed = ({ data, type = "all", handleRemove }) => {
               if (data.targetType === "makanlistrestaurant") {
                 return (
                   <div className="following-feed-card" key={index}>
-                    <p>
+                    <p
+                      className="clickable"
+                      onClick={() => navigate(`/user/${data.user.id}`)}
+                    >
                       @{data.user.username} {data.activityType} a Restaurant to{" "}
                       {data.targetDetails.makanlist.title}
                     </p>
@@ -73,7 +79,10 @@ const VertFeed = ({ data, type = "all", handleRemove }) => {
               } else if (data.targetType === "user") {
                 return (
                   <div className="following-feed-card" key={index}>
-                    <p>
+                    <p
+                      className="clickable"
+                      onClick={() => navigate(`/user/${data.user.id}`)}
+                    >
                       @{data.user.username} started following{" "}
                       {data.targetDetails.username === user.username
                         ? "you"
@@ -88,7 +97,10 @@ const VertFeed = ({ data, type = "all", handleRemove }) => {
               } else {
                 return (
                   <div className="following-feed-card" key={index}>
-                    <p>
+                    <p
+                      className="clickable"
+                      onClick={() => navigate(`/user/${data.user.id}`)}
+                    >
                       @{data.user.username} {data.activityType} a{" "}
                       {capitalise(data.targetType)}
                     </p>
@@ -124,9 +136,10 @@ const VertFeed = ({ data, type = "all", handleRemove }) => {
           feedContent = <h2 className="feed-none">No activity yet!</h2>;
         }
       }
-      setFeed(feedContent);
+    } else {
+      feedContent = <h2 className="feed-none">Loading...</h2>;
     }
-
+    setFeed(feedContent);
     //eslint-disable-next-line
   }, [data, type]);
 

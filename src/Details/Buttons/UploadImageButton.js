@@ -2,14 +2,16 @@ import { ReactComponent as ImageIcon } from "../../Icons/Image.svg";
 import { ReactComponent as DoneIcon } from "../../Icons/Done.svg";
 import "./Button.css";
 
-const UploadImageButton = ({ file, handleChange, label }) => {
+const UploadImageButton = ({ file, handleChange, label, type = "default" }) => {
   return (
     <>
       <label
         htmlFor="file"
-        className={`custom-file-upload clickable ${file && "file-attached"}`}
+        className={`custom-file-upload clickable ${
+          type === "outline" && "custom-file-outline"
+        } ${file && "file-attached"}`}
       >
-        {file ? file.name : label}
+        <p>{file ? file.name : label}</p>
         {file ? (
           <DoneIcon className={`upload-icon-after`} />
         ) : (

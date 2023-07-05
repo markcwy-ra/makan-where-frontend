@@ -12,6 +12,7 @@ import ListComposer from "../Components/Forms/ListComposer";
 
 import { UserContext } from "../App";
 import { getCurrentUser, getNewTokens } from "../Utilities/auth";
+import LoadingScreen from "../Pages/LoadingScreen/LoadingScreen";
 
 //------------------------------//
 
@@ -83,7 +84,7 @@ const MainOutlet = () => {
       </div>
     );
   } else {
-    return <h1>Loading</h1>;
+    return <LoadingScreen />;
   }
 };
 

@@ -9,6 +9,7 @@ import "./SignUpScreen.css";
 import Fade from "../../Details/Animation/Fade";
 import { getCodeList } from "country-list";
 import geos from "geos-major";
+import UploadImageButton from "../../Details/Buttons/UploadImageButton";
 
 const SignUpScreen = () => {
   const navigate = useNavigate();
@@ -40,10 +41,10 @@ const SignUpScreen = () => {
 
     const countryOptions = Object.keys(countries).map((code) => (
       <option key={code} value={code}>
-        {countries[code]}
+        <p>{countries[code]}</p>
       </option>
     ));
-    console.log(countryOptions);
+
     setCountryList(countryOptions);
   }, []);
 
@@ -176,15 +177,15 @@ const SignUpScreen = () => {
           onChange={handleChange}
           value={repeatPassword}
         />
-        <input
-          id="file"
-          type="file"
-          placeholder="Add Profile Image"
-          onChange={handleChange}
+        <UploadImageButton
+          file={file}
+          handleChange={handleChange}
+          type="outline"
+          label="Add Profile Image"
         />
         <select id="country" onChange={handleChange} required defaultValue="">
           <option value="" disabled>
-            Choose your country
+            <p>Choose your country</p>
           </option>
           {countryList}
         </select>
