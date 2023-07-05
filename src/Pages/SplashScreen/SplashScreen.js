@@ -1,7 +1,19 @@
 import { useNavigate } from "react-router-dom";
 import Button from "../../Details/Buttons/Button";
-import "./SplashScreen.css";
 import Fade from "../../Details/Animation/Fade";
+import "./SplashScreen.css";
+import { randomIndex } from "../../Utilities/utils";
+
+const images = [
+  "https://i.imgur.com/7JX5nqm.jpg",
+  "https://i.imgur.com/ciSqZkv.jpg",
+  "https://i.imgur.com/hwu8nZ3.jpg",
+  "https://i.imgur.com/YzyslzF.jpg",
+  "https://i.imgur.com/CzmORKO.jpg",
+  "https://i.imgur.com/nerEAWX.jpg",
+];
+
+const index = randomIndex(images.length);
 
 const SplashScreen = () => {
   const navigate = useNavigate();
@@ -25,7 +37,7 @@ const SplashScreen = () => {
           <Button id="signup" label="Sign Up" handleClick={handleClick} />
         </div>
       </Fade>
-      <img src="https://i.imgur.com/7JX5nqm.jpg" alt="Makan Where: Food!" />
+      <img src={images[index]} alt="Makan Where: Food!" />
     </div>
   );
 };

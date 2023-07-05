@@ -15,13 +15,6 @@
   color: white;
 }
 
-@media (min-width: 700px) {
-  .signupscreen {
-    padding: 100px;
-    gap: 30px;
-  }
-}
-
 .signupscreen-buttons {
   display: flex;
   flex-direction: column;
@@ -33,6 +26,16 @@
   flex-direction: column;
   width: 100%;
   gap: 10px;
+}
+
+@media (min-width: 700px) {
+  .signupscreen {
+    padding: 100px;
+    gap: 30px;
+  }
+  .signupscreen form {
+    width: 600px;
+  }
 }
 
 .signupscreen form input {

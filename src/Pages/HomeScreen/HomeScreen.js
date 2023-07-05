@@ -37,7 +37,6 @@ const HomeScreen = () => {
   const handleClick = (e) => {
     setTab(e.currentTarget.id);
   };
-
   return (
     <>
       <Fade>

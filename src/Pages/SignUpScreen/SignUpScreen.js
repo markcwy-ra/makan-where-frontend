@@ -7,7 +7,8 @@ import { storage } from "../../firebase";
 import { signup } from "../../Utilities/auth.js";
 import "./SignUpScreen.css";
 import Fade from "../../Details/Animation/Fade";
-// import { getNames } from "country-list";
+import { getCodeList } from "country-list";
+import geos from "geos-major";
 
 const SignUpScreen = () => {
   const navigate = useNavigate();
@@ -22,17 +23,20 @@ const SignUpScreen = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [isError, setIsError] = useState(false);
 
-  // const [countryList, setCountryList] = useState(null);
-  // const [country, setCountry] = useState("");
-  // useEffect(() => {
-  //   const countries = getNames();
-  //   const countryOptions = countries.map((country, i) => (
-  //     <option key={i} value={country}>
-  //       {country}
-  //     </option>
-  //   ));
-  //   setCountryList(countryOptions);
-  // }, []);
+  const [countryList, setCountryList] = useState(null);
+  const [country, setCountry] = useState("");
+
+  useEffect(() => {
+    const countries = getCodeList();
+
+    const countryOptions = Object.keys(countries).map((code) => (
+      <option key={code} value={code}>
+        {countries[code]}
+      </option>
+    ));
+    console.log(countryOptions);
+    setCountryList(countryOptions);
+  }, []);
 
   useEffect(() => {
     if (file) {
@@ -71,9 +75,9 @@ const SignUpScreen = () => {
       case "file":
         setFile(e.currentTarget.files[0]);
         break;
-      // case "country":
-      //   setCountry(value);
-      //   break;
+      case "country":
+        setCountry(value);
+        break;
       default:
         break;
     }
@@ -89,6 +93,12 @@ const SignUpScreen = () => {
       setIsError(true);
     } else {
       try {
+        const countryData = geos.country(country);
+        const countryName = countryData.countryName;
+        const countryCoords = {
+          lat: countryData.latitude,
+          lng: countryData.longitude,
+        };
         let photoUrl = null;
         if (file) {
           const fileRef = ref(storage, `profile/${username}`);
@@ -169,12 +179,12 @@ const SignUpScreen = () => {
           placeholder="Add Profile Image"
           onChange={handleChange}
         />
-        {/* <select id="country" onChange={handleChange} required defaultValue="">
+        <select id="country" onChange={handleChange} required defaultValue="">
           <option value="" disabled>
             Choose your country
           </option>
           {countryList}
-        </select> */}
+        </select>
         <button
           className={isFormComplete ? "signup-active" : "signup-inactive"}
           onClick={handleSignUp}

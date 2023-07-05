@@ -18,7 +18,6 @@ import getLocation from "../../Utilities/location";
 import { UserContext } from "../../App";
 import "./SearchScreen.css";
 import Fade from "../../Details/Animation/Fade";
-// import geos from "geos-major";
 
 //------------------------------//
 
@@ -32,9 +31,6 @@ const SearchScreen = () => {
   // Error Handling
   const [errorMessage, setErrorMessage] = useState("");
   const [isError, setIsError] = useState(false);
-
-  // const geo = geos.country("CA");
-  // console.log(geo);
 
   const handleToggle = (e) => {
     setResults(null);

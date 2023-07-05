@@ -8,4 +8,8 @@ const useIsFirstRender = () => {
   return isFirstRender.current;
 };
 
-export { useIsFirstRender };
+const randomIndex = (arrayLength) => {
+  return Math.floor(Math.random() * arrayLength);
+};
+
+export { useIsFirstRender, randomIndex };
