@@ -28,6 +28,7 @@ const RestaurantCard = ({
       if (type === "form-result") {
         setData(response);
       } else if (type === "list-add") {
+        console.log(response);
         await addToMakanlist({
           userId: user.id,
           listId,

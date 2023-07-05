@@ -7,14 +7,14 @@
   justify-content: space-between;
   gap: 5px;
   padding: var(--inner-p);
-  border-radius: 25px;
+  border-radius: var(--card-roundness);
   position: relative;
   border: 1px solid rgb(207, 207, 207);
 }
 
 .card-user-full-title {
   width: 60%;
-  color: #0078ef;
+  color: var(--blue);
   display: flex;
   flex-direction: column;
   gap: 10px;

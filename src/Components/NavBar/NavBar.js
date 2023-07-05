@@ -14,6 +14,7 @@ import Map from "../../Icons/Map.svg";
 import Add from "../../Icons/Add.svg";
 import Search from "../../Icons/Search.svg";
 import User from "../../Icons/User.svg";
+import { ReactComponent as Logo } from "../../Icons/Logo/LogoIcon.svg";
 
 //---------- Others ----------//
 
@@ -81,6 +82,9 @@ const NavBar = ({ handleToggle }) => {
           alt="Profile Button"
         />
         {activeIcon === "/profile" && <div className="navbar-active" />}
+      </div>
+      <div className="nav-logo">
+        <Logo />
       </div>
     </div>
   );

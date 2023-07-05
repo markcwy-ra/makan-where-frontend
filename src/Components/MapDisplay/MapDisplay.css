@@ -1,6 +1,6 @@
 .map-display {
   background-color: var(--blue);
-  border-radius: 25px 25px 0 0;
+  border-radius: var(--card-roundness) var(--card-roundness) 0 0;
   height: 100%;
   width: 100%;
   z-index: 0;
@@ -13,11 +13,11 @@
 
 .map-search-button {
   position: absolute;
-  top: 20px;
+  top: var(--outer-p);
   left: 50%;
   margin-left: -90px;
   z-index: 5;
   width: 180px;
-  border-radius: 25px;
+  border-radius: var(--card-roundness);
   box-shadow: rgba(100, 100, 111, 0.4) 0px 7px 29px 0px;
 }

@@ -1,7 +1,7 @@
 .button {
   width: 100%;
   border: none;
-  border-radius: 25px;
+  border-radius: var(--card-roundness);
   color: white;
   cursor: pointer;
 }
@@ -46,7 +46,7 @@
   width: 100%;
   padding: 15px 20px;
   height: 50px;
-  border-radius: 25px;
+  border-radius: var(var(--card-roundness));
   border: none;
   color: white;
   background-color: var(--blue);

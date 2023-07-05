@@ -2,17 +2,17 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
-  padding: 0px 20px 20px 20px;
+  padding: 0px var(--outer-p) var(--outer-p) var(--outer-p);
 }
 
 .profile-buttons {
   display: flex;
-  gap: 10px;
+  gap: var(--card-gap);
 }
 
 .profile-page-feeds {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: var(--outer-p);
   padding-bottom: var(--site-p-bottom);
 }

@@ -1,12 +1,25 @@
 import { useContext, useEffect, useState } from "react";
-import { getSearchResults } from "../../Utilities/fetch";
-import Search from "../../Icons/Search.svg";
+
+//---------- Components ----------//
+
 import StatusPill from "../Status/StatusPill";
 import ErrorPill from "../Errors/ErrorPill";
-import "./SearchBar.css";
-import getLocation from "../../Utilities/location";
-import { UserContext } from "../../App";
+import Search from "../../Icons/Search.svg";
 import { ReactComponent as LocationServices } from "../../Icons/LocationServices.svg";
+import { ReactComponent as Loading } from "../../Icons/Loading.svg";
+
+//---------- Helper Functions ----------//
+
+import getLocation from "../../Utilities/location";
+import { getSearchResults } from "../../Utilities/fetch";
+
+//---------- Others ----------//
+
+import { UserContext } from "../../App";
+import "./SearchBar.css";
+import "../../Pages/LoadingScreen/LoadingScreen.css";
+
+//------------------------------//
 
 const SearchBar = ({ db = "places", setResults }) => {
   const { user } = useContext(UserContext);
@@ -18,6 +31,7 @@ const SearchBar = ({ db = "places", setResults }) => {
   const [isError, setIsError] = useState(false);
   const [location, setLocation] = useState(null);
   const [hasLocation, setHasLocation] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   let placeholderCopy;
 
@@ -35,12 +49,15 @@ const SearchBar = ({ db = "places", setResults }) => {
       break;
   }
 
+  //-------------- useEffect Functions ------------//
+
   useEffect(() => {
     setQuery("");
     setIsError(false);
     setHasStatus(false);
   }, [db]);
-  console.log(location);
+
+  // Set state location to user's selection
   useEffect(() => {
     if (db === "places") {
       if (hasLocation) {
@@ -54,16 +71,27 @@ const SearchBar = ({ db = "places", setResults }) => {
     }
   }, [db, hasLocation, user]);
 
+  // Set search location to location state
   useEffect(() => {
     if (location) {
       setSearchLocation(location);
-    } else {
-      setSearchLocation({
-        lat: 1.3521,
-        lng: 103.8198,
-      });
     }
   }, [location]);
+
+  // Check if location is still loading
+  useEffect(() => {
+    if (
+      hasLocation &&
+      location.lat === user.location.lat &&
+      location.lng === user.location.lng
+    ) {
+      setIsLoading(true);
+    } else {
+      setIsLoading(false);
+    }
+  }, [location, user, hasLocation]);
+
+  //-------------- Action Functions ------------//
 
   const handleChange = (e) => {
     setIsError(false);
@@ -158,7 +186,13 @@ const SearchBar = ({ db = "places", setResults }) => {
             }`}
             onClick={handleLocation}
           >
-            <LocationServices />
+            {isLoading ? (
+              <div className="rotate">
+                <Loading />
+              </div>
+            ) : (
+              <LocationServices />
+            )}
           </div>
         )}
       </div>

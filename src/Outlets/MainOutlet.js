@@ -32,7 +32,6 @@ const MainOutlet = () => {
         if (!user) {
           try {
             const returnedUser = await getCurrentUser();
-            console.log(returnedUser);
             setUser({
               username: returnedUser.username,
               email: returnedUser.email,

@@ -39,6 +39,10 @@ const SearchScreen = () => {
   // Get current location
 
   useEffect(() => {
+    setIsError(false);
+  }, [results]);
+
+  useEffect(() => {
     let display = null;
     if (results) {
       setIsError(false);

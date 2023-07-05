@@ -24,7 +24,6 @@ import {
   removeFromMakanlist,
   updateMakanlist,
 } from "../../Utilities/fetch";
-import getLocation from "../../Utilities/location";
 import { useIsFirstRender } from "../../Utilities/utils";
 
 //---------- Motion ----------//
@@ -55,7 +54,6 @@ const ListEditor = ({ handleClick, list, setList, data, setData }) => {
   const [listDisplay, setListDisplay] = useState(null);
 
   // Search & search result states
-  const [location, setLocation] = useState(null);
   const [results, setResults] = useState(null);
   const [resultsDisplay, setResultsDisplay] = useState(null);
 
@@ -72,11 +70,6 @@ const ListEditor = ({ handleClick, list, setList, data, setData }) => {
 
   //---------- useEffect Functions ----------//
 
-  // Get Location
-  useEffect(() => {
-    getLocation(setLocation);
-  }, []);
-
   // Prefill Editor with current details
   useEffect(() => {
     setTitle(data.title);
@@ -90,6 +83,10 @@ const ListEditor = ({ handleClick, list, setList, data, setData }) => {
     }
     //eslint-disable-next-line
   }, [list]);
+
+  useEffect(() => {
+    setHasStatus(false);
+  }, [results]);
 
   // Display Search Results
   useEffect(() => {
@@ -250,7 +247,7 @@ const ListEditor = ({ handleClick, list, setList, data, setData }) => {
         </div>
         {activeToggle === "add-places" && (
           <div className="form-overflow">
-            <SearchBar location={location} setResults={setResults} />
+            <SearchBar setResults={setResults} />
             {hasStatus && <StatusPill message={statusMessage} />}
             {isError && <ErrorPill message={errorMessage} />}
             <div className="form-overflow">{resultsDisplay}</div>

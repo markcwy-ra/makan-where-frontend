@@ -2,13 +2,13 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: var(--card-gap);
 }
 
 .search-bar-field {
   width: 100%;
   display: flex;
-  gap: 10px;
+  gap: var(--card-gap);
 }
 
 .search-bar-field form {
@@ -21,7 +21,7 @@
   width: 50px;
   height: 50px;
   aspect-ratio: 1;
-  border-radius: 25px;
+  border-radius: var(--card-roundness);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -41,7 +41,7 @@
   width: 100%;
   padding: 15px 20px;
   height: 50px;
-  border-radius: 25px;
+  border-radius: var(--card-roundness);
   border: none;
   background-color: var(--lightblue);
 }

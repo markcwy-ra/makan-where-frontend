@@ -1,13 +1,13 @@
 .feed-list {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  padding: 0 20px;
+  gap: var(--card-gap);
+  padding: 0 var(--outer-p);
   padding-bottom: var(--site-p-bottom);
 }
 
 .back-button {
-  padding-top: 20px;
+  padding-top: var(--outer-p);
   cursor: pointer;
   color: var(--blue);
 }
@@ -15,10 +15,10 @@
 .favourites-screen {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: var(--card-gap);
   height: 100%;
   flex: 1;
-  padding: 0 20px;
+  padding: 0 var(--outer-p);
 }
 
 .favourites-screen h1 {

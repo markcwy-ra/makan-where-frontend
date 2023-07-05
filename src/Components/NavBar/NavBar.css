@@ -1,12 +1,12 @@
 #nav {
   background-color: white;
   position: absolute;
-  bottom: 40px;
+  bottom: var(--outer-p);
   left: 50%;
   margin-left: -172.5px;
   width: 345px;
   height: 60px;
-  border-radius: 25px;
+  border-radius: var(--card-roundness);
   padding: 15px 25px;
   box-shadow: rgba(100, 100, 111, 0.4) 0px 7px 29px 0px;
   display: flex;
@@ -44,11 +44,15 @@
   border: 3px solid var(--blue);
 }
 
+#nav .nav-logo {
+  display: none;
+}
+
 @media (min-width: 700px) {
   #nav {
     position: fixed;
     background-color: white;
-    top: 40px;
+    top: 125px;
     left: calc(10% - 30px);
     margin: 0;
     width: 60px;
@@ -61,5 +65,14 @@
 
   #nav .navbar-active {
     bottom: -10px;
+  }
+
+  #nav .nav-logo {
+    display: flex;
+    top: -120px;
+    position: absolute;
+    width: 60px;
+    aspect-ratio: 1;
+    color: var(--blue);
   }
 }

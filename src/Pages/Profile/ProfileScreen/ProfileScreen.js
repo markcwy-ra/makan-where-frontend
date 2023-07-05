@@ -158,12 +158,14 @@ const ProfileScreen = () => {
   //------------------------------//
 
   return (
-    <Fade>
+    <>
       {showMenu && <MenuProfile handleClick={handleMenu} />}
       {toggleEdit && (
         <ProfileEditor handleToggle={handleToggle} profileData={user} />
       )}
-      <Header icon="profile" userData={userData} handleClick={handleMenu} />
+      <Fade>
+        <Header icon="profile" userData={userData} handleClick={handleMenu} />
+      </Fade>
       <div className="profile-page-header">
         <div className="divider-line" />
         <StatsBar
@@ -198,7 +200,7 @@ const ProfileScreen = () => {
         <HorzFeed type="reviews" data={reviews} />
         <HorzFeed type="makanlists" data={lists} />
       </div>
-    </Fade>
+    </>
   );
 };
 

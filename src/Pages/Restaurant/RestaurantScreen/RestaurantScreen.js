@@ -109,15 +109,48 @@ const RestaurantScreen = () => {
 
     if (data && data.openinghours) {
       // Get opening hours
-      const hourDisplay = data.openinghours.map((day) => (
-        <div key={day.day} className="restaurant-content-details-row">
-          <p>{day.day}</p> <p>•</p>
-          <p>
-            {formatToAmPm(day.openingTime)} - {formatToAmPm(day.closingTime)}
-          </p>
-        </div>
-      ));
+      let hourDisplay;
+      if (data.openinghours.length !== 0) {
+        const cleanedHours = {};
 
+        data.openinghours.forEach((row) => {
+          if (cleanedHours[row.day]) {
+            cleanedHours[row.day] = [
+              ...cleanedHours[row.day],
+              `${formatToAmPm(row.openingTime)} - ${formatToAmPm(
+                row.closingTime
+              )}`,
+            ];
+          } else {
+            cleanedHours[row.day] = [
+              `${formatToAmPm(row.openingTime)} - ${formatToAmPm(
+                row.closingTime
+              )}`,
+            ];
+          }
+        });
+        console.log(cleanedHours);
+        const dayorder = [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+          "Sunday",
+        ];
+
+        hourDisplay = dayorder.map((day) => (
+          <div key={day} className="restaurant-content-details-row">
+            <p>{day}</p> <p>•</p>
+            <p>
+              {cleanedHours[day] ? cleanedHours[day].join(`   &   `) : "Closed"}
+            </p>
+          </div>
+        ));
+      } else {
+        hourDisplay = null;
+      }
       setOpeningHours(hourDisplay);
       getData(data.id);
     }

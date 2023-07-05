@@ -15,6 +15,7 @@
 
 .rotate {
   animation: rotate 5s linear infinite;
+  transform-origin: 50% 50%;
 }
 @keyframes rotate {
   to {

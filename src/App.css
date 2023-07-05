@@ -9,14 +9,18 @@
   --blue: #0078ef;
   --lightblue: #9edef5;
   --orange: rgb(234, 140, 18);
-  --site-p-bottom: 140px;
+  --site-p-bottom: 100px;
   --inner-p: 15px;
+  --outer-p: 20px;
+  --card-gap: 10px;
+  --card-roundness: 25px;
 }
 
 @media (min-width: 700px) {
   :root {
     --site-p-bottom: 40px;
     --inner-p: 20px;
+    --inner-p-large: 30px;
   }
 }
 

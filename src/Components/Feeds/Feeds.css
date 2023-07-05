@@ -1,16 +1,16 @@
 .horz-feed {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: var(--card-gap);
   position: relative;
   width: 100%;
-  padding-left: 20px;
+  padding-left: var(--outer-p);
 }
 
 .vert-feed {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: var(--card-gap);
   position: relative;
   width: 100%;
   overflow: none;
@@ -26,10 +26,10 @@
 .horz-feed-cards {
   display: flex;
   width: 100%;
-  gap: 10px;
+  gap: var(--card-gap);
   overflow-x: scroll;
-  padding-bottom: 10px;
-  padding-right: 20px;
+  padding-bottom: var(--card-gap);
+  padding-right: var(--outer-p);
 }
 
 .horz-feed-cards::-webkit-scrollbar {
@@ -42,7 +42,7 @@
 }
 
 .horz-feed-cards::-webkit-scrollbar-track {
-  margin-right: 20px;
+  margin-right: var(--outer-p);
   background-color: rgb(255, 255, 255);
   border-radius: 4px;
 }
@@ -51,10 +51,10 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: var(--card-gap);
   background-color: var(--lightblue);
-  padding: 15px;
-  border-radius: 25px;
+  padding: var(--inner-p);
+  border-radius: var(--card-roundness);
 }
 
 .list-edit-card {
@@ -64,15 +64,15 @@
 
 .list-edit-card-delete {
   position: absolute;
-  top: 20px;
-  right: 20px;
+  top: var(--inner-p);
+  right: var(--inner-p);
   z-index: 5;
 }
 
 .feed-none {
   background-color: var(--lightblue);
-  padding: 20px;
-  border-radius: 25px;
+  padding: var(--inner-p);
+  border-radius: var(--card-roundness);
   text-align: left;
   width: 100%;
 }

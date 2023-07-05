@@ -5,7 +5,7 @@
   position: sticky;
   background-color: rgba(255, 255, 255, 0.9);
   backdrop-filter: blur(50px);
-  padding: 20px;
+  padding: var(--outer-p);
 }
 
 @media (min-width: 700px) {
@@ -26,7 +26,8 @@
 
 #header .header-profilepic {
   object-fit: cover;
-  border-radius: 22.5px;
+  border-radius: 25px;
   box-shadow: rgba(100, 100, 111, 0.3) 0px 4px 10px 0px;
   border: 2px solid white;
+  aspect-ratio: 1;
 }

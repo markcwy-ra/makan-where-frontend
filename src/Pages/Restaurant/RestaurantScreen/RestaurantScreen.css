@@ -8,7 +8,7 @@
   height: 400px;
   min-height: 400px;
   background-color: var(--blue);
-  border-radius: 0 0 25px 25px;
+  border-radius: 0 0 var(--card-roundness) var(--card-roundness);
   overflow: hidden;
 }
 
@@ -50,7 +50,7 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
-  padding: 20px;
+  padding: var(--outer-p);
 }
 
 .restaurant-content-details-row {
