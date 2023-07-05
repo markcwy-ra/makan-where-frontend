@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 //---------- Components ----------//
 
@@ -24,6 +24,7 @@ import Fade from "../../Details/Animation/Fade";
 //------------------------------//
 
 const MakanlistScreen = () => {
+  const navigate = useNavigate();
   const { user } = useContext(UserContext);
   const { userId, listId } = useParams();
   const [heart, setHeart] = useState(false);
@@ -78,6 +79,12 @@ const MakanlistScreen = () => {
     setEdit((prev) => !prev);
   };
 
+  const handleClick = async (e) => {
+    if (e.currentTarget.id === "user-link") {
+      navigate(`/user/${data.user.id}`);
+    }
+  };
+
   if (!data) {
     return <LoadingScreen />;
   } else {
@@ -106,7 +113,13 @@ const MakanlistScreen = () => {
         >
           <div className="makanlist-title">
             <h1>{data.title}</h1>
-            <h4>Makanlist by {isUser ? "you" : `@${data.user.username}`}</h4>
+            <h4
+              id={isUser ? "" : "user-link"}
+              className={isUser ? "" : "clickable"}
+              onClick={handleClick}
+            >
+              Makanlist by {isUser ? "you" : `@${data.user.username}`}
+            </h4>
           </div>
           <div className="makanlist-title-buttons">
             {user.id === Number(userId) && (

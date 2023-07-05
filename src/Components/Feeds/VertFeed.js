@@ -14,6 +14,7 @@ const VertFeed = ({ data, type = "all", handleRemove }) => {
 
   useEffect(() => {
     if (data) {
+      console.log(data);
       let feedContent = [];
       if (type === "restaurants") {
         if (data.length !== 0) {
@@ -109,7 +110,7 @@ const VertFeed = ({ data, type = "all", handleRemove }) => {
           feedContent = <h2 className="feed-none">No activity yet!</h2>;
         }
       } else {
-        if (data.length !== 0) {
+        if (data.topActivities.length !== 0) {
           feedContent = data.topActivities.map((data, index) => {
             if (data.targetType === "makanlist") {
               return <MakanlistCard key={index} content={data.target} />;
@@ -125,6 +126,7 @@ const VertFeed = ({ data, type = "all", handleRemove }) => {
       }
       setFeed(feedContent);
     }
+
     //eslint-disable-next-line
   }, [data, type]);
 

@@ -2,8 +2,8 @@
 
 import axios from "axios";
 import { bothTokens, logoutToken } from "./token.js";
-// const url = process.env.REACT_APP_BACKEND_URL;
-const url = process.env.REACT_APP_HOSTED_BACKEND_URL;
+const url = process.env.REACT_APP_BACKEND_URL;
+// const url = process.env.REACT_APP_HOSTED_BACKEND_URL;
 
 const login = async ({ email, password }) => {
   const response = await axios.post(`${url}/auth/sign-in`, { email, password });

@@ -38,7 +38,7 @@ const RestaurantReview = () => {
     const getData = async () => {
       const response = await getReview({ placeId, userId });
       setData(response);
-      const status = getUpvoteStatus({
+      const status = await getUpvoteStatus({
         route,
         id: response.id,
         userId: user.id,
@@ -73,8 +73,12 @@ const RestaurantReview = () => {
     setReviewEditToggle((prev) => !prev);
   };
 
-  const handleClick = () => {
-    navigate(`/places/${data.restaurant.placeId}`);
+  const handleClick = async (e) => {
+    if (e.currentTarget.id === "user-link") {
+      navigate(`/user/${data.user.id}`);
+    } else if (e.currentTarget.id === "restaurant-link") {
+      navigate(`/places/${data.restaurant.placeId}`);
+    }
   };
 
   if (!data) {
@@ -96,7 +100,13 @@ const RestaurantReview = () => {
         </div>
         <div className="review-content">
           <div className="review-content-details">
-            <h4 onClick={handleClick}>{data.restaurant.name}</h4>
+            <h4
+              className="clickable"
+              id="restaurant-link"
+              onClick={handleClick}
+            >
+              {data.restaurant.name}
+            </h4>
             <div className="review-title">
               <h1>{data.title}</h1>
               <div className="review-title-buttons">
@@ -108,8 +118,13 @@ const RestaurantReview = () => {
             <div className="review-content-details-row">
               <Rating score={data.rating} />
             </div>
-
-            <h4>Review by {isUser ? "you" : `@${data.user.username}`}</h4>
+            <h4
+              id={isUser ? "" : "user-link"}
+              className={isUser ? "" : "clickable"}
+              onClick={handleClick}
+            >
+              Review by {isUser ? "you" : `@${data.user.username}`}
+            </h4>
           </div>
           <div className="divider-dotted" />
           <div className="review-content-details">

@@ -26,6 +26,15 @@ const SignUpScreen = () => {
   const [countryList, setCountryList] = useState(null);
   const [country, setCountry] = useState("");
 
+  const countryData = geos.country(country);
+  console.log(countryData);
+  // const countryName = countryData.countryName;
+  // const countryCode = countryData.countryCode;
+  // const countryCoords = {
+  //   lat: countryData.latitude,
+  //   lng: countryData.longitude,
+  // };
+
   useEffect(() => {
     const countries = getCodeList();
 
@@ -93,12 +102,6 @@ const SignUpScreen = () => {
       setIsError(true);
     } else {
       try {
-        const countryData = geos.country(country);
-        const countryName = countryData.countryName;
-        const countryCoords = {
-          lat: countryData.latitude,
-          lng: countryData.longitude,
-        };
         let photoUrl = null;
         if (file) {
           const fileRef = ref(storage, `profile/${username}`);
