@@ -7,7 +7,8 @@ import { getNewTokens } from "./auth";
 //---------- Constants ----------//
 
 let token = localStorage.getItem("token");
-const url = process.env.REACT_APP_BACKEND_URL;
+// const url = process.env.REACT_APP_BACKEND_URL;
+const url = process.env.REACT_APP_HOSTED_BACKEND_URL;
 
 axios.interceptors.response.use(
   (response) => response,
