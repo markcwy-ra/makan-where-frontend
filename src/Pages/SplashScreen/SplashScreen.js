@@ -3,6 +3,7 @@ import Button from "../../Details/Buttons/Button";
 import Fade from "../../Details/Animation/Fade";
 import "./SplashScreen.css";
 import { randomIndex } from "../../Utilities/utils";
+import { ReactComponent as LogoFull } from "../../Icons/Logo/LogoFullHorz.svg";
 
 const images = [
   "https://i.imgur.com/7JX5nqm.jpg",
@@ -30,14 +31,18 @@ const SplashScreen = () => {
   return (
     <div className="content splashscreen">
       <Fade className="splashscreen-popup">
-        <h4>MAKAN WHERE</h4>
+        <LogoFull className="splashscreen-logo" />
         <h1>For the love of food.</h1>
         <div className="splashscreen-popup-buttons">
           <Button id="login" label="Login" handleClick={handleClick} />
           <Button id="signup" label="Sign Up" handleClick={handleClick} />
         </div>
       </Fade>
-      <img src={images[index]} alt="Makan Where: Food!" />
+      <img
+        className="splashscreen-bg"
+        src={images[index]}
+        alt="Makan Where: Food!"
+      />
     </div>
   );
 };

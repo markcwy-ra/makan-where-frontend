@@ -1,6 +1,23 @@
 .loading-screen {
   background-color: var(--blue);
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+  gap: 30px;
+  color: white;
+}
+
+.loading-screen h3 {
+  text-transform: uppercase;
+  letter-spacing: 0.4em;
+}
+
+.rotate {
+  animation: rotate 5s linear infinite;
+}
+@keyframes rotate {
+  to {
+    transform: rotate(360deg);
+  }
 }
