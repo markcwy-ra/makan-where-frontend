@@ -63,3 +63,16 @@
   flex-direction: column;
   gap: 5px;
 }
+
+.recommended-pill {
+  border: 1px solid var(--blue);
+  width: fit-content;
+  padding: 5px 13px;
+  border-radius: 20px;
+}
+
+.recommended-pills-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}

@@ -93,7 +93,6 @@ const ProfileScreen = () => {
       if (userId) {
         userProfile(userId);
       } else {
-        console.log(user, " inside userProfile");
         userProfile(user.id);
       }
     }

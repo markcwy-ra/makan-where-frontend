@@ -87,6 +87,7 @@
   border-radius: var(--card-roundness);
   border: none;
   background-color: var(--lightblue);
+  resize: none;
 }
 
 .form-popup form input::placeholder,

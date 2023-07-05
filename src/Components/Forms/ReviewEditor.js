@@ -191,14 +191,15 @@ const ReviewEditor = ({ handleToggle, reviewData, setReviewData = null }) => {
             <input
               id="title"
               type="text"
+              maxLength="40"
               placeholder="Review Title"
               onChange={handleChange}
               value={title}
             />
-            <input
+            <textarea
               id="recommended"
-              type="text"
-              placeholder="Recommended Dishes"
+              rows="3"
+              placeholder="Recommended Dishes (Separated by commas)"
               onChange={handleChange}
               value={recommendedDishes}
             />

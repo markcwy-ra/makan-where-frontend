@@ -95,7 +95,11 @@ const MainOutlet = () => {
       </div>
     );
   } else {
-    return <LoadingScreen />;
+    return (
+      <div className="App">
+        <LoadingScreen />
+      </div>
+    );
   }
 };
 

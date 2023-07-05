@@ -19,6 +19,7 @@ import {
   getUpvoteStatus,
   handleHeart,
 } from "../../../Utilities/fetch";
+import { capitalise } from "../../../Utilities/formatting";
 import Fade from "../../../Details/Animation/Fade";
 
 //------------------------------//
@@ -32,6 +33,7 @@ const RestaurantReview = () => {
   const [upvoteCount, setUpvoteCount] = useState(null);
   const [isUser, setIsUser] = useState(false);
   const [reviewEditToggle, setReviewEditToggle] = useState(false);
+  const [recommendations, setRecommendations] = useState(null);
   const route = "reviews";
 
   useEffect(() => {
@@ -50,6 +52,12 @@ const RestaurantReview = () => {
   }, [user]);
 
   useEffect(() => {
+    if (Number(userId) === user.id) {
+      setIsUser(true);
+    }
+  }, [user, userId]);
+
+  useEffect(() => {
     if (data) {
       getUpvoteCount({
         route,
@@ -60,10 +68,21 @@ const RestaurantReview = () => {
   }, [data, heart]);
 
   useEffect(() => {
-    if (Number(userId) === user.id) {
-      setIsUser(true);
+    if (data) {
+      const recommendedDishes = data.recommendedDishes
+        .split(",")
+        .map((value, i) => {
+          const dish = value.trim();
+          return (
+            <div key={i} className="recommended-pill">
+              <p>{capitalise(dish)}</p>
+            </div>
+          );
+        });
+
+      setRecommendations(recommendedDishes);
     }
-  }, [user, userId]);
+  }, [data]);
 
   const handleUpvote = () => {
     handleHeart({ route, id: data.id, userId: user.id, heart, setHeart });
@@ -93,7 +112,7 @@ const RestaurantReview = () => {
             setReviewData={setData}
           />
         )}
-        <div className="review-cover">
+        <div className={`review-cover${data.photoUrl ? "" : "-nopic"}`}>
           {data.photoUrl && (
             <img src={data.photoUrl} alt={data.restaurant.name} />
           )}
@@ -128,8 +147,8 @@ const RestaurantReview = () => {
           </div>
           <div className="divider-dotted" />
           <div className="review-content-details">
-            <h4>Recommended Items</h4>
-            <p>{data.recommendedDishes}</p>
+            <h4>Recommended Dishes</h4>
+            <div className="recommended-pills-container">{recommendations}</div>
           </div>
           <div className="divider-dotted" />
           <p className="review-paragraph">{data.body}</p>

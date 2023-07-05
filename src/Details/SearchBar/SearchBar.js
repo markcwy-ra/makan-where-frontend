@@ -37,7 +37,7 @@ const SearchBar = ({ db = "places", setResults }) => {
 
   switch (db) {
     case "places":
-      placeholderCopy = "Search by cuisine or place name";
+      placeholderCopy = "Search for a place";
       break;
     case "makanlists":
       placeholderCopy = "Search by Makanlist name";
@@ -182,7 +182,7 @@ const SearchBar = ({ db = "places", setResults }) => {
         {db === "places" && (
           <div
             className={`search-bar-location-${
-              hasLocation ? "active" : "inactive"
+              hasLocation && !isLoading ? "active" : "inactive"
             }`}
             onClick={handleLocation}
           >
