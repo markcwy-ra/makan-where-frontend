@@ -17,8 +17,6 @@ const VertFeed = ({ data, type = "all", handleRemove }) => {
   useEffect(() => {
     let feedContent = [];
     if (data) {
-      console.log(data);
-
       if (type === "restaurants") {
         if (data.length !== 0) {
           feedContent = data.map((data, index) => (
@@ -136,7 +134,7 @@ const VertFeed = ({ data, type = "all", handleRemove }) => {
           feedContent = <h2 className="feed-none">No activity yet!</h2>;
         }
       }
-    } else {
+    } else if (type === "following-feed" || type === "featured-feed") {
       feedContent = <h2 className="feed-none">Loading...</h2>;
     }
     setFeed(feedContent);

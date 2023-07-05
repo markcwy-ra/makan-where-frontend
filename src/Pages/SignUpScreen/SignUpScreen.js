@@ -1,15 +1,29 @@
 import { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import ErrorPill from "../../Details/Errors/ErrorPill";
-import { UserContext } from "../../App";
+
+//---------- Firebase ----------//
+
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { storage } from "../../firebase";
-import { signup } from "../../Utilities/auth.js";
-import "./SignUpScreen.css";
+
+//---------- Motion ----------//
+
 import Fade from "../../Details/Animation/Fade";
+
+//---------- Components ----------//
+
+import UploadImageButton from "../../Details/Buttons/UploadImageButton";
+import ErrorPill from "../../Details/Errors/ErrorPill";
+
+//---------- Others ----------//
+
 import { getCodeList } from "country-list";
 import geos from "geos-major";
-import UploadImageButton from "../../Details/Buttons/UploadImageButton";
+import { UserContext } from "../../App";
+import { signup } from "../../Utilities/auth.js";
+import "./SignUpScreen.css";
+
+//------------------------------//
 
 const SignUpScreen = () => {
   const navigate = useNavigate();
@@ -27,21 +41,12 @@ const SignUpScreen = () => {
   const [countryList, setCountryList] = useState(null);
   const [country, setCountry] = useState("");
 
-  const countryData = geos.country(country);
-  console.log(countryData);
-  // const countryName = countryData.countryName;
-  // const countryCode = countryData.countryCode;
-  // const countryCoords = {
-  //   lat: countryData.latitude,
-  //   lng: countryData.longitude,
-  // };
-
   useEffect(() => {
     const countries = getCodeList();
 
     const countryOptions = Object.keys(countries).map((code) => (
       <option key={code} value={code}>
-        <p>{countries[code]}</p>
+        {countries[code]}
       </option>
     ));
 
@@ -58,12 +63,12 @@ const SignUpScreen = () => {
   }, [file]);
 
   useEffect(() => {
-    if (username && email && password && repeatPassword) {
+    if (username && email && password && repeatPassword && country) {
       setIsFormComplete(true);
     } else {
       setIsFormComplete(false);
     }
-  }, [username, email, password, repeatPassword]);
+  }, [username, email, password, repeatPassword, country]);
 
   const handleChange = (e) => {
     setIsError(false);
@@ -109,12 +114,18 @@ const SignUpScreen = () => {
           await uploadBytesResumable(fileRef, file);
           photoUrl = await getDownloadURL(fileRef);
         }
+        const countryData = geos.country(country);
         if ((file && photoUrl !== null) || !file) {
+          console.log("here");
           const response = await signup({
             username,
             email,
             password,
             photoUrl,
+            country: countryData.countryName,
+            countryCode: countryData.countryCode,
+            latitude: countryData.latitude,
+            longitude: countryData.longitude,
           });
           localStorage.setItem("token", response.token);
           localStorage.setItem("refreshToken", response.refreshToken);
@@ -123,6 +134,11 @@ const SignUpScreen = () => {
             email: response.email,
             id: response.id,
             photoUrl: response.photoUrl,
+            location: {
+              name: response.location.name,
+              lat: response.location.latitude,
+              lng: response.location.longitude,
+            },
           });
           navigate("/home");
         }

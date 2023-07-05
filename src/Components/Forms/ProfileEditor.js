@@ -24,6 +24,8 @@ import SlideUp from "../../Details/Animation/SlideUp";
 
 import "./Forms.css";
 import { updateUserProfile } from "../../Utilities/fetch";
+import { getCodeList } from "country-list";
+import geos from "geos-major";
 
 //------------------------------//
 
@@ -38,10 +40,27 @@ const ProfileEditor = ({ handleToggle, profileData }) => {
   const [errorMessage, setErrorMessage] = useState("");
   const [isError, setIsError] = useState(false);
 
+  const [countryList, setCountryList] = useState(null);
+  const [country, setCountry] = useState("");
+
   useEffect(() => {
-    setUsername(profileData.username);
-    setEmail(profileData.email);
-  }, [profileData]);
+    setUsername(user.username);
+    setEmail(user.email);
+    setCountry(user.location.name);
+    console.log(user);
+  }, [user]);
+
+  useEffect(() => {
+    const countries = getCodeList();
+
+    const countryOptions = Object.keys(countries).map((code) => (
+      <option key={code} value={code}>
+        {countries[code]}
+      </option>
+    ));
+
+    setCountryList(countryOptions);
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -52,6 +71,7 @@ const ProfileEditor = ({ handleToggle, profileData }) => {
         await uploadBytesResumable(fileRef, file);
         photoUrl = await getDownloadURL(fileRef);
       }
+      const countryData = geos.country(country);
       const updatedUser = await updateUserProfile({
         userId: user.id,
         username,
@@ -59,12 +79,22 @@ const ProfileEditor = ({ handleToggle, profileData }) => {
         currentPassword,
         newPassword,
         photoUrl,
+        country: countryData.countryName,
+        countryCode: countryData.countryCode,
+        latitude: countryData.latitude,
+        longitude: countryData.longitude,
       });
+      console.log(updatedUser);
       setUser({
-        username: updatedUser.username,
-        email: updatedUser.email,
-        id: updatedUser.id,
-        photoUrl: updatedUser.photoUrl,
+        username: updatedUser.updatedUser.username,
+        email: updatedUser.updatedUser.email,
+        id: updatedUser.updatedUser.id,
+        photoUrl: updatedUser.updatedUser.photoUrl,
+        location: {
+          name: updatedUser.location.name,
+          lat: updatedUser.location.latitude,
+          lng: updatedUser.location.longitude,
+        },
       });
       handleToggle();
     } catch (err) {
@@ -95,6 +125,9 @@ const ProfileEditor = ({ handleToggle, profileData }) => {
         break;
       case "file":
         setFile(e.currentTarget.files[0]);
+        break;
+      case "country":
+        setCountry(value);
         break;
       default:
         break;
@@ -155,12 +188,19 @@ const ProfileEditor = ({ handleToggle, profileData }) => {
             handleChange={handleChange}
             label="Upload a Profile Image"
           />
-          {/* <select id="country" onChange={handleChange} required value={country}>
-            <option value="" disabled>
-              Choose your country
-            </option>
-            {countryList}
-          </select> */}
+          {country && countryList && (
+            <select
+              id="country"
+              onChange={handleChange}
+              required
+              defaultValue=""
+            >
+              <option value="" disabled>
+                Choose your country
+              </option>
+              {countryList}
+            </select>
+          )}
         </form>
         {isError && <ErrorPill message={errorMessage} />}
         <Button

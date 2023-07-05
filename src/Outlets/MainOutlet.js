@@ -32,23 +32,35 @@ const MainOutlet = () => {
         if (!user) {
           try {
             const returnedUser = await getCurrentUser();
+            console.log(returnedUser);
             setUser({
               username: returnedUser.username,
               email: returnedUser.email,
               id: returnedUser.id,
               photoUrl: returnedUser.photoUrl,
               token: token,
+              location: {
+                name: returnedUser.location.name,
+                lat: returnedUser.location.latitude,
+                lng: returnedUser.location.longitude,
+              },
             });
           } catch (err) {
             console.log("Access token expired! Getting new tokens.");
             try {
               const returnedUser = await getNewTokens();
+
               setUser({
                 username: returnedUser.data.username,
                 email: returnedUser.data.email,
                 id: returnedUser.data.id,
                 photoUrl: returnedUser.data.photoUrl,
                 token: returnedUser.token,
+                location: {
+                  name: returnedUser.location.name,
+                  lat: returnedUser.location.latitude,
+                  lng: returnedUser.location.longitude,
+                },
               });
             } catch {
               console.log("Refresh token expired! Login required.");

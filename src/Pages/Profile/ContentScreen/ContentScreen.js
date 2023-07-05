@@ -14,6 +14,7 @@ const ContentScreen = () => {
   const [activeToggle, setActiveToggle] = useState("reviews");
   const [reviews, setReviews] = useState(null);
   const [lists, setLists] = useState(null);
+  console.log(reviews);
 
   useEffect(() => {
     if (content === "reviews" || content === "makanlists") {
@@ -91,13 +92,13 @@ const ContentScreen = () => {
         {activeToggle === "reviews" && (
           <VertFeed data={reviews} type="reviews" />
         )}
-        {activeToggle === "reviews" && reviews && reviews.length === 0 && (
+        {activeToggle === "reviews" && !reviews && (
           <h2 className="content-none">No reviews</h2>
         )}
         {activeToggle === "makanlists" && lists && (
           <VertFeed data={lists} type="makanlists" />
         )}
-        {activeToggle === "makanlists" && lists && lists.length === 0 && (
+        {activeToggle === "makanlists" && !lists && (
           <h2 className="content-none">No Makanlists</h2>
         )}
       </div>

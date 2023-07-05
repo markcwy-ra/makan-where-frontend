@@ -30,15 +30,22 @@ const LoginScreen = () => {
         const response = await login({ email, password });
         localStorage.setItem("token", response.token);
         localStorage.setItem("refreshToken", response.refreshToken);
+        console.log(response);
         setUser({
           username: response.username,
           email: response.email,
           id: response.id,
           photoUrl: response.photoUrl,
           token: response.token,
+          location: {
+            name: response.location.name,
+            lat: response.location.latitude,
+            lng: response.location.longitude,
+          },
         });
         navigate("/home");
       } catch (err) {
+        console.log(err);
         const code = err.response.status;
         if (code === 401) {
           setErrorMessage("This account does not exist.");

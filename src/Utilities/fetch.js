@@ -141,10 +141,25 @@ const updateUserProfile = async ({
   currentPassword,
   newPassword,
   photoUrl,
+  country,
+  countryCode,
+  latitude,
+  longitude,
 }) => {
+  console.log(userId);
   const response = await axios.put(
     `${url}/users/${userId}/update`,
-    { username, email, currentPassword, newPassword, photoUrl },
+    {
+      username,
+      email,
+      currentPassword,
+      newPassword,
+      photoUrl,
+      country,
+      countryCode,
+      latitude,
+      longitude,
+    },
     bearerToken(token)
   );
   return response.data.data;

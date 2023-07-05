@@ -14,7 +14,6 @@ import MakanlistCard from "../../Details/Cards/Makanlist/MakanlistCard";
 
 //---------- Others ----------//
 
-import getLocation from "../../Utilities/location";
 import { UserContext } from "../../App";
 import "./SearchScreen.css";
 import Fade from "../../Details/Animation/Fade";
@@ -23,7 +22,6 @@ import Fade from "../../Details/Animation/Fade";
 
 const SearchScreen = () => {
   const { user } = useContext(UserContext);
-  const [location, setLocation] = useState(null);
   // Search Type and Results
   const [activeToggle, setActiveToggle] = useState("places");
   const [results, setResults] = useState(null);
@@ -39,9 +37,6 @@ const SearchScreen = () => {
   };
 
   // Get current location
-  useEffect(() => {
-    getLocation(setLocation);
-  }, []);
 
   useEffect(() => {
     let display = null;
@@ -117,11 +112,7 @@ const SearchScreen = () => {
             handleClick={handleToggle}
           />
         </div>
-        <SearchBar
-          db={activeToggle}
-          location={location}
-          setResults={setResults}
-        />
+        <SearchBar db={activeToggle} setResults={setResults} />
         {isError && <ErrorPill message={errorMessage} />}
         <div className="content search-results">
           {resultsDisplay && resultsDisplay}

@@ -1,17 +1,23 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { getSearchResults } from "../../Utilities/fetch";
 import Search from "../../Icons/Search.svg";
 import StatusPill from "../Status/StatusPill";
 import ErrorPill from "../Errors/ErrorPill";
 import "./SearchBar.css";
+import getLocation from "../../Utilities/location";
+import { UserContext } from "../../App";
+import { ReactComponent as LocationServices } from "../../Icons/LocationServices.svg";
 
-const SearchBar = ({ db = "places", location, setResults }) => {
+const SearchBar = ({ db = "places", setResults }) => {
+  const { user } = useContext(UserContext);
   const [query, setQuery] = useState("");
   const [searchLocation, setSearchLocation] = useState(null);
   const [hasStatus, setHasStatus] = useState(false);
   const [statusMessage, setStatusMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [isError, setIsError] = useState(false);
+  const [location, setLocation] = useState(null);
+  const [hasLocation, setHasLocation] = useState(false);
 
   let placeholderCopy;
 
@@ -34,6 +40,19 @@ const SearchBar = ({ db = "places", location, setResults }) => {
     setIsError(false);
     setHasStatus(false);
   }, [db]);
+  console.log(location);
+  useEffect(() => {
+    if (db === "places") {
+      if (hasLocation) {
+        getLocation(setLocation);
+      } else {
+        setLocation({
+          lat: user.location.lat,
+          lng: user.location.lng,
+        });
+      }
+    }
+  }, [db, hasLocation, user]);
 
   useEffect(() => {
     if (location) {
@@ -50,6 +69,10 @@ const SearchBar = ({ db = "places", location, setResults }) => {
     setIsError(false);
     setHasStatus(false);
     setQuery(e.currentTarget.value);
+  };
+
+  const handleLocation = () => {
+    setHasLocation((prev) => !prev);
   };
 
   const handleSubmit = async (e) => {
@@ -118,15 +141,27 @@ const SearchBar = ({ db = "places", location, setResults }) => {
 
   return (
     <div className="search-bar">
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder={placeholderCopy}
-          onChange={handleChange}
-          value={query}
-        />
-        <img src={Search} alt="Search Bar" onClick={handleSubmit} />
-      </form>
+      <div className="search-bar-field">
+        <form onSubmit={handleSubmit}>
+          <input
+            type="text"
+            placeholder={placeholderCopy}
+            onChange={handleChange}
+            value={query}
+          />
+          <img src={Search} alt="Search Bar" onClick={handleSubmit} />
+        </form>
+        {db === "places" && (
+          <div
+            className={`search-bar-location-${
+              hasLocation ? "active" : "inactive"
+            }`}
+            onClick={handleLocation}
+          >
+            <LocationServices />
+          </div>
+        )}
+      </div>
       {hasStatus && <StatusPill message={statusMessage} />}
       {isError && <ErrorPill message={errorMessage} />}
     </div>

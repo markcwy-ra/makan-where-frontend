@@ -29,6 +29,11 @@ const SplashOutlet = () => {
               id: returnedUser.id,
               photoUrl: returnedUser.photoUrl,
               token: token,
+              location: {
+                name: returnedUser.location.name,
+                lat: returnedUser.location.latitude,
+                lng: returnedUser.location.longitude,
+              },
             });
             navigate("/home");
           } catch (err) {
@@ -41,6 +46,11 @@ const SplashOutlet = () => {
                 id: returnedUser.data.id,
                 photoUrl: returnedUser.data.photoUrl,
                 token: returnedUser.token,
+                location: {
+                  name: returnedUser.location.name,
+                  lat: returnedUser.location.latitude,
+                  lng: returnedUser.location.longitude,
+                },
               });
               navigate("/home");
             } catch {

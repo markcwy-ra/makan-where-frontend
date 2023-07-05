@@ -34,7 +34,6 @@ import { createReview } from "../../Utilities/fetch";
 const ReviewComposer = ({ handleToggle, place = null }) => {
   const navigate = useNavigate();
   const { user } = useContext(UserContext);
-  const [location, setLocation] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
   const [isError, setIsError] = useState(false);
 
@@ -51,12 +50,6 @@ const ReviewComposer = ({ handleToggle, place = null }) => {
   const [resultsDisplay, setResultsDisplay] = useState(null);
 
   //---------- UseEffect Functions ----------//
-
-  useEffect(() => {
-    if (!placeData) {
-      getLocation(setLocation);
-    }
-  }, [placeData]);
 
   useEffect(() => {
     if (place) {
@@ -197,7 +190,7 @@ const ReviewComposer = ({ handleToggle, place = null }) => {
           {placeData ? (
             <RestaurantCard content={placeData} type="form-selected" />
           ) : (
-            <SearchBar location={location} setResults={setResults} />
+            <SearchBar setResults={setResults} />
           )}
           {resultsDisplay && resultsDisplay}
           <form>

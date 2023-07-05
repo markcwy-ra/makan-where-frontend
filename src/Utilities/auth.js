@@ -17,12 +17,25 @@ const logout = async () => {
   localStorage.removeItem("refreshToken");
 };
 
-const signup = async ({ username, email, password, photoUrl }) => {
+const signup = async ({
+  username,
+  email,
+  password,
+  photoUrl,
+  country,
+  countryCode,
+  latitude,
+  longitude,
+}) => {
   const response = await axios.post(`${url}/auth/sign-up`, {
     username,
     email,
     password,
     photoUrl,
+    country,
+    countryCode,
+    latitude,
+    longitude,
   });
   return response.data.data;
 };
