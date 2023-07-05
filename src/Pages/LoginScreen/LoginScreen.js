@@ -30,7 +30,7 @@ const LoginScreen = () => {
         const response = await login({ email, password });
         localStorage.setItem("token", response.token);
         localStorage.setItem("refreshToken", response.refreshToken);
-        console.log(response);
+
         setUser({
           username: response.username,
           email: response.email,
@@ -45,15 +45,19 @@ const LoginScreen = () => {
         });
         navigate("/home");
       } catch (err) {
-        console.log(err);
-        const code = err.response.status;
-        if (code === 401) {
-          setErrorMessage("This account does not exist.");
-          setIsError(true);
-        } else if (code === 403) {
-          setErrorMessage("This email/password combination doesn't exist.");
-          setIsError(true);
-        } else if (code === 500) {
+        if (err.response.status) {
+          const code = err.response.status;
+          if (code === 401) {
+            setErrorMessage("This account does not exist.");
+            setIsError(true);
+          } else if (code === 403) {
+            setErrorMessage("This email/password combination doesn't exist.");
+            setIsError(true);
+          } else if (code === 500) {
+            setErrorMessage("There was an error. Please refresh.");
+            setIsError(true);
+          }
+        } else {
           setErrorMessage("There was an error. Please refresh.");
           setIsError(true);
         }

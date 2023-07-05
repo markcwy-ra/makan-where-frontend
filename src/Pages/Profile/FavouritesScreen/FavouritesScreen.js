@@ -72,11 +72,20 @@ const FavouritesScreen = () => {
         {activeToggle === "places" && (
           <VertFeed data={places} type="restaurants" />
         )}
+        {activeToggle === "places" && places && places.length === 0 && (
+          <h2 className="content-none">No favourite places</h2>
+        )}
         {activeToggle === "makanlists" && (
           <VertFeed data={lists} type="makanlists" />
         )}
+        {activeToggle === "makanlists" && lists && lists.length === 0 && (
+          <h2 className="content-none">No favourite Makanlists</h2>
+        )}
         {activeToggle === "reviews" && (
           <VertFeed data={reviews} type="reviews" />
+        )}
+        {activeToggle === "reviews" && reviews && reviews.length === 0 && (
+          <h2 className="content-none">No favourite reviews</h2>
         )}
       </div>
     </Fade>

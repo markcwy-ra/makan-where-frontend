@@ -137,7 +137,7 @@ const SearchBar = ({ db = "places", setResults }) => {
         const results = await getSearchResults({ route: "makanlists", query });
         setResults(results);
         setHasStatus(false);
-        console.log(results);
+
         if (!results) {
           setErrorMessage("No makanlists found!");
           setIsError(true);
