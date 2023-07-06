@@ -1,4 +1,4 @@
-// global google
+/* global google */
 import "./MapDisplay.css";
 import { GoogleMap, MarkerF, useLoadScript } from "@react-google-maps/api";
 import { useEffect, useState } from "react";
@@ -40,8 +40,8 @@ const MapDisplay = () => {
 
   const handleIdle = async () => {
     if (!initialLoad) {
-      const coords = map.getBounds();
-      const places = await getMapMarkers(coords);
+      const bounds = map.getBounds();
+      const places = await getMapMarkers(bounds);
       setMarkers(places.data.restaurants);
       setInitialLoad(true);
     }

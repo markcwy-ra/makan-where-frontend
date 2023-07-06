@@ -124,8 +124,11 @@ const getFeed = async (type) => {
 //---------- Map Page ----------//
 
 const getMapMarkers = async (coords) => {
+  const names = Object.keys(coords);
+  const ns = names[0];
+  const ew = names[1];
   const response = await axios.get(
-    `${url}/map?north=${coords.Va.hi}&south=${coords.Va.lo}&east=${coords.Ha.hi}&west=${coords.Ha.lo}`,
+    `${url}/map?north=${coords[ns].hi}&south=${coords[ns].lo}&east=${coords[ew].hi}&west=${coords[ew].lo}`,
     bearerToken(token)
   );
   return response;
